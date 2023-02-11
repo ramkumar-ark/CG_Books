@@ -1,0 +1,32 @@
+{
+  "name": "cg-books",
+  "version": "1.0.0",
+  "description": "back-end for cg-books app",
+  "main": "bin/index.js",
+  "bin": {
+    "cg-books": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin",
+    "dev": "nodemon -r dotenv/config ./bin"
+  },
+  "keywords": [
+    "accounting",
+    "finance",
+    "taxation"
+  ],
+  "author": "Ram Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.1",
+    "morgan": "^1.10.0",
+    "rotating-file-stream": "^3.0.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
