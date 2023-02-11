@@ -1,4 +1,4 @@
-import {Form, Input, Typography} from "antd";
+import {Col, Row, Form, Input, Switch, Typography} from "antd";
 import StateSelector from "./StateSelector";
 
 const {Title, Text} = Typography;
@@ -11,6 +11,7 @@ export default function(){
             name="register"
             layout="vertical"
             labelAlign="left"
+            labelWrap={false}
             colon={false}
             onFinish={() => {}}
             style={{
@@ -35,24 +36,28 @@ export default function(){
             >
                 <Input/>
             </Form.Item>
-            <div style={{display:"flex", justifyContent:"space-between"}}>
-            <Form.Item
-                name="country"
-                label="Organization Address"
-                initialValue="India"
-                required={true}
-            >
-                <Input disabled={true} value="India" />
-            </Form.Item>
+            <Row>
+            <Col span={9}>
+                <Form.Item
+                    name="country"
+                    label="Organization Address"
+                    initialValue="India"
+                    required={true}
+                >
+                    <Input disabled={true} value="India" />
+                </Form.Item>
+            </Col>
 
-            <Form.Item
-                name="state"
-                label="State/Union Territory"
-                required={true}
-            >
-                <StateSelector/>
-            </Form.Item>
-            </div>
+            <Col span={9} offset={6}>
+                <Form.Item
+                    name="state"
+                    label="State/Union Territory"
+                    required={true}
+                >
+                    <StateSelector/>
+                </Form.Item>
+            </Col>    
+            </Row>
 
             <Form.Item name="street1">
                 <Input placeholder="Street 1"/>
@@ -61,15 +66,26 @@ export default function(){
             <Form.Item name="street2">
                 <Input placeholder="Street 2"/>
             </Form.Item>
-            
-            <div style={{display:"flex", justifyContent:"space-between"}}>
+        
+            <Row>
+                <Col span={9}>
                 <Form.Item name="city">
                     <Input placeholder="City"/>
                 </Form.Item>
+                </Col>
+                <Col span={9} offset={6}>
                 <Form.Item name="pinCode">
                     <Input placeholder="Zip/Postal Code"/>
                 </Form.Item>
-            </div>
+                </Col>
+            </Row>
+
+            <Form.Item>
+                
+            </Form.Item>
+            <Form.Item name="isGst" valuePropName="checked">
+                <Switch/>
+            </Form.Item>
 
         </Form>
     );

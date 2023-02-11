@@ -6,7 +6,9 @@ const verifyAuth = (token) =>
     new Promise((resolve, reject) => {
         axios.post(apiBaseEndpoint, {token})
             .then(res => res.data.status ? resolve() : reject())
-            .catch(error => reject(error.response.data.error));
+            .catch(error => {
+                reject(error.response?.data?.error);
+            });
     });
 
 export default verifyAuth;
