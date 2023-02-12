@@ -37,11 +37,11 @@ const stateList = [ "Andhra Pradesh",
                 "Lakshadweep",
                 "Puducherry"];
 
-const StateSelector = () => (
+const StateSelector = ({onChange}) => (
   <Select
     showSearch
     style={{
-      width: 200,
+      minWidth: 150,
     }}
     placeholder="State/Union Territory*"
     optionFilterProp="children"
@@ -49,7 +49,8 @@ const StateSelector = () => (
     filterSort={(optionA, optionB) =>
       (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
     }
-    options={ stateList.map((e, i) => ({value: String(i + 1), label: e}))}
+    options={ stateList.map((e, i) => ({value: e, label: e}))}
+    onChange={value => onChange(value)}
   />
 );
 export default StateSelector;

@@ -1,19 +1,21 @@
-import {Col, Row, Form, Input, Switch, Typography} from "antd";
+import {Col, Row, Form, Input, Switch, Typography, Button, Space} from "antd";
+import { useState } from "react";
 import StateSelector from "./StateSelector";
 
 const {Title, Text} = Typography;
 
 export default function(){
     const [form] = Form.useForm();
+    const [isGstEnabled, setIsGstEnabled] = useState(false);
     return (
         <Form
             form={form}
             name="register"
             layout="vertical"
             labelAlign="left"
-            labelWrap={false}
+            labelWrap={true}
             colon={false}
-            onFinish={() => {}}
+            onFinish={(values) => {console.log(values)}}
             style={{
                 maxWidth: "50%",
                 margin: "10px auto",
@@ -34,13 +36,14 @@ export default function(){
                 ]}
                 required={true}
             >
-                <Input/>
+                <Input.TextArea autoSize />
             </Form.Item>
             <Row>
-            <Col span={9}>
+            <Col lg={{span:8}} sm={{span:24}}>
                 <Form.Item
                     name="country"
                     label="Organization Address"
+                    labelWrap={false}
                     initialValue="India"
                     required={true}
                 >
@@ -48,19 +51,22 @@ export default function(){
                 </Form.Item>
             </Col>
 
-            <Col span={9} offset={6}>
+            <Col lg={{span:11, offset:5}} sm={{span:24, offset:0}}>
                 <Form.Item
                     name="state"
                     label="State/Union Territory"
                     required={true}
                 >
-                    <StateSelector/>
+                    <StateSelector onChange={(value) => {
+                        form.setFieldValue({state: value});
+                        console.log(value);
+                        }}/>
                 </Form.Item>
             </Col>    
             </Row>
 
             <Form.Item name="street1">
-                <Input placeholder="Street 1"/>
+                <Input placeholder="Street 1" autoSize />
             </Form.Item>
 
             <Form.Item name="street2">
@@ -68,25 +74,50 @@ export default function(){
             </Form.Item>
         
             <Row>
-                <Col span={9}>
-                <Form.Item name="city">
-                    <Input placeholder="City"/>
-                </Form.Item>
+                <Col md={{span:9}} >
+                    <Form.Item name="city">
+                        <Input placeholder="City"/>
+                    </Form.Item>
                 </Col>
-                <Col span={9} offset={6}>
-                <Form.Item name="pinCode">
-                    <Input placeholder="Zip/Postal Code"/>
-                </Form.Item>
+                <Col md={{span:9, offset:6}}>
+                    <Form.Item name="pinCode">
+                        <Input placeholder="Zip/Postal Code"/>
+                    </Form.Item>
                 </Col>
             </Row>
-
-            <Form.Item>
-                
-            </Form.Item>
-            <Form.Item name="isGst" valuePropName="checked">
-                <Switch/>
-            </Form.Item>
-
+            <Row>
+                <Col md={10} span={24}>
+                    <Form.Item
+                        name="isGst" 
+                        label="Is registered under GST?" 
+                        valuePropName="checked"
+                    >
+                        <Switch checkedChildren="Yes" unCheckedChildren="No" onChange={checked => setIsGstEnabled(checked)}/>
+                    </Form.Item>
+                </Col>
+                <Col lg={{span:10, offset:4}}>
+                    <Form.Item
+                        name="gstin"
+                        label="Enter your GSTIN"
+                        required={true}
+                        hidden={!isGstEnabled}
+                    >
+                        <Input style={{minWidth:150}}/>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row justify="space-between">
+                <Col md={4} span={24}>
+                    <Form.Item>
+                        <Button type="primary" size="large" htmlType="submit">Create</Button>
+                    </Form.Item>
+                </Col>
+                <Col md={6} span={24}>
+                    <Form.Item>
+                        <Button size="large" style={{backgroundColor: "#f5f5f5"}}>Back</Button>
+                    </Form.Item>
+                </Col>
+            </Row>
         </Form>
     );
 }
