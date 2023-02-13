@@ -1,6 +1,7 @@
 import {Col, Row, Form, Input, Switch, Typography, Button, Space} from "antd";
 import { useState } from "react";
 import StateSelector from "./StateSelector";
+import createOrg from "../../service/createOrg";
 
 const {Title, Text} = Typography;
 
@@ -10,12 +11,12 @@ export default function(){
     return (
         <Form
             form={form}
-            name="register"
+            name="createOrgForm"
             layout="vertical"
             labelAlign="left"
             labelWrap={true}
             colon={false}
-            onFinish={(values) => {console.log(values)}}
+            onFinish={createOrg}
             style={{
                 maxWidth: "50%",
                 margin: "10px auto",
