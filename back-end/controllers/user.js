@@ -63,3 +63,33 @@ export const verifyToken = async(token) => {
         return Promise.reject({error: "Unauthorized"});
     }
 };
+
+export const setDefaultOrg = async (userId, orgId) => {
+    try {
+        await User.findByIdAndUpdate(userId, {defaultOrganization: orgId});
+        return Promise.resolve();    
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const mapOrgToUser = async (orgId, userId, role="admin") => {
+    try {
+        const {organizations:currentOrgs} = await User.findById(userId, 'organizations').exec();
+        if (currentOrgs.length === 0) await setDefaultOrg(userId, orgId);
+        currentOrgs.push({orgId, role});
+        await User.findByIdAndUpdate(userId, {organizations: currentOrgs});
+        return Promise.resolve();
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const getAssociatedOrgs = async (userId) => {
+    try {
+        const {organizations, defaultOrganization} = await User.findById(userId, 'organizations defaultOrganization').exec();
+        return Promise.resolve({organizations, defaultOrganization});
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};

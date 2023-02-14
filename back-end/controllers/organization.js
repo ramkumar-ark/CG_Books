@@ -1,4 +1,5 @@
 import Organization from "../models/organization";
+import { mapOrgToUser } from "./user";
 
 const processDetails = (orgDetails) => {
     const {name, country, state, street1, street2, city, pinCode, gstin, isGst, userId} = orgDetails;
@@ -52,6 +53,7 @@ export const addOrganization = async (orgDetails) => {
         const details = processDetails(orgDetails);
         console.log(details);
         const org = await Organization.create(details);
+        await mapOrgToUser(org.id, orgDetails.userId);
         return Promise.resolve({orgId: org.id});
     }catch(error){
         return Promise.reject({error});

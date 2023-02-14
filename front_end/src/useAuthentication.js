@@ -1,4 +1,4 @@
-import React, {useState, createContext, useEffect} from "react";
+import React, {useState, createContext} from "react";
 import signUpUser from "./service/signUpUser";
 import signInUser from "./service/signInUser";
 import verifyAuth from "./service/verifySecret";

@@ -1,13 +1,18 @@
 import {Schema, model} from "mongoose";
 import bcrypt from "bcrypt";
 
+const organizationsSchema = new Schema({
+    orgId: {type: Schema.Types.ObjectId, ref:'Organization', unique:true},
+    role:{type:String, default:String("admin")},
+});
+
 const userScheme = new Schema({
     name:{type:String, required:true},
     email:{type:String, required:true, unique:true},
     password:{type:String, required:true},
     mobileNo:{type:String, required:true},
-    organizations: {type:Array, default:[]},
-    defaultOrganization:{type:Schema.Types.ObjectId, default:null},
+    organizations: [organizationsSchema],
+    defaultOrganization: {type: Schema.Types.ObjectId, default: null},
     createdAt:{type:Date, default:Date.now},
     lastLoggedIn:{type:Date, default:Date.now},
 });

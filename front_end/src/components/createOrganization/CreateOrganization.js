@@ -1,5 +1,7 @@
-import {Col, Row, Form, Input, Switch, Typography, Button, Space} from "antd";
-import { useState } from "react";
+import {Col, Row, Form, Input, Switch, Typography, Button, Space, Alert} from "antd";
+import { useState, useContext } from "react";
+import {Redirect} from "react-router-dom";
+import useAuthentication from "../../useAuthentication"
 import StateSelector from "./StateSelector";
 import createOrg from "../../service/createOrg";
 
@@ -8,6 +10,25 @@ const {Title, Text} = Typography;
 export default function(){
     const [form] = Form.useForm();
     const [isGstEnabled, setIsGstEnabled] = useState(false);
+    const [isCreated, setIsCreated] = useState(false);
+    const [error, setIsError] = useState(false);
+    const {AuthCtx} = useAuthentication();
+    const {user} = useContext(AuthCtx);
+    const onSubmit = (values) => {
+        createOrg({...values, userId:user.id})
+            .then((res) => {
+                setIsCreated(true);
+                setIsError(false);
+            })
+            .catch((reason) => {
+                console.log(reason);
+                setIsCreated(false);
+                setIsError(true);
+            });
+    };
+    if (isCreated){
+        return <Redirect to={{pathname:"/app/dashboard", state:{from:"/app"}}}/>
+    }
     return (
         <Form
             form={form}
@@ -16,7 +37,7 @@ export default function(){
             labelAlign="left"
             labelWrap={true}
             colon={false}
-            onFinish={createOrg}
+            onFinish={onSubmit}
             style={{
                 maxWidth: "50%",
                 margin: "10px auto",
@@ -28,6 +49,7 @@ export default function(){
             scrollToFirstError
         >
             <Title level={3}>Create your organization profile</Title>
+            {error && <Alert message="System Error! Contact Support." type="error"/>}
             <span style={{textAlign:"left", display:"block", margin:"15px 0px"}}><Text strong={true} type="secondary">ORGANIZATION'S DETAILS</Text></span>
             <Form.Item
                 name="name"
