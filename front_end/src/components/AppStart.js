@@ -18,7 +18,6 @@ const AppStart = () => {
             })
             .catch((error) => {console.log(error)});
     }, []);
-    console.log(organizations, defaultOrganization);
     if (organizations === undefined && defaultOrganization === undefined)
         return <Spin loading={true} size="large"/>;
     if (organizations.length === 0)

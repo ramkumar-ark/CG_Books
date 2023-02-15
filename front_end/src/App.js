@@ -9,6 +9,7 @@ import useAuthentication from './useAuthentication';
 import React, { useContext } from 'react';
 import CreateOrganization from './components/createOrganization/CreateOrganization';
 import AppStart from './components/AppStart';
+import ProtectedComponent from './components/ProtectedComponent';
 
 const { Content } = Layout
 
@@ -26,8 +27,8 @@ function App() {
                   <Route exact path="/"><Home/></Route>
                   <Route path="/login"><Login/></Route>
                   <Route path="/signup"><SignUp/></Route>
-                  <Route exact path="/app"><AppStart/></Route>
-                  <Route path="/app/createorg"><CreateOrganization/></Route>
+                  <ProtectedComponent user={user} exact path="/app"><AppStart/></ProtectedComponent>
+                  <ProtectedComponent user={user} path="/app/createorg"><CreateOrganization/></ProtectedComponent>
               </Switch>
             </Content>
           </Layout>

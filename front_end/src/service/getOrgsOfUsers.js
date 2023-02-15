@@ -1,12 +1,12 @@
 import axios from "axios"
+import header from "./createAuthHeader";
 
 const apiBaseEndpoint = "http://localhost:3001/api/getassociatedorgs";
 
-export default function(userId){
+export default function getOrgsOfUsers(userId){
     return new Promise((resolve, reject) => {
-        axios.get(`${apiBaseEndpoint}/${userId}`)
+        axios.get(`${apiBaseEndpoint}/${userId}`, {headers:header})
             .then(res => {
-                console.log(res.data)
                 resolve(res.data);
             })
             .catch(reason => {
