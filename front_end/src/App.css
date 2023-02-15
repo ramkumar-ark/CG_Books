@@ -61,3 +61,24 @@
 .login-form-button {
   width: 100%;
 }
+
+/* for sider menu */
+.ant-layout-sider-trigger{
+  background-color: #ededf7;
+}
+
+.ant-layout-sider-children > ul > .ant-menu-item,.ant-menu-submenu{
+  padding-left: 12px !important;
+}
+
+.ant-layout-sider-children .ant-menu-submenu-title{
+  padding-left: 0px !important;
+}
+
+.ant-layout-sider-children .ant-menu-item-only-child{
+  padding-left: 24px !important;
+}
+
+.ant-layout-sider-children .ant-menu-sub{
+  background-color: #f7f7fe !important;
+}

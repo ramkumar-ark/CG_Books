@@ -65,7 +65,7 @@ const AppHeader = ({user}) => {
             fontWeight: 'bold',
           }}  
           mode="horizontal"
-          defaultSelectedKeys={['2']}
+          // defaultSelectedKeys={['2']}
           items={navMenuItems.map(({label, link, login, dd}, index) => {
             if (login && user){
               if (label === "Sign In") 

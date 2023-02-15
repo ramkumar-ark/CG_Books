@@ -7,7 +7,6 @@ import './App.css';
 import SignUp from './components/SignUp';
 import useAuthentication from './useAuthentication';
 import React, { useContext } from 'react';
-import CreateOrganization from './components/createOrganization/CreateOrganization';
 import AppStart from './components/AppStart';
 import ProtectedComponent from './components/ProtectedComponent';
 
@@ -27,8 +26,10 @@ function App() {
                   <Route exact path="/"><Home/></Route>
                   <Route path="/login"><Login/></Route>
                   <Route path="/signup"><SignUp/></Route>
-                  <ProtectedComponent user={user} exact path="/app"><AppStart/></ProtectedComponent>
-                  <ProtectedComponent user={user} path="/app/createorg"><CreateOrganization/></ProtectedComponent>
+                  <ProtectedComponent user={user} path="/app"><AppStart/></ProtectedComponent>
+                  <Route>
+                    <h1>404 Requested Resource Not Found.</h1>
+                  </Route>
               </Switch>
             </Content>
           </Layout>
