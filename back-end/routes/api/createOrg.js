@@ -8,8 +8,8 @@ export default async (req, res) => {
         const {orgId} = await addOrganization(reqBody);
         const {defaultOrganization} = await getAssociatedOrgs(reqBody.userId);
         defaultOrganization && await setDefaultOrg(reqBody.userId, orgId);
-        const db = accountingDb(orgId);
-        res.json({orgId})
+        const dbControllers = await accountingDb(orgId, true);
+        res.json({message: "success"})
     } catch (error) {
         console.log(error);
         res.status(403).json(error);

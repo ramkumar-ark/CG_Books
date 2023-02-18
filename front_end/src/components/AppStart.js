@@ -27,10 +27,12 @@ const AppStart = () => {
 
     useEffect(() => {
         organizations?.length === 0 && history.replace({pathname:"/app/createorg"});
-        defaultOrganization === null && history.replace({pathname:"/app/selectorg"});
+        (defaultOrganization === null && organizations?.length > 0)
+            && history.replace({pathname:"/app/selectorg"});
+        defaultOrganization === null && history.replace({pathname:"/app/createorg"});
         (window.location.pathname === "/app" && defaultOrganization) 
             && history.replace({pathname:"/app/home"});    
-    }, [defaultOrganization]);
+    }, [defaultOrganization, history, organizations]);
 
     return (
         <Spin spinning={isLoading} size="large">

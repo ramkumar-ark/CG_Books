@@ -27,7 +27,7 @@ export default function(){
             });
     };
     if (isCreated){
-        return <Redirect to={{pathname:"/app/dashboard", state:{from:"/app"}}}/>
+        return <Redirect to={{pathname:"/app/home/dashboard", state:{from:"/app"}}}/>
     }
     return (
         <Form
