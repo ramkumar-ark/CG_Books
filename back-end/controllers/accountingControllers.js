@@ -16,14 +16,12 @@ export default function createAccountingControllers(modelsObject) {
 
         };
         try {
-            await Object.keys(defaultGroups).forEach(
-                async (typeName) => {
-                    const typeId = await accountTypes.getId(typeName);
-                    defaultGroups[typeName].forEach(async (groupName) => {
-                        await primaryGroup.create(groupName, typeId);
-                    });
+            for (const typeName in defaultGroups){
+                const typeId = await accountTypes.getId(typeName);
+                for (const groupName of defaultGroups[typeName]){
+                    await primaryGroup.create(groupName, typeId);
                 }
-            );
+            }
             return Promise.resolve();
         } catch (error) {
             return Promise.reject();
@@ -32,7 +30,7 @@ export default function createAccountingControllers(modelsObject) {
 
     const createPrimaryMasters = async() => {
         await accountTypes.createDefaultTypes();
-        createDefaultPrimaryGroups();
+        await createDefaultPrimaryGroups();
     };
 
     const utils = {

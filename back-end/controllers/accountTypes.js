@@ -18,10 +18,9 @@ export default class AccountTypesController {
     }
 
     async createDefaultTypes(){
-        await ["Assets", "Liability", "Equity", "Expense", "Income"]
-            .map(async (elem) => {
-                await this.createType(elem)
-            });
+        const typesArray = ["Assets", "Liability", "Equity", "Expense", "Income"];
+        for (const elem of typesArray) {
+            await this.createType(elem);
+        }
     }
-
 }

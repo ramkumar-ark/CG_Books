@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import useAuthentication from "../useAuthentication";
+import useOrganization from "../useOrganization";
 import { Switch, Route, useHistory } from "react-router-dom";
 import getOrgsOfUsers from "../service/getOrgsOfUsers";
 import { Spin } from "antd";
@@ -8,6 +9,8 @@ import AppHome from "./AppHome";
 
 const AppStart = () => {
     const {AuthCtx} = useAuthentication();
+    const {OrgCtx} = useOrganization();
+    const {setSelectedOrgId} = useContext(OrgCtx);
     const {user} = useContext(AuthCtx);
     const [organizations, setOrganizations] =useState();
     const [defaultOrganization, setDefaultOrganization] = useState();
@@ -21,6 +24,7 @@ const AppStart = () => {
                 setIsLoading(false);
                 setOrganizations(res.organizations);
                 setDefaultOrganization(res.defaultOrganization);
+                setSelectedOrgId(res.defaultOrganization);
             })
             .catch((error) => {console.log(error)});
     }, []);

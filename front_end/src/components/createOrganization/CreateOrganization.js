@@ -2,6 +2,7 @@ import {Col, Row, Form, Input, Switch, Typography, Button, Space, Alert} from "a
 import { useState, useContext } from "react";
 import {Redirect} from "react-router-dom";
 import useAuthentication from "../../useAuthentication"
+import useOrganization from "../../useOrganization";
 import StateSelector from "./StateSelector";
 import createOrg from "../../service/createOrg";
 
@@ -14,21 +15,21 @@ export default function(){
     const [error, setIsError] = useState(false);
     const {AuthCtx} = useAuthentication();
     const {user} = useContext(AuthCtx);
+    const {OrgCtx} = useOrganization();
+    const {setSelectedOrgId} = useContext(OrgCtx);
     const onSubmit = (values) => {
         createOrg({...values, userId:user.id})
             .then((res) => {
                 setIsCreated(true);
                 setIsError(false);
+                setSelectedOrgId(res);
             })
             .catch((reason) => {
-                console.log(reason);
                 setIsCreated(false);
                 setIsError(true);
             });
     };
-    if (isCreated){
-        return <Redirect to={{pathname:"/app/home/dashboard", state:{from:"/app"}}}/>
-    }
+    
     return (
         <Form
             form={form}
@@ -49,6 +50,7 @@ export default function(){
             scrollToFirstError
         >
             <Title level={3}>Create your organization profile</Title>
+            {isCreated && <Redirect to={{pathname:"/app/home/dashboard", state:{from:"/app"}}}/>}
             {error && <Alert message="System Error! Contact Support." type="error"/>}
             <span style={{textAlign:"left", display:"block", margin:"15px 0px"}}><Text strong={true} type="secondary">ORGANIZATION'S DETAILS</Text></span>
             <Form.Item

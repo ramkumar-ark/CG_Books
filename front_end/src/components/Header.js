@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dropdown, Layout, Menu } from 'antd';
 import { Link, useLocation } from "react-router-dom";
 import UserDropDown from "./UserDropDown";
+import OrgDropDown from "./OrgDropDown";
 
 const { Header} = Layout;
 
@@ -23,7 +24,8 @@ const navItems = {
         {label:"Sign In", link: "login"}
     ],
     app:[
-        {dd: true}
+        {dd: true, name: "user"},
+        {dd: true, name: "org"}
     ]
 };
 
@@ -66,13 +68,14 @@ const AppHeader = ({user}) => {
           }}  
           mode="horizontal"
           // defaultSelectedKeys={['2']}
-          items={navMenuItems.map(({label, link, login, dd}, index) => {
+          items={navMenuItems.map(({label, link, login, dd, name}, index) => {
             if (login && user){
               if (label === "Sign In") 
                 return {key: String(index + 1), label: <UserDropDown/>};
             }
             else if(dd){
-                return {key: String(index + 1), label: <UserDropDown/>};
+                if (name==="user") return {key: String(index + 1), label: <UserDropDown/>};
+                if (name==="org") return {key: String(index + 1), label: <OrgDropDown/>};
             }else{
               return {
                 key: String(index + 1),

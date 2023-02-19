@@ -55,7 +55,7 @@ export const signin = async({email, password}) => {
 export const verifyToken = async(token) => {
     try {
         const user = jwt.decode(token);
-        const findUser = User.findOne({email: user.email});
+        const findUser = await User.findOne({email: user.email}).exec();
         if (!findUser) return Promise.reject({error: "Unauthorized"});
         await verify(token);
         return Promise.resolve();        

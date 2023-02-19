@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import useAuthentication from './useAuthentication';
+import useOrganization from './useOrganization';
 
 const ConnectedApp = () => {
+    const {OrgProvider} = useOrganization();
     const {AuthProvider} = useAuthentication();
     return (
         <AuthProvider>
+        <OrgProvider>
             <App/>
+        </OrgProvider>
         </AuthProvider>
     );
 };

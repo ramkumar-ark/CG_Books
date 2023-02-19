@@ -13,7 +13,7 @@ export default async function initiateAccountingDb(orgId, isNewOrg){
     });
     const databaseModels = createAccountingModels(db);
     const databaseControllers = createAccountingControllers(databaseModels);
-    isNewOrg && databaseControllers.utils.createPrimaryMasters();
+    isNewOrg && await databaseControllers.utils.createPrimaryMasters();
     console.log("Connected to Accounting Database");
     return databaseControllers;
 }
