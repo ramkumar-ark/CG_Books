@@ -22,5 +22,6 @@ export default class AccountTypesController {
         for (const elem of typesArray) {
             await this.createType(elem);
         }
+        console.log('Account Types Created')
     }
 }

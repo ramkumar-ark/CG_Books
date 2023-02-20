@@ -2,17 +2,22 @@
 import AccountTypesController from "./accountTypes";
 import AccountGroupsController from "./accountsGroup";
 import PrimaryGroupsController from "./primaryGroup";
+import LedgerController from "./ledgerController";
+import getMasters from "../data/getMasters";
 
 export default function createAccountingControllers(modelsObject) {
     const accountTypes = new AccountTypesController(modelsObject.AccountTypes);
     const group = new AccountGroupsController(modelsObject.Groups);
     const primaryGroup = new PrimaryGroupsController(modelsObject.PrimaryGroups);
+    const ledger = new LedgerController(modelsObject.Ledger);
 
     const createDefaultPrimaryGroups = async() => {
         const defaultGroups = {
-            Assets: ['Other Asset', 'Other Current Asset', 'Cash', 'Bank', 'Fixed Asset', 'Stock', 'Payment Clearing'],
-            Liability: ['Other Current Liability', 'Credit Card', 'Long Term Liability', 'Other Liability'],
-
+            Assets: ['Other Asset', 'Accounts Receivable', 'Other Current Asset', 'Investment', 'Cash', 'Bank', 'Fixed Asset', 'Stock', 'Payment Clearing'],
+            Liability: ['Other Current Liability', 'Accounts Payable', 'Credit Card', 'Long Term Liability', 'Other Liability'],
+            Equity: ['Equity'],
+            Income: ['Income', 'Other Income'],
+            Expense: ['Expense', 'Cost Of Goods Sold', 'Other Expense']
 
         };
         try {
@@ -22,15 +27,33 @@ export default function createAccountingControllers(modelsObject) {
                     await primaryGroup.create(groupName, typeId);
                 }
             }
+            console.log('Primary groups created');
             return Promise.resolve();
         } catch (error) {
             return Promise.reject();
         }
     };
 
+    const createLedgerMasters = async() => {
+        try {
+            const { ledgerMasters: ledgerObjs } = await getMasters();
+            console.log(ledgerObjs[0]);
+            for (const record of ledgerObjs){
+                const {name, group, description} = record;
+                const { id:groupId } = await primaryGroup.getByName(group);
+                await ledger.create(name, groupId, description);
+            }
+            console.log('ledger masters created.');
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
     const createPrimaryMasters = async() => {
         await accountTypes.createDefaultTypes();
         await createDefaultPrimaryGroups();
+        await createLedgerMasters();
     };
 
     const utils = {
@@ -40,6 +63,7 @@ export default function createAccountingControllers(modelsObject) {
         accountTypes,
         group,
         primaryGroup,
+        ledger,
 
         utils
     };

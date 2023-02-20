@@ -37,7 +37,7 @@ export default class PrimaryGroupsController {
         try {
             const group = await this.model.findOne({ name }).exec();
             if (!group) {
-                const newGroup = await this.model.create({name, accountType: typeId});
+                const newGroup = await this.model.create({name, category: typeId});
                 return Promise.resolve(newGroup.id);
             }else{
                 return Promise.resolve(group.id);

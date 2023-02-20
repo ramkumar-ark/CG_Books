@@ -1,0 +1,67 @@
+slNo,name,group,description
+1,Accounts Payable,Accounts Payable,"This is an account of all the money which you owe to others like a pending bill payment to a vendor,etc."
+2,Accounts Receivable,Accounts Receivable,The money that customers owe you becomes the accounts receivable. A good example of this is a payment expected from an invoice sent to your customer.
+3,Undeposited Funds,Cash,Record funds received by your company yet to be deposited in a bank as undeposited funds and group them as a current asset in your balance sheet.
+4,Petty Cash,Cash,It is a small amount of cash that is used to pay your minor or casual expenses rather than writing a check.
+5,Cost of Goods Sold,Cost Of Goods Sold,An expense account which tracks the value of the goods sold.
+6,Labor,Cost Of Goods Sold,An expense account that tracks the amount that you pay as labor.
+7,Materials,Cost Of Goods Sold,An expense account that tracks the amount you use in purchasing materials.
+8,Subcontractor,Cost Of Goods Sold,An expense account to track the amount that you pay subcontractors who provide service to you.
+9,Job Costing,Cost Of Goods Sold,An expense account to track the costs that you incur in performing a job or a task.
+10,Drawings,Equity,The money withdrawn from a business by its owner can be tracked with this account.
+11,Retained Earnings,Equity,The earnings of your company which are not distributed among the share holders is accounted as retained earnings.
+12,Owner's Equity,Equity,The owners rights to the assets of a company can be quantified in the owner''s equity account.
+13,Opening Balance Offset,Equity,This is an account where you can record the balance from your previous years earning or the amount set aside for some activities. It is like a buffer account for your funds.
+14,Investments,Investment,An equity account used to track the amount that you invest.
+15,Distributions,Equity,"An equity account that tracks the payment of stock, cash or physical products to its shareholders."
+16,Capital Stock,Equity,An equity account that tracks the capital introduced when a business is operated through a company or corporation.
+17,Dividends Paid,Equity,An equity account to track the dividends paid when a corporation declares dividend on its common stock.
+18,Travel Expense,Expense,"Expenses on business travels like hotel bookings, flight charges, etc. are recorded as travel expenses."
+19,Telephone Expense,Expense,"The expenses on your telephone, mobile and fax usage are accounted as telephone expenses."
+20,Automobile Expense,Expense,"Transportation related expenses like fuel charges and maintenance charges for automobiles, are included to the automobile expense account."
+21,IT and Internet Expenses,Expense,"Money spent on your IT infrastructure and usage like  internet connection, purchasing computer equipment etc is recorded as an IT and Computer Expense."
+22,Rent Expense,Expense,The rent paid for your office or any space related to your business can be recorded as a rental expense.
+23,Janitorial Expense,Expense,All your janitorial and cleaning expenses are recorded into the janitorial expenses account.
+24,Postage,Expense,"Your expenses on ground mails, shipping and air mails can be recorded under the postage account."
+25,Bad Debt,Expense,Any amount which is lost and is unrecoverable is recorded into the bad debt account.
+26,Printing and Stationery,Expense,Expenses incurred by the organization towards printing and stationery.
+27,Salaries and Employee Wages,Expense,Salaries for your employees and the wages paid to workers are recorded under the salaries and wages account.
+28,Meals and Entertainment,Expense,Expenses on food and entertainment are recorded into this account.
+29,Depreciation Expense,Expense,Any depreciation in value of your assets can be captured as a depreciation expense.
+30,Consultant Expense,Expense,Charges for availing the services of a consultant is recorded as a consultant expenses. The fees paid to a soft skills consultant to impart personality development training for your employees is a good example.
+31,Repairs and Maintenance,Expense,The costs involved in maintenance and repair of assets is recorded under this account.
+32,Other Expenses,Expense,Any minor expense on activities unrelated to primary business operations is recorded under the other expense account.
+33,Lodging,Expense,Any expense related to putting up at motels etc while on business travel can be entered here.
+34,Uncategorized Expenses,Expense,This account can be used to temporarily track expenses that are yet to be identified and classified into a particular category.
+35,Office Supplies,Expense,All expenses on purchasing office supplies like stationery are recorded into the office supplies account.
+36,Advertising And Marketing,Expense,"Your expenses on promotional, marketing and advertising activities like banners, web-adds, trade shows, etc. are recorded in advertising and marketing account."
+37,Bank Fees and Charges,Expense,"Any bank fees levied is recorded into the bank fees and charges account. A bank account maintenance fee, transaction charges, a late payment fee are some examples."
+38,Credit Card Charges,Expense,"Service fees for transactions , balance transfer fees, annual credit fees and other charges levied on a credit card are recorded into the credit card account."
+39,Purchase Discounts,Expense,Tracks any reduction that your vendor offers on your purchases. Some vendors also provide them to encourage quick payment settlement.
+40,Raw Materials And Consumables,Expense,An expense account to track the amount spent on purchasing raw materials and consumables.
+41,Transportation Expense,Expense,An expense account to track the amount spent on transporting goods or providing services.
+42,Depreciation And Amortisation,Expense,"An expense account that is used to track the depreciation of tangible assets and intangible assets, which is amortization."
+43,Contract Assets,Expense,An asset account to track the amount that you receive from your customers while you're yet to complete rendering the services.
+44,Furniture and Equipment,Fixed Asset,Purchases of furniture and equipment for your office that can be used for a long period of time usually exceeding one year can be tracked with this account.
+45,Other Charges,Expense,Miscellaneous charges like adjustments made to the invoice can be recorded in this account.
+46,Shipping Charge,Income,Shipping charges made to the invoice will be recorded in this account.
+47,Sales,Income,The income from the sales in your business is recorded under the sales account.
+48,Other Income,Other Income,A general category of account where you can record any income which cannot be recorded into any other category.
+49,Interest Income,Other Income,A percentage of your balances and deposits are given as interest to you by your banks and financial institutions. This interest is recorded into the interest income account.
+50,Late Fee Income,Other Income,Any late fee income is recorded into the late fee income account. The late fee is levied when the payment for an invoice is not received by the due date.
+51,Discount,Income,Any reduction on your selling price as a discount can be recorded into the discount account.
+52,Mortgages,Long Term Liability,An expense account that tracks the amounts you pay for the mortgage loan.
+53,Construction Loans,Long Term Liability,An expense account that tracks the amount you repay for construction loans.
+54,Employee Advance,Other Current Asset,Money paid out to an employee in advance can be tracked here till it's repaid or shown to be spent for company purposes.
+55,Advance Tax,Other Current Asset,"Any tax which is paid in advance is recorded into the advance tax account. This advance tax payment could be a quarterly, half yearly or yearly payment."
+56,Prepaid Expenses,Other Current Asset,An asset account that reports amounts paid in advance while purchasing goods or services from a vendor.
+57,TDS Receivable,Other Current Asset,Tracks the Tax Deducted by customers from the payments due to us
+58,Employee Reimbursements,Other Current Liability,This account can be used to track the reimbursements that are due to be paid out to employees.
+59,Opening Balance Adjustments,Other Current Liability,This account will hold the difference in the debits and credits entered during the opening balance.
+60,Unearned Revenue,Other Current Liability,"A liability account that reports amounts received in advance of providing goods or services. When the goods or services are provided, this account balance is decreased and a revenue account is increased."
+61,Tax Payable,Other Current Liability,The amount of money which you owe to your tax authority is recorded under the tax payable account. This amount is a sum of your outstanding in taxes and the tax charged on sales.
+62,TDS Payable,Other Current Liability,Tracks the Tax Deducted and payable by us to Govt.
+63,Exchange Gain or Loss,Other Expense,Changing the conversion rate can result in a gain or a loss. You can record this into the exchange gain or loss account.
+64,Dimension Adjustments,Other Liability,"This adjustment account tracks the transfers between different dimensions like tags, branches."
+65,Inventory Asset,Stock,An account which tracks the value of goods in your inventory.
+66,Suspense Account,Other Asset,Tracks the transactions with incomplete information or data and make correct entries later.

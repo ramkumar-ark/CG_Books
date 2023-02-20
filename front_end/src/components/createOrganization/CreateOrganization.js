@@ -1,6 +1,6 @@
 import {Col, Row, Form, Input, Switch, Typography, Button, Space, Alert} from "antd";
-import { useState, useContext } from "react";
-import {Redirect} from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import {useHistory} from "react-router-dom";
 import useAuthentication from "../../useAuthentication"
 import useOrganization from "../../useOrganization";
 import StateSelector from "./StateSelector";
@@ -11,24 +11,26 @@ const {Title, Text} = Typography;
 export default function(){
     const [form] = Form.useForm();
     const [isGstEnabled, setIsGstEnabled] = useState(false);
-    const [isCreated, setIsCreated] = useState(false);
     const [error, setIsError] = useState(false);
     const {AuthCtx} = useAuthentication();
     const {user} = useContext(AuthCtx);
     const {OrgCtx} = useOrganization();
-    const {setSelectedOrgId} = useContext(OrgCtx);
+    const {setSelectedOrgId, selectedOrg} = useContext(OrgCtx);
+    const history = useHistory();
     const onSubmit = (values) => {
         createOrg({...values, userId:user.id})
             .then((res) => {
-                setIsCreated(true);
                 setIsError(false);
                 setSelectedOrgId(res);
             })
             .catch((reason) => {
-                setIsCreated(false);
                 setIsError(true);
             });
     };
+
+    useEffect(() =>{
+        if(selectedOrg) history.replace({pathname:"/app/home/dashboard", state:{from:"/app"}});
+    }, [selectedOrg, history]);
     
     return (
         <Form
@@ -50,7 +52,6 @@ export default function(){
             scrollToFirstError
         >
             <Title level={3}>Create your organization profile</Title>
-            {isCreated && <Redirect to={{pathname:"/app/home/dashboard", state:{from:"/app"}}}/>}
             {error && <Alert message="System Error! Contact Support." type="error"/>}
             <span style={{textAlign:"left", display:"block", margin:"15px 0px"}}><Text strong={true} type="secondary">ORGANIZATION'S DETAILS</Text></span>
             <Form.Item
