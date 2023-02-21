@@ -29,18 +29,21 @@ const items = [
 ]),
   getItem('Accountant', 'sub3', <SolutionOutlined />, [
     getItem('Manual Journals', '12'),
-    getItem('Chart of Accounts', '13'),
+    getItem(<Link to="/app/home/chartofaccounts">Chart Of Accounts</Link>, '13'),
   ]),
   getItem('Reports', '14', <BarChartOutlined/>)
 ];
 
-const SiderNavMenu = () => {
+const SiderNavMenu = ({onCollapse}) => {
     const [collapsed, setCollapsed] = useState(false);
     return (
         <Sider 
             collapsible 
             collapsed={collapsed} 
-            onCollapse={(value) => setCollapsed(value)}
+            onCollapse={(value) => {
+              setCollapsed(value);
+              onCollapse(!collapsed);
+            }}
             style={{overflow:'auto', height:'80vh', position:'fixed', left:0, backgroundColor:"#f7f7fe"}}
         >
         <Menu defaultSelectedKeys={['1']} mode="inline" items={items} style={{backgroundColor:"#f7f7fe", textAlign:"start"}} />

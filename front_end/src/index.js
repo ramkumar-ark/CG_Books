@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import useAuthentication from './useAuthentication';
 import useOrganization from './useOrganization';
+import { Provider } from 'react-redux';
+import store from './store/index';
 
 const ConnectedApp = () => {
     const {OrgProvider} = useOrganization();
@@ -20,9 +22,9 @@ const ConnectedApp = () => {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
-    <ConnectedApp />
-  
+    <Provider store={store}>
+        <ConnectedApp />
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

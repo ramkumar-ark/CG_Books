@@ -7,6 +7,8 @@ import getAssociatedOrgs from "./getAssociatedOrgs";
 import getOrgData from "./getOrgData";
 import protectApi from "../../utils/protectApi";
 import testApi from "./testApi";
+import getMasters from "./getMasters";
+import openOrg from "./openOrg";
 
 const router =Router();
 
@@ -14,7 +16,9 @@ router.post("/signup", signUpUser);
 router.post("/signin", signInUser);
 router.post("/verify/secret", verify);
 router.post("/createorg", protectApi, createOrg);
+router.get("/openorg/:orgId", protectApi, openOrg);
 router.get("/getassociatedorgs/:userId",protectApi ,getAssociatedOrgs);
+router.get("/getmasters/:orgId", protectApi, getMasters);
 router.get("/getorgdata/:orgId", protectApi, getOrgData);
 router.get("/testApi", testApi);
 

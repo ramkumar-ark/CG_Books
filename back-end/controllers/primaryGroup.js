@@ -46,4 +46,13 @@ export default class PrimaryGroupsController {
             return Promise.reject(error);
         }
     }
+
+    async getAllGroups(){
+        try {
+            const groups = await this.model.find({});
+            return Promise.resolve(groups);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }

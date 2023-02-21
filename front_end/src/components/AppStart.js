@@ -6,11 +6,12 @@ import getOrgsOfUsers from "../service/getOrgsOfUsers";
 import { Spin } from "antd";
 import CreateOrganization from "./createOrganization/CreateOrganization";
 import AppHome from "./AppHome";
+import openOrg from "../service/openOrg";
 
 const AppStart = () => {
     const {AuthCtx} = useAuthentication();
     const {OrgCtx} = useOrganization();
-    const {setSelectedOrgId} = useContext(OrgCtx);
+    const {setSelectedOrgId, selectedOrg} = useContext(OrgCtx);
     const {user} = useContext(AuthCtx);
     const [organizations, setOrganizations] =useState();
     const [defaultOrganization, setDefaultOrganization] = useState();
@@ -18,16 +19,24 @@ const AppStart = () => {
     const history = useHistory();
 
     useEffect(() => {
-        setIsLoading(true);
-        getOrgsOfUsers(user.id)
-            .then((res) => {
-                setIsLoading(false);
-                setOrganizations(res.organizations);
-                setDefaultOrganization(res.defaultOrganization);
-                setSelectedOrgId(res.defaultOrganization);
-            })
-            .catch((error) => {console.log(error)});
-    }, []);
+        console.log('executed');
+        if (!selectedOrg){
+            setIsLoading(true);
+            getOrgsOfUsers(user.id)
+                .then((res) => {
+                    setIsLoading(false);
+                    setOrganizations(res.organizations);
+                    setDefaultOrganization(res.defaultOrganization);
+                    openOrg(res.defaultOrganization)
+                        .then(response => {
+                            setSelectedOrgId(res.defaultOrganization);
+                        })
+                        .catch(err => console.log(err));
+                    
+                })
+                .catch((error) => {console.log(error)});
+        }
+    }, [selectedOrg]);
 
     useEffect(() => {
         organizations?.length === 0 && history.replace({pathname:"/app/createorg"});

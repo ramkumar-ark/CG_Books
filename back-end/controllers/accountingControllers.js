@@ -18,7 +18,6 @@ export default function createAccountingControllers(modelsObject) {
             Equity: ['Equity'],
             Income: ['Income', 'Other Income'],
             Expense: ['Expense', 'Cost Of Goods Sold', 'Other Expense']
-
         };
         try {
             for (const typeName in defaultGroups){
@@ -37,7 +36,6 @@ export default function createAccountingControllers(modelsObject) {
     const createLedgerMasters = async() => {
         try {
             const { ledgerMasters: ledgerObjs } = await getMasters();
-            console.log(ledgerObjs[0]);
             for (const record of ledgerObjs){
                 const {name, group, description} = record;
                 const { id:groupId } = await primaryGroup.getByName(group);
@@ -56,8 +54,20 @@ export default function createAccountingControllers(modelsObject) {
         await createLedgerMasters();
     };
 
+    const getAllMasters = async() => {
+        try {
+            const ledgers = await ledger.getAllLedgers();
+            const groups = await primaryGroup.getAllGroups();
+            const types = await accountTypes.getAllAccountTypes();
+            return Promise.resolve({ledgers, groups, types});
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
     const utils = {
         createPrimaryMasters,
+        getAllMasters,
     };
     return {
         accountTypes,

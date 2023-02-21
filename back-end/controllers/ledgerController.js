@@ -6,10 +6,17 @@ export default class LedgerController {
 
     async create(name, groupId, description, opBalance){
         try {
-            console.log(name);
             const ledger = await this.model.create({name, group:groupId, description, opBalance: opBalance || 0});
-            console.log(ledger);
             return Promise.resolve(ledger.id);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getAllLedgers(){
+        try {
+            const ledgers = await this.model.find({});
+            return Promise.resolve(ledgers);
         } catch (error) {
             return Promise.reject(error);
         }

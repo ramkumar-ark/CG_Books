@@ -22,6 +22,15 @@ export default class AccountTypesController {
         for (const elem of typesArray) {
             await this.createType(elem);
         }
-        console.log('Account Types Created')
+        console.log('Account Types Created');
+    }
+
+    async getAllAccountTypes(){
+        try {
+            const accountTypes = await this.model.find({});
+            return Promise.resolve(accountTypes);
+        } catch (error) {
+            return Promise.reject(error);
+        }
     }
 }
