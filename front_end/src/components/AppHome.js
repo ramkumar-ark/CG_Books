@@ -4,6 +4,8 @@ import SiderNavMenu from "./SiderNavMenu";
 import Dashboard from "./dashboard/Dashboard";
 import ChartOfAccounts from "./chartOfAccounts/ChartOfAccounts";
 import { useState } from "react";
+import Customers from "./customers/Customers";
+import CreateCustomer from "./customers/CreateCustomer";
 
 const {Content, Header} = Layout;
 
@@ -23,6 +25,12 @@ export default () =>{
                         </Route>
                         <Route path={`/app/home/chartofaccounts`}>
                             <ChartOfAccounts/>
+                        </Route>
+                        <Route exact path='/app/home/customers'>
+                            <Customers/>
+                        </Route>
+                        <Route path='/app/home/customers/new'>
+                            <CreateCustomer/>
                         </Route>
                     </Switch>
                 </Content>

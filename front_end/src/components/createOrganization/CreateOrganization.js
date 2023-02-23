@@ -85,7 +85,6 @@ export default function(){
                 >
                     <StateSelector onChange={(value) => {
                         form.setFieldValue({state: value});
-                        console.log(value);
                         }}/>
                 </Form.Item>
             </Col>    

@@ -13,8 +13,11 @@ export const mastersApi = createApi({
     endpoints: (builder) => ({
         fetchMasters: builder.query({
             query: (orgId) => `/api/getmasters/${orgId}`
-        })
+        }),
+        getCustomers: builder.query({
+            query: () => `/api/testApi`
+        }),
     })
 });
 
-export const { useFetchMastersQuery } = mastersApi;
+export const { useFetchMastersQuery, useGetCustomersQuery } = mastersApi;

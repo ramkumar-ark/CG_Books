@@ -82,3 +82,45 @@
 .ant-layout-sider-children .ant-menu-sub{
   background-color: #f7f7fe !important;
 }
+
+/* for create contact form */
+#createCustomerContact .ant-form-item-control-input-content{
+  display: flex;
+}
+
+#createCustomerContact .ant-form-item .ant-form-item{
+  margin-bottom: 10px;
+}
+
+.addressSectionName .ant-form-item-control-input-content{
+  justify-content: flex-end;
+}
+
+.contactsTable .ant-table-cell {
+  display: table-cell;
+}
+
+.contactsTable .ant-table-cell input{
+  border-width: 0;
+}
+
+.contactsTable .ant-table-cell .ant-select-selector{
+  border-width: 0;
+}
+
+.contactsTable .ant-table-cell input:hover{
+  border-width: 1px;
+}
+
+.contactsTable .ant-table-cell .ant-select-selector:hover{
+  border-width: 1px;
+}
+
+.contactsTable .ant-form-item {
+  width: -webkit-fill-available;
+  margin-bottom: 0 !important;
+}
+
+.contactsTable .ant-table-tbody>tr>td {
+  padding: 0;
+}
