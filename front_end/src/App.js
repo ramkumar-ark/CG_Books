@@ -20,7 +20,6 @@ function App() {
       <div className="App">
         <Layout>
           <AppHeader user={user}/>
-          {/* <Layout style={{minHeight: '90vh'}}> */}
             <Content>
               <Switch>
                   <Route exact path="/"><Home/></Route>
@@ -32,7 +31,6 @@ function App() {
                   </Route>
               </Switch>
             </Content>
-          {/* </Layout> */}
         </Layout>
       </div>
     </Router>

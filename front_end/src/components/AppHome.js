@@ -14,7 +14,7 @@ export default () =>{
     return (
         <Layout style={{ minHeight: '100vh',}} hasSider>
             <SiderNavMenu onCollapse={(value) => setIsSiderCollapsed(value)}/>
-            <Layout className="site-layout" style={{marginLeft: isSiderCollapsed ? "80px" : "200px"}}>
+            <Layout className="site-layout" style={{marginLeft: isSiderCollapsed ? "50px" : "200px"}}>
                 <Content >
                     <Switch>
                         <Route exact path="/app/home">

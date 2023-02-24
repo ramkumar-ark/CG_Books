@@ -1,0 +1,53 @@
+{
+    "customerType": "business",
+    "primaryContact": {
+        "salutation": "Mr.",
+        "firstName": "RAM",
+        "lastName": "KUMAR"
+    },
+    "companyName": "ARK INTERNATIONAL",
+    "name": "RAM KUMAR",
+    "customerEmail": "ramgambit@gmail.com",
+    "customerPhone": {
+        "workPhone": "+917904012432",
+        "mobile": "+917904012432"
+    },
+    "website": "WWW.ARKINTERNATIONAL.COM",
+    "pan": "BQPRS2341T",
+    "openingBalance": 500000,
+    "creditPeriod": {
+        "unit": "days",
+        "value": 60
+    },
+    "billingAddress": {
+        "attention": "Ram Kumar",
+        "country": "United States",
+        "street1": "WHITE HOUSE",
+        "street2": "WASHING TON",
+        "city": "TERICO",
+        "state": "New York",
+        "zipCode": "123456",
+        "phone": "882639145"
+    },
+    "shippingAddress": {
+        "attention": "Ram Kumar",
+        "country": "United States",
+        "street1": "WHITE HOUSE",
+        "street2": "WASHING TON",
+        "city": "TERICO",
+        "state": "New York",
+        "zipCode": "123456",
+        "phone": "882639145"
+    },
+    "contactPersons": [
+        {
+            "salutation": "Miss.",
+            "firstName": "Vimala",
+            "lastName": "Vineeth",
+            "email": "vim@email.com",
+            "workPhone": "65653212",
+            "mobile": "9865321245"
+        }
+    ],
+    "remarks": "nature of business, how arrived, importance"
+}

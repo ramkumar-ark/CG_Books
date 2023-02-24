@@ -47,8 +47,6 @@ const items = [
 const SiderNavMenu = ({onCollapse}) => {
     const initState = () => {
       let option = window.location.pathname.split('/')[3];
-      console.log(option);
-      console.log(keyObj[option]);
       if (keyObj[option]) 
         return {
           selected: String(keyObj[option]),
@@ -70,6 +68,7 @@ const SiderNavMenu = ({onCollapse}) => {
               setCollapsed(value);
               onCollapse(!collapsed);
             }}
+            collapsedWidth={50}
             style={{overflow:'auto', height:'80vh', position:'fixed', left:0, backgroundColor:"#f7f7fe"}}
         >
         <Menu defaultSelectedKeys={[selection.selected]} defaultOpenKeys={selection.expanded} mode="inline" items={items} style={{backgroundColor:"#f7f7fe", textAlign:"start"}} />
