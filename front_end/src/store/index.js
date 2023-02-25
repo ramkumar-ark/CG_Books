@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import masterReducer from "./mastersSlice";
-import { mastersApi } from "../service/fetchMasters";
+import { mastersApi } from "../service/mastersApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 export default configureStore({

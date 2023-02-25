@@ -4,12 +4,20 @@ import AccountGroupsController from "./accountsGroup";
 import PrimaryGroupsController from "./primaryGroup";
 import LedgerController from "./ledgerController";
 import getMasters from "../data/getMasters";
+import ContactController from "./contactController";
+import AddressController from "./addressController";
+import BankDetailsController from "./bankDetailsController";
+import EntityController from "./entityController";
 
 export default function createAccountingControllers(modelsObject) {
     const accountTypes = new AccountTypesController(modelsObject.AccountTypes);
     const group = new AccountGroupsController(modelsObject.Groups);
     const primaryGroup = new PrimaryGroupsController(modelsObject.PrimaryGroups);
     const ledger = new LedgerController(modelsObject.Ledger);
+    const contact = new ContactController(modelsObject.Contact);
+    const address = new AddressController(modelsObject.Address);
+    const bankDetails = new BankDetailsController(modelsObject.BankDetails);
+    const entity = new EntityController(modelsObject.Entity);
 
     const createDefaultPrimaryGroups = async() => {
         const defaultGroups = {
@@ -68,13 +76,17 @@ export default function createAccountingControllers(modelsObject) {
     const utils = {
         createPrimaryMasters,
         getAllMasters,
+
     };
     return {
         accountTypes,
         group,
         primaryGroup,
         ledger,
-
+        contact,
+        address,
+        bankDetails,
+        entity,
         utils
     };
 }

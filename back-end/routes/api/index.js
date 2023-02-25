@@ -9,6 +9,7 @@ import protectApi from "../../utils/protectApi";
 import testApi from "./testApi";
 import getMasters from "./getMasters";
 import openOrg from "./openOrg";
+import createEntity from "./createEntity";
 
 const router =Router();
 
@@ -20,6 +21,7 @@ router.get("/openorg/:orgId", protectApi, openOrg);
 router.get("/getassociatedorgs/:userId",protectApi ,getAssociatedOrgs);
 router.get("/getmasters/:orgId", protectApi, getMasters);
 router.get("/getorgdata/:orgId", protectApi, getOrgData);
+router.post("/createentity", protectApi, createEntity);
 router.get("/testApi", testApi);
 
 export default router;

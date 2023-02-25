@@ -22,4 +22,13 @@ export default class LedgerController {
         }
     }
 
+    async delete(id){
+        try {
+            await this.model.deleteOne({"_id": id});
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
 }

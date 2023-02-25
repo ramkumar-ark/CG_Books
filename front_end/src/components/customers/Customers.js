@@ -1,7 +1,7 @@
 import { Button, Space, Typography, Dropdown } from "antd";
 import { DownOutlined, EllipsisOutlined, PlusOutlined, InteractionTwoTone } from "@ant-design/icons"
 import { Link } from "react-router-dom";
-import { useGetCustomersQuery } from "../../service/fetchMasters";
+import { useGetCustomersQuery } from "../../service/mastersApi";
 import CustomersTable from "./CustomersTable";
 
 const { Title, Text } = Typography;

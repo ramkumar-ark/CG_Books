@@ -10,12 +10,13 @@ import {
 import TabsCreateContact from './TabsCreateContact';
 import { useHistory } from 'react-router-dom';
 
-const CreateContactForm = () => {
+const CreateContactForm = ({onSubmit}) => {
     const history = useHistory();
     const [form] = Form.useForm(); 
-    const onSubmit = (values) => {
-        // if (values.creditPeriod.value && values.creditPeriod.unit === undefined) values.creditPeriod.unit = "days";
+    const onSave = (values) => {
         console.log(values);
+        const data = {...values, type:"customer"};
+        onSubmit(data);
     };
     const handleSubmit = () => {form.submit();};
     return (
@@ -23,7 +24,7 @@ const CreateContactForm = () => {
         <Form
             form={form}
             name='createCustomerContact'
-            onFinish={onSubmit}
+            onFinish={onSave}
             initialValues={{
                 creditPeriod: {unit: "days"}
             }}
@@ -88,19 +89,19 @@ const CreateContactForm = () => {
             >
                 <Input/>
             </Form.Item>
-            <Form.Item label="Customer Email" name="customerEmail">
+            <Form.Item label="Customer Email" name={["primaryContact", "email"]}>
                 <Input/>
             </Form.Item>
             <Form.Item label="Customer Phone">
                 <Input.Group style={{textAlign:"left"}}>
                     <Row style={{justifyContent:"space-between"}}>
                         <Col span={10}>
-                            <Form.Item name={["customerPhone", "workPhone"]}>
+                            <Form.Item name={["primaryContact", "workPhone"]}>
                                 <Input placeholder='Work Phone'/>
                             </Form.Item>
                         </Col>
                         <Col span={10}>
-                            <Form.Item name={["customerPhone", "mobile"]}>
+                            <Form.Item name={["primaryContact", "mobile"]}>
                                 <Input placeholder='Mobile'/>
                             </Form.Item>
                         </Col>

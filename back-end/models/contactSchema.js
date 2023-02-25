@@ -6,7 +6,7 @@ const contactSchema = new Schema({
     lastName: {type: String },
     email: {type: String},
     workPhone: {type: Number},
-    mobilePhone: {type: Number},
+    mobile: {type: Number},
 });
 
 export default contactSchema;

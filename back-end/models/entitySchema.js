@@ -11,13 +11,14 @@ const entitySchema = new Schema({
     website: {type: String},
     pan: {type: String},
     creditPeriod: creditPeriodSchema,
-    address: [{type: Schema.Types.ObjectId, ref: 'Address'}],
+    addresses: [{type: Schema.Types.ObjectId, ref: 'Address'}],
     contacts: [{type: Schema.Types.ObjectId, ref: 'Contact'}],
-    primaryContactId: {type: Schema.Types.ObjectId, ref: 'Contact'},
+    primaryContact: {type: Schema.Types.ObjectId, ref: 'Contact'},
     bankDetails: {type: Schema.Types.ObjectId, ref: 'BankDetails'},
     isActive: {type: Boolean, required: true, default: true},
     type: {type: String, required: true },
-    ledgerId: {type: Schema.Types.ObjectId, required: true, ref: 'Ledger'},
+    remarks: { type: String },
+    ledger: {type: Schema.Types.ObjectId, required: true, ref: 'Ledger'},
     createdOn: {type: Date, required: true, default: Date.now},
     createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true}
 });

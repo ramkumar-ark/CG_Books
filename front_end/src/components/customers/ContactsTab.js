@@ -17,7 +17,7 @@ const EditableTable = () => {
       dataIndex: 'salutation',
       editable: true,
       render: (text, record, index) => (
-        <Form.Item name={['contactPersons', index, 'salutation']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'salutation']} initialValue={text}>
             <Select 
                 placeholder="Salutation"
                 options={[
@@ -36,7 +36,7 @@ const EditableTable = () => {
       dataIndex: 'firstName',
       editable: true,
       render: (text, record, index) => (
-        <Form.Item name={['contactPersons', index, 'firstName']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'firstName']} initialValue={text}>
           <Input />
         </Form.Item>
       ),
@@ -45,7 +45,7 @@ const EditableTable = () => {
       title: 'Last Name',
       dataIndex: 'lastName',
       render: (text, record, index) => (
-        <Form.Item name={['contactPersons', index, 'lastName']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'lastName']} initialValue={text}>
           <Input />
         </Form.Item>
       ),
@@ -54,7 +54,7 @@ const EditableTable = () => {
         title: 'Email Address',
         dataIndex: 'email',
         render: (text, record, index) => (
-          <Form.Item name={['contactPersons', index, 'email']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'email']} initialValue={text}>
             <Input />
           </Form.Item>
         ),
@@ -63,7 +63,7 @@ const EditableTable = () => {
         title: 'Work Phone',
         dataIndex: 'workPhone',
         render: (text, record, index) => (
-          <Form.Item name={['contactPersons', index, 'workPhone']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'workPhone']} initialValue={text}>
             <Input />
           </Form.Item>
         ),
@@ -72,7 +72,7 @@ const EditableTable = () => {
         title: 'Mobile',
         dataIndex: 'mobile',
         render: (text, record, index) => (
-          <Form.Item name={['contactPersons', index, 'mobile']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'mobile']} initialValue={text}>
             <Input />
           </Form.Item>
         ),

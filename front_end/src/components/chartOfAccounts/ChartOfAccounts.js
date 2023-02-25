@@ -1,7 +1,6 @@
 import { Table } from 'antd';
 import { useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useFetchMastersQuery } from '../../service/fetchMasters';
+import { useFetchMastersQuery } from '../../service/mastersApi';
 import useOrganization from '../../useOrganization';
 const columns = [
   {
