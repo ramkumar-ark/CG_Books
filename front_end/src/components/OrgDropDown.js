@@ -2,11 +2,16 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import useOrganization from '../useOrganization';
+import { useGetSelectedOrgQuery } from '../service/appApi';
+import useAuthentication from '../useAuthentication';
+
 
 const OrgDropDown = () => {
-    const {OrgCtx} = useOrganization();
-    const {selectedOrg} = useContext(OrgCtx);
+    const { AuthCtx } = useAuthentication();
+    const { user } = useContext(AuthCtx);
+    let selectedOrg;
+    const {data} = useGetSelectedOrgQuery(user.id);
+    if (data) selectedOrg = data.selectedOrg;
     const items = [
         {
             label: 'Settings',

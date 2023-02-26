@@ -3,6 +3,9 @@ import { DownOutlined, EllipsisOutlined, PlusOutlined, InteractionTwoTone } from
 import { Link } from "react-router-dom";
 import { useGetCustomersQuery } from "../../service/mastersApi";
 import CustomersTable from "./CustomersTable";
+import { useGetSelectedOrgQuery } from "../../service/appApi";
+import useAuthentication from "../../useAuthentication";
+import { useContext } from "react";
 
 const { Title, Text } = Typography;
 
@@ -22,12 +25,12 @@ const items = [
 
 
 const Customers = () => {
-    const {data} = useGetCustomersQuery();
-    let customers = [];
-    if (data){
-        console.log(data);
-        customers = data.result;
-    }
+    const {AuthCtx} = useAuthentication();
+    const {user} = useContext(AuthCtx);
+    const {data} = useGetSelectedOrgQuery(user.id);
+    const selectedOrg = data?.selectedOrg;
+    const {data: data1} = useGetCustomersQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
+    const customers = data1?.customers || [];
     if (customers.length === 0){
         return (
             <div style={{display:"flex", flexDirection:"column", placeContent:"space-around",minHeight:"70%"}}>
@@ -48,7 +51,7 @@ const Customers = () => {
                 <Typography.Link><Title level={3}>Active Customers<DownOutlined style={{color:"#408dfb", fontSize:"15px"}}/></Title></Typography.Link>
                 <Space>
                     <Link to="/app/home/customers/new">
-                        <Button type="primary" href="/app/home/cutomers/new"><PlusOutlined />New</Button>
+                        <Button type="primary"><PlusOutlined />New</Button>
                     </Link>
                     <Dropdown trigger={['click']} menu={{items}}><Button><EllipsisOutlined /></Button></Dropdown>
                 </Space>

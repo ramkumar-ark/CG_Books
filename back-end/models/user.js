@@ -13,6 +13,7 @@ const userScheme = new Schema({
     mobileNo:{type:String, required:true},
     organizations: [organizationsSchema],
     defaultOrganization: {type: Schema.Types.ObjectId, default: null},
+    lastSelectedOrg: {type: Schema.Types.ObjectId, ref: 'Organization', default: null},
     createdAt:{type:Date, default:Date.now},
     lastLoggedIn:{type:Date, default:Date.now},
 });

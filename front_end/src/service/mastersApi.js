@@ -15,7 +15,7 @@ export const mastersApi = createApi({
             query: (orgId) => `/api/getmasters/${orgId}`
         }),
         getCustomers: builder.query({
-            query: () => `/api/testApi`
+            query: (orgId) => `/api/getcustomers/${orgId}`
         }),
         createEntity: builder.mutation({
             query: (entity) => ({

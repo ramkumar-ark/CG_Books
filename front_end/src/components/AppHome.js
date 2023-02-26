@@ -6,6 +6,8 @@ import ChartOfAccounts from "./chartOfAccounts/ChartOfAccounts";
 import { useState } from "react";
 import Customers from "./customers/Customers";
 import CreateCustomer from "./customers/CreateCustomer";
+import Invoices from "./Invoices/Invoices";
+import CreateInvoice from "./Invoices/CreateInvoice";
 
 const {Content, Header} = Layout;
 
@@ -31,6 +33,12 @@ export default () =>{
                         </Route>
                         <Route path='/app/home/customers/new'>
                             <CreateCustomer/>
+                        </Route>
+                        <Route exact path='/app/home/invoices'>
+                            <Invoices/>
+                        </Route>
+                        <Route path='/app/home/invoices/new'>
+                            <CreateInvoice/>
                         </Route>
                     </Switch>
                 </Content>

@@ -6,7 +6,7 @@ const getOrgData = async (req, res) => {
         const result = await getOrgById(orgId);
         res.json(result);
     } catch (error) {
-        console.log(error.data);
+        console.log(error);
         res.status(403).json({error});
     }
 };

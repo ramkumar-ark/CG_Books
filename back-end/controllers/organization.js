@@ -62,7 +62,6 @@ export const addOrganization = async (orgDetails) => {
 
 export const getOrgById = async (orgId) => {
     try {
-        console.log(orgId);
         const org = await Organization.findById(orgId).exec();
         if (org) return Promise.resolve(org);
         return Promise.reject({message: "Data Not Found!"})

@@ -27,7 +27,7 @@ const items = [
   getItem('Banking', '3', <BankOutlined />),
   getItem('Sales', 'sub1', <ShoppingCartOutlined />, [
     getItem(<Link to="/app/home/customers">Customers</Link>, '4'),
-    getItem('Invoices', '5'),
+    getItem(<Link to="/app/home/invoices">Invoices</Link>, '5'),
     getItem('Payments Received', '6'),
     getItem('Credit Notes', '7'),
   ]),

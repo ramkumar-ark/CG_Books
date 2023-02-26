@@ -87,8 +87,26 @@ export const mapOrgToUser = async (orgId, userId, role="admin") => {
 
 export const getAssociatedOrgs = async (userId) => {
     try {
-        const {organizations, defaultOrganization} = await User.findById(userId, 'organizations defaultOrganization').exec();
-        return Promise.resolve({organizations, defaultOrganization});
+        const {organizations} = await User.findById(userId, 'organizations').exec();
+        return Promise.resolve(organizations);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const getLastSelectedOrg = async (userId) => {
+    try {
+        const { lastSelectedOrg } = await User.findById(userId, 'lastSelectedOrg').exec();
+        return Promise.resolve(lastSelectedOrg);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+
+export const setLastSelectedOrg = async (userId, orgId) => {
+    try {
+        await User.findByIdAndUpdate(userId, { lastSelectedOrg: orgId }).exec();
+        return Promise.resolve("Success")
     } catch (error) {
         return Promise.reject(error);
     }

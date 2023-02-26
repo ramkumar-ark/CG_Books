@@ -45,4 +45,13 @@ export default class EntityController{
             return Promise.reject(error)
         }
     }
+
+    async fetchCustomers(){
+        try {
+            const entityDocs = await this.model.find({type:"customer"}).exec();
+            return Promise.resolve(entityDocs);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }

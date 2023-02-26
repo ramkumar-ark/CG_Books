@@ -22,4 +22,8 @@ export default async function initiateAccountingDb(orgId, isNewOrg){
     return databaseControllers[orgId];
 }
 
-export const getDbController = (orgId) => databaseControllers[orgId];
+export const getDbController = async(orgId) => {
+    let dbController = databaseControllers[orgId];
+    if (!dbController) dbController = await initiateAccountingDb(orgId, false);
+    return dbController;
+};

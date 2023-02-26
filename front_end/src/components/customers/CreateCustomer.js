@@ -3,19 +3,19 @@ import CreateContactForm from "./CreateContactForm";
 import { useCreateEntityMutation } from "../../service/mastersApi";
 import { Redirect } from "react-router-dom";
 import useAuthentication from "../../useAuthentication";
-import useOrganization from "../../useOrganization";
 import { useContext } from "react";
+import { useGetSelectedOrgQuery } from "../../service/appApi";
 
 const { Title, Text } = Typography;
 
 const CreateCustomer = () => {
     const { AuthCtx } = useAuthentication();
     const { user } = useContext(AuthCtx);
-    const { OrgCtx } = useOrganization();
-    const { selectedOrg } = useContext(OrgCtx);
+    const { data } = useGetSelectedOrgQuery(user.id);
+    const orgId = data?.selectedOrg?.['_id'];
     const [createEntity, { isLoading, isSuccess, isError, error }] = useCreateEntityMutation();
     const submitFn = (formData) => {
-        const entityData = {...formData, userId: user.id, orgId: selectedOrg['_id']};
+        const entityData = {...formData, userId: user.id, orgId};
         createEntity(entityData);
     };
     return (

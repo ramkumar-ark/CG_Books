@@ -1,7 +1,8 @@
 import { Table } from 'antd';
 import { useContext } from 'react';
+import { useGetSelectedOrgQuery } from '../../service/appApi';
 import { useFetchMastersQuery } from '../../service/mastersApi';
-import useOrganization from '../../useOrganization';
+import useAuthentication from '../../useAuthentication';
 const columns = [
   {
     title: 'Sl. No.',
@@ -33,15 +34,16 @@ const rowSelection = {
   }),
 };
 const ChartOfAccounts = () => {
-    const {OrgCtx} = useOrganization();
-    const { selectedOrg } = useContext(OrgCtx);
-    const {data, isLoading, isError, isFetching, error} = useFetchMastersQuery(selectedOrg['_id']);
-    console.log(data)
+    const { AuthCtx } = useAuthentication();
+    const { user } = useContext(AuthCtx);
+    const { data } = useGetSelectedOrgQuery(user.id);
+    const orgId = data?.selectedOrg?.['_id'];
+    const { data: data1 } = useFetchMastersQuery(orgId, { skip: !orgId });
     const groups = {};
     let ledgers = [];
-    if (data){
-        data.groups.forEach(e => {groups[e['_id']] = e});
-        ledgers = data.ledgers.map(({_id, name, group, opBalance}, i) => ({key:_id, slNo:i+1, name, group:groups[group].name, opBal:opBalance}));
+    if (data1){
+        data1.groups.forEach(e => {groups[e['_id']] = e});
+        ledgers = data1.ledgers.map(({_id, name, group, opBalance}, i) => ({key:_id, slNo:i+1, name, group:groups[group].name, opBal:opBalance}));
     }
     return (
         <div>

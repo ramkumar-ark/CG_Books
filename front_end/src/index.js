@@ -4,18 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import useAuthentication from './useAuthentication';
-import useOrganization from './useOrganization';
 import { Provider } from 'react-redux';
 import store from './store/index';
 
 const ConnectedApp = () => {
-    const {OrgProvider} = useOrganization();
     const {AuthProvider} = useAuthentication();
     return (
         <AuthProvider>
-        <OrgProvider>
             <App/>
-        </OrgProvider>
         </AuthProvider>
     );
 };

@@ -2,9 +2,9 @@ import {Col, Row, Form, Input, Switch, Typography, Button, Space, Alert} from "a
 import { useState, useContext, useEffect } from "react";
 import {useHistory} from "react-router-dom";
 import useAuthentication from "../../useAuthentication"
-import useOrganization from "../../useOrganization";
 import StateSelector from "./StateSelector";
 import createOrg from "../../service/createOrg";
+import { useSetSelectedOrgMutation } from "../../service/appApi";
 
 const {Title, Text} = Typography;
 
@@ -14,14 +14,13 @@ export default function(){
     const [error, setIsError] = useState(false);
     const {AuthCtx} = useAuthentication();
     const {user} = useContext(AuthCtx);
-    const {OrgCtx} = useOrganization();
-    const {setSelectedOrgId, selectedOrg} = useContext(OrgCtx);
     const history = useHistory();
+    const [ setSelectedOrg, {isSuccess} ] = useSetSelectedOrgMutation();
     const onSubmit = (values) => {
         createOrg({...values, userId:user.id})
             .then((res) => {
                 setIsError(false);
-                setSelectedOrgId(res);
+                setSelectedOrg(user.id, res);
             })
             .catch((reason) => {
                 setIsError(true);
@@ -29,8 +28,8 @@ export default function(){
     };
 
     useEffect(() =>{
-        if(selectedOrg) history.replace({pathname:"/app/home/dashboard", state:{from:"/app"}});
-    }, [selectedOrg, history]);
+        if(isSuccess) history.replace({pathname:"/app/home/dashboard", state:{from:"/app"}});
+    }, [isSuccess, history]);
     
     return (
         <Form

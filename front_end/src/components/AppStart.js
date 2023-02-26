@@ -1,54 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import useAuthentication from "../useAuthentication";
-import useOrganization from "../useOrganization";
 import { Switch, Route, useHistory } from "react-router-dom";
-import getOrgsOfUsers from "../service/getOrgsOfUsers";
 import { Spin } from "antd";
 import CreateOrganization from "./createOrganization/CreateOrganization";
 import AppHome from "./AppHome";
-import openOrg from "../service/openOrg";
+import { useGetSelectedOrgQuery, useGetUserOrgsQuery } from "../service/appApi";
 
 const AppStart = () => {
     const {AuthCtx} = useAuthentication();
-    const {OrgCtx} = useOrganization();
-    const {setSelectedOrgId, selectedOrg} = useContext(OrgCtx);
     const {user} = useContext(AuthCtx);
-    const [organizations, setOrganizations] =useState();
-    const [defaultOrganization, setDefaultOrganization] = useState();
-    const [isLoading, setIsLoading] = useState(false);
+    let organizations, selectedOrg;
+    const {data, isLoading: isLoading1} = useGetUserOrgsQuery(user.id);
+    if (data) organizations = data.organizations;
+    const {data: data1, isLoading: isLoading2, isError} = useGetSelectedOrgQuery(user.id);
+    if (data1) selectedOrg = data1.selectedOrg;
+    console.log(selectedOrg);
+    const isLoading = [isLoading1, isLoading2];
     const history = useHistory();
 
     useEffect(() => {
-        console.log('executed');
-        if (!selectedOrg){
-            setIsLoading(true);
-            getOrgsOfUsers(user.id)
-                .then((res) => {
-                    setIsLoading(false);
-                    setOrganizations(res.organizations);
-                    setDefaultOrganization(res.defaultOrganization);
-                    openOrg(res.defaultOrganization)
-                        .then(response => {
-                            setSelectedOrgId(res.defaultOrganization);
-                        })
-                        .catch(err => console.log(err));
-                    
-                })
-                .catch((error) => {console.log(error)});
-        }
-    }, [selectedOrg]);
-
-    useEffect(() => {
         organizations?.length === 0 && history.replace({pathname:"/app/createorg"});
-        (defaultOrganization === null && organizations?.length > 0)
+        (selectedOrg === null && organizations?.length > 0)
             && history.replace({pathname:"/app/selectorg"});
-        defaultOrganization === null && history.replace({pathname:"/app/createorg"});
-        (window.location.pathname === "/app" && defaultOrganization) 
+        selectedOrg === null && history.replace({pathname:"/app/createorg"});
+        (window.location.pathname === "/app" && selectedOrg) 
             && history.replace({pathname:"/app/home"});    
-    }, [defaultOrganization, history, organizations]);
+    }, [selectedOrg, history, organizations]);
 
     return (
-        <Spin spinning={isLoading} size="large">
+        <Spin spinning={isLoading.includes(true)} size="large">
             <Switch>
                 <Route path="/app/createorg">
                     <CreateOrganization/>
