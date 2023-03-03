@@ -1,13 +1,14 @@
 import { getDbController } from "../../db/accountingDb";
 
-export default async function getMasters(req, res){
+const getAllBalances = async (req, res) => {
     try {
         const orgId = req.params.orgId;
         const dbController = await getDbController(orgId);
-        const result = await dbController.utils.getAllMasters();
-        res.json(result);
+        const balances = await dbController.closingBalance.getAllBalances();
+        res.json(balances);
     } catch (error) {
-        console.log(error);
         res.status(403).json({error});
     }
 };
+
+export default getAllBalances;

@@ -35,7 +35,7 @@ const createEntity = async(req, res) => {
             return res.status(403).json({error:"Invalid Entity Type"});
         // create address documents and store Ids of the same in array
         const addressIds = [];
-        for (const address of [shippingAddress, billingAddress]){
+        for (const address of [{...shippingAddress, type:"shipping"}, billingAddress]){
             if (address && !isAllValuesUndefiend(address)){
                 const addressId = await dbController.address.create(address);
                 addressIds.push(addressId);

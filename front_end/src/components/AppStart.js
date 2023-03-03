@@ -14,7 +14,6 @@ const AppStart = () => {
     if (data) organizations = data.organizations;
     const {data: data1, isLoading: isLoading2, isError} = useGetSelectedOrgQuery(user.id);
     if (data1) selectedOrg = data1.selectedOrg;
-    console.log(selectedOrg);
     const isLoading = [isLoading1, isLoading2];
     const history = useHistory();
 

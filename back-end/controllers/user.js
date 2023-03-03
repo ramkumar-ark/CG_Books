@@ -85,6 +85,15 @@ export const mapOrgToUser = async (orgId, userId, role="admin") => {
     }
 };
 
+export const unMapOrg = async (orgId, userId) => {
+    try {
+        const doc = await User.findByIdAndUpdate(userId, {$pull: {organizations: orgId}});
+        return Promise.resolve(doc);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
 export const getAssociatedOrgs = async (userId) => {
     try {
         const {organizations} = await User.findById(userId, 'organizations').exec();

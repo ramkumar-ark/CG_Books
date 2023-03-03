@@ -8,6 +8,10 @@ import ContactController from "./contactController";
 import AddressController from "./addressController";
 import BankDetailsController from "./bankDetailsController";
 import EntityController from "./entityController";
+import ClosingBalanceController from "./closingBalance";
+import VoucherTypeController from "./voucherTypeController";
+import TransactionController from "./transactionController";
+import OtherDetailsController from "./otherDetailsController";
 
 export default function createAccountingControllers(modelsObject) {
     const accountTypes = new AccountTypesController(modelsObject.AccountTypes);
@@ -18,6 +22,10 @@ export default function createAccountingControllers(modelsObject) {
     const address = new AddressController(modelsObject.Address);
     const bankDetails = new BankDetailsController(modelsObject.BankDetails);
     const entity = new EntityController(modelsObject.Entity);
+    const closingBalance = new ClosingBalanceController(modelsObject.ClosingBalance);
+    const voucherType = new VoucherTypeController(modelsObject.VoucherType);
+    const transaction = new TransactionController(modelsObject.Transaction);
+    const otherDetails = new OtherDetailsController(modelsObject.OtherDetails);
 
     const createDefaultPrimaryGroups = async() => {
         const defaultGroups = {
@@ -60,6 +68,7 @@ export default function createAccountingControllers(modelsObject) {
         await accountTypes.createDefaultTypes();
         await createDefaultPrimaryGroups();
         await createLedgerMasters();
+        await voucherType.createDefaultVoucherTypes();
     };
 
     const getAllMasters = async() => {
@@ -87,6 +96,10 @@ export default function createAccountingControllers(modelsObject) {
         address,
         bankDetails,
         entity,
+        closingBalance,
+        voucherType,
+        transaction,
+        otherDetails,
         utils
     };
 }

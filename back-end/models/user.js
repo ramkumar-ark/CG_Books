@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 const organizationsSchema = new Schema({
     orgId: {type: Schema.Types.ObjectId, ref:'Organization', unique:true},
     role:{type:String, default:String("admin")},
-});
+}, {_id:false});
 
 const userScheme = new Schema({
     name:{type:String, required:true},

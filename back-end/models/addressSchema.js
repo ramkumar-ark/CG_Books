@@ -9,6 +9,7 @@ const addressSchema = new Schema({
     street2: {type: String},
     pincode: {type: Number},
     phone: {type: Number},
+    fax: {type:Number},
     type: {type: String, required: true, default: "billing"}
 });
 

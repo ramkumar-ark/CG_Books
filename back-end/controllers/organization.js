@@ -1,5 +1,5 @@
 import Organization from "../models/organization";
-import { mapOrgToUser } from "./user";
+import { mapOrgToUser, unMapOrg } from "./user";
 
 const processDetails = (orgDetails) => {
     const {name, country, state, street1, street2, city, pinCode, gstin, isGst, userId} = orgDetails;
@@ -51,12 +51,23 @@ const processDetails = (orgDetails) => {
 export const addOrganization = async (orgDetails) => {
     try{
         const details = processDetails(orgDetails);
-        console.log(details);
         const org = await Organization.create(details);
         await mapOrgToUser(org.id, orgDetails.userId);
         return Promise.resolve({orgId: org.id});
     }catch(error){
         return Promise.reject({error});
+    }
+};
+
+export const deleteOrganization = async (orgId) => {
+    try {
+        const doc = await Organization.findByIdAndRemove(orgId).populate('users');
+        for (const user of doc.users){
+            await unMapOrg(orgId, user.id);
+        }
+        return Promise.resolve(doc.id);
+    } catch (error) {
+        return Promise.reject(error);
     }
 };
 

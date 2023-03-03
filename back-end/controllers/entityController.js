@@ -48,7 +48,12 @@ export default class EntityController{
 
     async fetchCustomers(){
         try {
-            const entityDocs = await this.model.find({type:"customer"}).exec();
+            const entityDocs = await this.model.find({type:"customer"})
+                .populate('addresses')
+                .populate('contacts')
+                .populate('primaryContact')
+                .populate('bankDetails')
+                .populate('ledger');
             return Promise.resolve(entityDocs);
         } catch (error) {
             return Promise.reject(error);

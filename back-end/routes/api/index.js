@@ -13,6 +13,9 @@ import createEntity from "./createEntity";
 import getCustomers from "./getCustomers";
 import getSelectedOrg from "./getSelectedOrg";
 import setSelectedOrg from "./setSelectedOrg";
+import getLegerBalance from "./getLedgerBalance";
+import getAllBalances from "./getAllBalances";
+import createVoucher from "./createVoucher";
 
 const router =Router();
 
@@ -28,6 +31,9 @@ router.get("/getmasters/:orgId", protectApi, getMasters);
 router.get("/getorgdata/:orgId", protectApi, getOrgData);
 router.post("/createentity", protectApi, createEntity);
 router.get("/getcustomers/:orgId", protectApi, getCustomers);
+router.post("/createvoucher", protectApi, createVoucher);
+router.get("/getledgerbalance/:orgId/:ledgerId", protectApi, getLegerBalance);
+router.get("/getallbalances/:orgId", protectApi, getAllBalances);
 router.get("/testApi", testApi);
 
 export default router;

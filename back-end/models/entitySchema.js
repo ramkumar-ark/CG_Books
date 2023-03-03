@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 const creditPeriodSchema = new Schema({
     value: {type: Number, required: true, default: Number(0)},
     unit: {type: String, required: true, default: "days"},
-});
+}, {id:false});
 
 const entitySchema = new Schema({
     name: {type: String, required: true},

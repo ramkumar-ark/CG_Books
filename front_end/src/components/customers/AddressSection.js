@@ -59,7 +59,7 @@ const AddressSection = ({type, copyFunction}) =>{
                             filterOption={(input, option) => 
                                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())} />
                 </Form.Item>
-                <Form.Item label="Zip Code" name={[`${type}Address`, "pinCode"]} {...formItemLayout}>
+                <Form.Item label="Zip Code" name={[`${type}Address`, "pincode"]} {...formItemLayout}>
                     <Input/>
                 </Form.Item>
                 <Form.Item label="Phone" name={[`${type}Address`, "phone"]} {...formItemLayout}>
