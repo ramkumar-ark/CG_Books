@@ -91,7 +91,9 @@ const CreateInvoice = () => {
 
     const onCustomerSelect = (customerId) => {
         const customer = customersObj[customerId];
-        const dueDate = moment(form.getFieldValue('invoiceDate')).add(customer.creditPeriod?.value || 0, customer.creditPeriod.unit);
+        const invoiceDate = form.getFieldValue('invoiceDate');
+        const dueDate = invoiceDate && invoiceDate.add(
+            customer.creditPeriod?.value || 0, customer.creditPeriod.unit);
         form.setFieldsValue({'creditPeriod':{value: customer.creditPeriod?.value || 0, unit: customer.creditPeriod.unit, dueDate}});
         form.setFieldValue('partyName', customer.name);
         form.setFieldsValue({'billingAddress':customer.addresses.filter(e => e.type === "billing")[0]});
@@ -100,8 +102,10 @@ const CreateInvoice = () => {
     };
 
     const onCreditPeriodChange = () => {
-        const {value, unit} = form.getFieldValue('creditPeriod');
-        const dueDate = moment(form.getFieldValue('invoiceDate')).add(value, unit);
+        const {value, unit} = form.getFieldValue('creditPeriod') || {value:0 , unit:'days'};
+        const invoiceDate = form.getFieldValue('invoiceDate');
+        console.log(invoiceDate);
+        const dueDate = invoiceDate && invoiceDate.add(value, unit);
         form.setFieldsValue({'creditPeriod':{...form.getFieldValue('creditPeriod'), dueDate}});
     };
 
@@ -249,13 +253,13 @@ const CreateInvoice = () => {
                         <Input/>
                     </Form.Item>
                     <Form.Item label="Invoice Date" name="invoiceDate">
-                        <DatePicker style={{width:"100%"}} format="DD-MM-YYYY"/>
+                        <DatePicker style={{width:"100%"}} format="DD-MM-YYYY" onChange={onCreditPeriodChange}/>
                     </Form.Item>
                     <Form.Item label="Credit Terms" wrapperCol={{span:20}}>
                         <Input.Group compact>
                             <Space style={{display: "flex"}} size={50}>
                                 <Form.Item name={['creditPeriod', 'value']}>
-                                    <InputNumber addonAfter={selectAfter} style={{width:"200px"}}
+                                    <InputNumber min={0} addonAfter={selectAfter} style={{width:"200px"}}
                                         onChange={onCreditPeriodChange}/>
                                 </Form.Item>
                                 <Form.Item label="Due Date" name={['creditPeriod', 'dueDate']}>
@@ -329,7 +333,7 @@ const CreateInvoice = () => {
                                         <Text strong style={{fontSize:"large"}}>Total ( ₹ )</Text>
                                     </Col>
                                     <Col span={6} className="displayAmount">
-                                        <Text strong style={{fontSize:"large"}}>{tableFigures.total}</Text>
+                                        <Text strong style={{fontSize:"large", wordWrap:false}}>{tableFigures.total}</Text>
                                         <Form.Item hidden={true} name="totalAmount"/>
                                     </Col>
                                 </Row>        
