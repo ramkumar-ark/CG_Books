@@ -8,6 +8,11 @@ const itemListSchema = new Schema({
     amount:{type:Number, required:true},
 }, {_id:false});
 
+const creditTermsSchema = new Schema({
+    value: {type:Number, },
+    unit: {type:String, enum:['days', 'months', 'years']},
+});
+
 const otherDetailsSchema = new Schema({
     linkedEntity:{type:Schema.Types.ObjectId, ref:'Entity'},
     partyName:{type:String},
@@ -15,6 +20,7 @@ const otherDetailsSchema = new Schema({
     billingAddress:addressSchema,
     itemDetails: [itemListSchema],
     dueDate:{type:Date},
+    creditTerms: creditTermsSchema,
     subject:{type:String},
     notes:{type:String},
     termsAndConditions:{type:String},

@@ -30,8 +30,8 @@ const columns = [
     // specify the condition of filtering result
     // here is that finding the name started with `value`
     onFilter: (value, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ['descend'],
+    sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+    // sortDirections: ['descend'],
   },
   {
     title: 'Age',
@@ -80,6 +80,12 @@ const data = [
     age: 32,
     address: 'London No. 2 Lake Park',
   },
+  {
+    key: '5',
+    name: 'Awesome Arjun',
+    age: 28,
+    address: 'New Delhi',
+  }
 ];
 const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);

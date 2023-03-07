@@ -2,15 +2,16 @@
 
 const transformData = (data) => {
     const linkedEntity = data.customer;
-    const {partyName, shippingAddress, billingAddress, subject, notes, termsAndConditions, 
+    const {partyName, shippingAddress, billingAddress, subject, customerNotes, termsAndConditions, 
         orderNumber, totalAmount} = data;
     const itemDetails = data.items.map(item => ({details: item.itemDetails, quantity: item.itemQuantity, rate: item.itemRate, amount: Number(item.itemAmount)}));
+    const creditTerms = {value:data.creditPeriod.value, unit:data.creditPeriod.unit}
     const dueDate = data.creditPeriod.dueDate.toDate().toISOString();
     const status = "unPaid";
     const pendingAmount = totalAmount;
     const otherDetails = {
-        linkedEntity, partyName, shippingAddress, billingAddress, subject, notes, termsAndConditions,
-        orderNumber, totalAmount, itemDetails, dueDate, status, pendingAmount
+        linkedEntity, partyName, shippingAddress, billingAddress, subject, customerNotes, termsAndConditions,
+        orderNumber, totalAmount, itemDetails, creditTerms, dueDate, status, pendingAmount
     };
     const voucherType = "Sales";
     const transactionDate = data.invoiceDate.toDate().toISOString();

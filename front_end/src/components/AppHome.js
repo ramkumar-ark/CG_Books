@@ -7,6 +7,7 @@ import { useState } from "react";
 import Customers from "./customers/Customers";
 import CreateCustomer from "./customers/CreateCustomer";
 import Invoices from "./Invoices/Invoices";
+import SingleInvoiceView from "./Invoices/SingleInvoiceView";
 import CreateInvoice from "./Invoices/CreateInvoice";
 
 const {Content, Header} = Layout;
@@ -40,6 +41,10 @@ export default () =>{
                         <Route path='/app/home/invoices/new'>
                             <CreateInvoice/>
                         </Route>
+                        <Route path='/app/home/invoices/:transactionId'>
+                            <SingleInvoiceView/>
+                        </Route>
+                        
                     </Switch>
                 </Content>
             </Layout>

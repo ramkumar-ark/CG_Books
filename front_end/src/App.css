@@ -154,3 +154,11 @@
 .itemsTable .ant-table-cell input{
   text-align: end;
 }
+
+th.tableHeader.ant-table-cell.ant-table-column-has-sorters{
+  padding: 5px;
+}
+
+.selectableTableRow:hover{
+  cursor: pointer;
+}

@@ -9,25 +9,11 @@ import CustomerDetails from "./CustomerDetails";
 import AddressDisplayCard from "./AddressDisplayCard";
 import ItemsListTable from "./ItemsListTable";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import {generatePdf} from "./PdfGenerator";
 import transformData from "./transformFormData";
 import { useCreateVoucherMutation, useGetLedgerBalanceQuery } from "../../service/transactionsApi";
 
 const { Title, Text } = Typography;
-
-const invoiceData = {
-    customer:{
-        name:"Ram", address:"22, Street", city:"Chennai", state:"Tamil Nadu", zip:"601203", phone:23741123,
-    },
-    items:[
-        {itemDetails: "mdine", itemQuantity:20, itemRate:40, itemAmount:800},
-        {itemDetails: "cdine", itemQuantity:10, itemRate:45, itemAmount:450},
-    ],
-    subtotal: 1250,
-    discount:{value:10, amount: 125},
-    total: 1125,
-};
 
 const CreateInvoice = () => {
     const history = useHistory();
@@ -58,7 +44,7 @@ const CreateInvoice = () => {
     const otherChargesLedgerId = ledgerMasters.find(e => e.name === "Other Charges")?.['_id'];
     const discountLedgerId = ledgerMasters.find(e => e.name === "Discount")?.['_id'];
     const salesLedgerId = ledgerMasters.find(e => e.name === "Sales")?.['_id'];
-    const concernedLedgers = {otherChargesLedgerId, discountLedgerId, salesLedgerId, salesLedgerId};
+    const concernedLedgers = {otherChargesLedgerId, discountLedgerId, salesLedgerId};
 
     const updateTableFigures = (stateField, value) => {
         let {subTotal, discount, round, total} = tableFigures;
@@ -104,7 +90,6 @@ const CreateInvoice = () => {
     const onCreditPeriodChange = () => {
         const {value, unit} = form.getFieldValue('creditPeriod') || {value:0 , unit:'days'};
         const invoiceDate = form.getFieldValue('invoiceDate');
-        console.log(invoiceDate);
         const dueDate = invoiceDate && invoiceDate.add(value, unit);
         form.setFieldsValue({'creditPeriod':{...form.getFieldValue('creditPeriod'), dueDate}});
     };
@@ -115,8 +100,10 @@ const CreateInvoice = () => {
             concernedLedgers, userId:user.id,
         };
         const requestObject = transformData(dataObj);
-        createVoucher({...requestObject, orgId});
-        // generatePdf(invoiceData);
+        const invoiceData = {org: selectedOrg, ...requestObject, discount: tableFigures.discount, 
+            subTotal:tableFigures.subTotal, rounding:tableFigures.round};
+        !isSuccess && createVoucher({...requestObject, orgId});
+        isSuccess && generatePdf(invoiceData);
     };
 
     const handleSubmit = () => {form.submit();}
@@ -309,7 +296,7 @@ const CreateInvoice = () => {
                                 <Row>
                                     <Col span={18}>
                                         <Form.Item name={["discount", "value"]} label="Discount" labelCol={{span:8}} wrapperCol={{span:16}} style={{marginBottom:0}}>
-                                            <InputNumber addonAfter={selectDiscountUnit} 
+                                            <InputNumber addonAfter={selectDiscountUnit} min={0}
                                                 style={{width:"130px"}} onChange={onDiscountChange}
                                             />
                                         </Form.Item>
@@ -356,10 +343,11 @@ const CreateInvoice = () => {
                 </div>
             </Form>
             <div style={{position:'sticky', bottom:0, backgroundColor:"whitesmoke", borderTop:"2px outset", display:"flex", alignContent:"center", justifyContent:"flex-start",padding:"12px"}}>
-                <Button onClick={handleSubmit} type='primary'>Save</Button>
-                <Button type='secondary' onClick={() => {history.goBack()}} style={{borderColor: "#ddd", marginLeft:"10px"}}>Cancel</Button>
+                <Button onClick={handleSubmit} type='primary'>Save and Print</Button>
+                <Button type='secondary' onClick={() => {history.goBack()}} style={{borderColor: "#ddd", margin:"0 10px"}}>Cancel</Button>
                 {isError && <Text type="danger">Error in creating invoice!</Text>}
                 {isError && console.log(error)}
+                {isSuccess && handleSubmit()}
                 {isSuccess && history.goBack()}
             </div>
         </Spin>

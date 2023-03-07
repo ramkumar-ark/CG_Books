@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 
 export default class VoucherTypeController{
     constructor(voucherTypeModel){
@@ -34,7 +35,6 @@ export default class VoucherTypeController{
                     { name: voucherName },
                     {$push:{"transactions":{financialYear, transactions:[voucher]}},},
                     {new: true});
-                console.log(doc);
             }else{
                 if (VoucherTypeController.checkIsDuplicateVoucherNo(search, voucherNumber, financialYear)){ 
                     return Promise.reject("Voucher Number Already used.");
@@ -64,6 +64,53 @@ export default class VoucherTypeController{
         }
     }
 
+    async getVouchers(name){
+        try {
+            const doc = await this.model.findOne(
+                {name},
+                {'transactions.transactions':1}
+            )
+            .populate({
+                path:'transactions.transactions.transaction',
+                populate:{
+                    path:'otherDetails',
+                    model:'OtherDetails',
+                }
+            });
+            let vouchers = [];
+            for (const finYrTransac of doc.transactions){
+                vouchers = [...vouchers, ...finYrTransac.transactions];
+            }
+            return Promise.resolve(vouchers);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getVoucherData(transactionId, name){
+        try {
+            const doc = await this.model.findOne({name}, {transactions:1, _id:0})
+            .transform((res) => {
+                for (const obj of res.transactions){
+                    for (const transac of obj.transactions){
+                        if (String(transac.transaction['_id']) === String(new Types.ObjectId(transactionId)))
+                            return transac;
+                    }
+                }
+                return null;
+            })
+            .populate({
+                path:'transactions.transactions.transaction',
+                populate:{
+                    path:'otherDetails debits.ledger credits.ledger',
+                }
+            });
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     static getFinancialYearFromDate(date){
         const year = date.getFullYear();
         if (date.getMonth() >= 3) {
@@ -76,7 +123,6 @@ export default class VoucherTypeController{
     static checkIsDuplicateVoucherNo(doc, voucherNo, finYr){
         const vouchers = doc.transactions.find(e => e.financialYear === finYr).transactions;
         const isDuplicate = !!vouchers.find(e => e.voucherNumber === voucherNo);
-        console.log(isDuplicate);
         return isDuplicate;
     }
 }

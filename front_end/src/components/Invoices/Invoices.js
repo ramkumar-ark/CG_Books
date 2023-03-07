@@ -1,6 +1,7 @@
 import { Typography, Space, Button, Dropdown } from "antd";
 import { DownOutlined, PlusOutlined, EllipsisOutlined, InteractionTwoTone } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
+import InvoiceTable from "./InvoiceTable";
 
 const { Title, Text } = Typography;
 
@@ -32,23 +33,26 @@ const items1 = [
 
 const Invoices = () => {
     return (
-        <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
-            <div style={{textAlign:"left", margin:"0px 10px", display:"flex", justifyContent:"space-between" }}>
-                <Dropdown trigger={['click']} menu={{items: items1}}>
-                    <Link onClick={(e) => e.preventDefault()}>
-                        <Title level={3}>
-                            All Invoices<DownOutlined style={{color:"#408dfb", fontSize:"15px"}}/>
-                        </Title>
-                    </Link>
-                </Dropdown>
-                <Space>
-                    <Link to="/app/home/invoices/new">
-                        <Button type="primary"><PlusOutlined />New</Button>
-                    </Link>
-                    <Dropdown trigger={['click']} menu={{items}}><Button><EllipsisOutlined /></Button></Dropdown>
-                </Space>
+        <>
+            <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
+                <div style={{textAlign:"left", margin:"0px 10px", display:"flex", justifyContent:"space-between" }}>
+                    <Dropdown trigger={['click']} menu={{items: items1}}>
+                        <Link onClick={(e) => e.preventDefault()}>
+                            <Title level={3}>
+                                All Invoices<DownOutlined style={{color:"#408dfb", fontSize:"15px"}}/>
+                            </Title>
+                        </Link>
+                    </Dropdown>
+                    <Space>
+                        <Link to="/app/home/invoices/new">
+                            <Button type="primary"><PlusOutlined />New</Button>
+                        </Link>
+                        <Dropdown trigger={['click']} menu={{items}}><Button><EllipsisOutlined /></Button></Dropdown>
+                    </Space>
+                </div>
             </div>
-        </div>
+            <InvoiceTable/>
+        </>        
     );
 };
 
