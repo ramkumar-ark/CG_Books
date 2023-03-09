@@ -4,8 +4,8 @@ import { Table, Form, Input, Typography, Select, InputNumber } from 'antd';
 
 const { Link } = Typography;
 
-const ItemsListTable = ({formObj, updateTotal}) => {
-  const [dataSource, setDataSource] = useState([{}]);
+const ItemsListTable = ({formObj, updateTotal, itemList}) => {
+  const [dataSource, setDataSource] = useState(itemList);
   const calculateItemAmount = (index) => {
       const items = formObj.getFieldValue('items');
       const {itemQuantity, itemRate} = items[index];

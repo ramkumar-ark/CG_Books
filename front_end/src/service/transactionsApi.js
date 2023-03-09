@@ -31,10 +31,27 @@ export const transactionsApi = createApi({
             }),
             invalidatesTags: ['ClosingBalance'],
         }),
+        deleteVoucherEntry: builder.mutation({
+            query: (requestObject) => ({
+                url: `/api/deletevoucherentry/${requestObject.params.orgId}`,
+                method: 'DELETE',
+                body: {...requestObject.body},
+            }),
+            invalidatesTags: ['ClosingBalance'],
+        }),
+        updateVoucherEntry: builder.mutation({
+            query: (requestObject) => ({
+                url: `/api/updatevoucherdata/${requestObject.params.orgId}/${requestObject.params.transactionId}/${requestObject.params.otherDetailsId}`,
+                method: 'PATCH',
+                body: requestObject.body,                
+            }),
+            invalidatesTags:['ClosingBalance'],
+        }),
 
     }),
 });
 
 export const { 
     useGetLedgerBalanceQuery, useCreateVoucherMutation, useGetVouchersQuery , useGetVoucherDataQuery,
+    useDeleteVoucherEntryMutation, useUpdateVoucherEntryMutation,
 } = transactionsApi;

@@ -10,6 +10,8 @@ const getVoucherData = async (req, res) => {
         const transaction = {
             transactionDate: doc.transaction.transactionDate, subject:doc.transaction.narration};
         const otherDetails = doc.transaction.otherDetails;
+        otherDetails.customerNotes = doc.transaction.otherDetails.notes;
+        delete otherDetails.notes;
         let subTotal, discount, rounding;
         subTotal = discount = rounding = 0;
         for (const entry of [...doc.transaction.debits, ...doc.transaction.credits]){

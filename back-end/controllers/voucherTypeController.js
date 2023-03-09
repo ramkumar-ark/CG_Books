@@ -17,7 +17,6 @@ export default class VoucherTypeController{
 
     async getId(name){
         try {
-            console.log(name);
             const doc = await this.model.findOne({name}).exec();
             return Promise.resolve(doc.id);
         } catch (error) {
@@ -44,7 +43,6 @@ export default class VoucherTypeController{
                     { $push:{"transactions.$.transactions": voucher} },
                     { new: true }
                 );
-                console.log(doc);
             }           
             return Promise.resolve();
         } catch (error) {
@@ -106,6 +104,37 @@ export default class VoucherTypeController{
                 }
             });
             return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async deleteVoucherData(transactionId, voucherDate, voucherName, voucherNumber){
+        try {
+            const finYr = VoucherTypeController.getFinancialYearFromDate(new Date(voucherDate));
+            const doc = await this.model.findOneAndUpdate(
+                { name: voucherName, transactions:{$elemMatch: {financialYear: finYr}}},
+                { $pull:{"transactions.$.transactions": {voucherNumber, transaction:transactionId}} },
+                { new: true }
+            );
+            return Promise.resolve(doc.id)
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async updateVoucherNumber(transactionId, newVoucherNumber, oldVoucherDate, voucherName){
+        try {
+            const financialYear = VoucherTypeController.getFinancialYearFromDate(new Date(oldVoucherDate));
+            const search = await this.model.findOne({ name: voucherName, transactions:{$elemMatch: {financialYear}}});
+            if (VoucherTypeController.checkIsDuplicateVoucherNo(search, newVoucherNumber, financialYear))
+                return Promise.reject("Voucher Number Already used.");
+            const doc = await this.model.updateOne(
+                {name: voucherName},
+                {'$set':{'transactions.$[].transactions.$[item].voucherNumber': newVoucherNumber}},
+                {"arrayFilters":[{'item.transaction':transactionId}]},
+            );
+            return Promise.resolve(doc.id);
         } catch (error) {
             return Promise.reject(error);
         }

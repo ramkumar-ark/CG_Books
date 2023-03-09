@@ -76,7 +76,7 @@ const InvoiceTable = () => {
             pagination={false}
             rowClassName='selectableTableRow'
             onRow={(record, rowIndex) => ({
-                onClick: (event) => {history.push(`/app/home/invoices/${record.transactionId}`)},
+                onClick: (event) => {history.push(`/app/home/invoices/view/${record.transactionId}`)},
             })}
         />
     );

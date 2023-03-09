@@ -11,6 +11,11 @@ const itemListSchema = new Schema({
 const creditTermsSchema = new Schema({
     value: {type:Number, },
     unit: {type:String, enum:['days', 'months', 'years']},
+}, {_id:false});
+
+const discountSchema = new Schema({
+    value: {type: Number},
+    unit: {type:String, enum:['absolute', 'percentage']},
 });
 
 const otherDetailsSchema = new Schema({
@@ -26,6 +31,7 @@ const otherDetailsSchema = new Schema({
     termsAndConditions:{type:String},
     orderNumber:{type:String},
     totalAmount:{type:Number},
+    discount:discountSchema,
     pendingAmount:{type:Number},
     status:{type:String}
 });

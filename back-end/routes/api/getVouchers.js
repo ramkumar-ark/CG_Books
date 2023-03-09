@@ -23,6 +23,7 @@ const getVouchers = async (req, res) => {
         }
         res.json({vouchers:result});
     } catch (error) {
+        console.log(error);
         res.status(403).json({error});
     }
 };

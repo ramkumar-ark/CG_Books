@@ -21,4 +21,13 @@ export default class OtherDetailsController{
             return Promise.reject(error);
         }
     }
+
+    async update(id, data){
+        try {
+            const doc = await this.model.replaceOne({_id: id}, data);
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }

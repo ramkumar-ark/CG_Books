@@ -1,14 +1,15 @@
 import { useParams, useHistory } from "react-router-dom";
-import { Typography } from "antd";
-import { CloseOutlined, EditOutlined, DeleteOutlined, FilePdfOutlined, DollarCircleOutlined} from "@ant-design/icons"
+import { Typography, Modal } from "antd";
+import { CloseOutlined, EditOutlined, DeleteOutlined, FilePdfOutlined, DollarCircleOutlined, ExclamationCircleFilled} from "@ant-design/icons"
 import { Invoice, generatePdf } from "./PdfGenerator";
 import { useGetSelectedOrgQuery } from "../../service/appApi";
 import useAuthentication from "../../useAuthentication";
 import { useContext } from "react";
-import { useGetVoucherDataQuery } from "../../service/transactionsApi";
+import { useDeleteVoucherEntryMutation, useGetVoucherDataQuery } from "../../service/transactionsApi";
 import { PDFViewer } from "@react-pdf/renderer";
 
 const { Title, Link } = Typography;
+const { confirm } = Modal;
 
 const SingleInvoiceView = () => {
     const history = useHistory();
@@ -16,11 +17,37 @@ const SingleInvoiceView = () => {
     const { AuthCtx } = useAuthentication();
     const { user } = useContext(AuthCtx);
     const {data} = useGetSelectedOrgQuery(user.id);
-    
+    const [deleteInvoice, { isLoading, isSuccess: isDeleted, isError, error} ] = useDeleteVoucherEntryMutation();
     const {data:data1} = useGetVoucherDataQuery(
-        {orgId:data?.selectedOrg['_id'], voucher:'Sales', transactionId}, {skip: !data}
+        {orgId:data?.selectedOrg['_id'], voucher:'Sales', transactionId}, 
+        {skip: (!data || isDeleted || isLoading)}
     );
     const invoiceData = {org:data?.selectedOrg, ...data1?.voucher};
+    const onDeleteInvoice = () => {
+        const requestBody = {
+            params: {orgId: data?.selectedOrg['_id']},
+            body: {
+                transactionId, 
+                otherDetailsId:invoiceData.otherDetails?.['_id'], 
+                voucherName:'Sales',
+                voucherDate:invoiceData.transaction.transactionDate, 
+                voucherNumber: invoiceData.voucherNumber,
+            }
+        }
+        deleteInvoice(requestBody);
+    };
+    const showConfirm = () => {
+        confirm({
+          title: 'DELETE INVOICE',
+          icon: <ExclamationCircleFilled />,
+          content: 'Do you Want to delete this Invoice?',
+          onOk() {
+            onDeleteInvoice();
+          },
+          onCancel() {
+          },
+        });
+      };
     return (
         <>
         <div 
@@ -30,6 +57,7 @@ const SingleInvoiceView = () => {
                 alignItems:'center'
             }}
         >
+            {isDeleted && history.goBack()}
             <Title level={4} style={{marginTop:16}}>{invoiceData.voucherNumber}</Title>
             <Link onClick={() => history.goBack()}>
                 <CloseOutlined style={{fontSize:20, color:'grey'}}/>
@@ -41,8 +69,8 @@ const SingleInvoiceView = () => {
         >
             {
             [
-                {label: 'Edit', icon:() => <EditOutlined/>, link:'/app/home/invoices/edit'},
-                {label: 'Delete', icon:() => <DeleteOutlined/>, link:'/app/home/invoices/edit'},
+                {label: 'Edit', icon:() => <EditOutlined/>, fn: () => history.push(`/app/home/invoices/edit/${transactionId}`)},
+                {label: 'Delete', icon:() => <DeleteOutlined/>, fn:showConfirm},
                 {label: 'Download PDF', icon:() => <FilePdfOutlined/>, 
                     fn: (event) => generatePdf(invoiceData)},
                 {label: 'Record Payment', icon:() => <DollarCircleOutlined/>, link:'/app/home/invoices/edit'},

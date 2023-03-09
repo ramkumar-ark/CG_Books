@@ -5,7 +5,6 @@ const createVoucher = async (req, res) => {
     
     try {
         const {otherDetails, transaction, voucherType, voucherNumber, orgId} = req.body;
-        console.log(req.body);
         const dbController = await getDbController(orgId);
         // create other Details
         const otherDetailsId = await dbController.otherDetails.create(otherDetails);

@@ -18,6 +18,8 @@ import getAllBalances from "./getAllBalances";
 import createVoucher from "./createVoucher";
 import getVouchers from "./getVouchers";
 import getVoucherData from "./getVoucherData";
+import deleteVoucherData from "./deleteVoucherEntry";
+import updateVoucher from "./updateVoucher";
 
 const router =Router();
 
@@ -35,7 +37,9 @@ router.post("/createentity", protectApi, createEntity);
 router.get("/getcustomers/:orgId", protectApi, getCustomers);
 router.post("/createvoucher", protectApi, createVoucher);
 router.get("/getvouchers/:orgId/:voucherName", protectApi, getVouchers);
-router.get("/getvoucherdata/:orgId/:voucherName/:transactionId", protectApi, getVoucherData)
+router.get("/getvoucherdata/:orgId/:voucherName/:transactionId", protectApi, getVoucherData);
+router.patch("/updatevoucherdata/:orgId/:transactionId/:otherDetailsId", protectApi, updateVoucher);
+router.delete("/deletevoucherentry/:orgId", protectApi, deleteVoucherData);
 router.get("/getledgerbalance/:orgId/:ledgerId", protectApi, getLegerBalance);
 router.get("/getallbalances/:orgId", protectApi, getAllBalances);
 router.get("/testApi", testApi);

@@ -242,7 +242,7 @@ export const Invoice = ({ invoice }) => {
               <Text>Total In Words</Text>
               <Text style={{fontWeight:'bold'}}>{numberToWords(invoice.otherDetails.totalAmount)}</Text>
             </View>
-            <View style={{marginBottom:20}}><Text>{invoice.otherDetails.customerNotes || ""}</Text></View>
+            <View style={{marginBottom:20}}><Text>{invoice.otherDetails.notes || ""}</Text></View>
             {invoice.otherDetails.termsAndConditions && 
             <>
             <View style={{color:'grey'}}><Text>Terms & Conditions</Text></View>

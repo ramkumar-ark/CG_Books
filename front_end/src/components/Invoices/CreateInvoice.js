@@ -1,6 +1,6 @@
 import { Spin, Divider, Typography, Form, Select, Input, Space, Button, Row, Col, DatePicker, InputNumber } from "antd";
 import { FileTextOutlined, PlusCircleFilled, IdcardOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { useFetchMastersQuery, useGetCustomersQuery } from "../../service/mastersApi";
 import useAuthentication from "../../useAuthentication";
 import { useState, useContext } from "react";
@@ -11,19 +11,36 @@ import ItemsListTable from "./ItemsListTable";
 import { useHistory } from "react-router-dom";
 import {generatePdf} from "./PdfGenerator";
 import transformData from "./transformFormData";
-import { useCreateVoucherMutation, useGetLedgerBalanceQuery } from "../../service/transactionsApi";
+import { useCreateVoucherMutation, useGetLedgerBalanceQuery, useGetVoucherDataQuery, useUpdateVoucherEntryMutation } from "../../service/transactionsApi";
+import constructInitialValues from "./constructInitialValues";
+import { useEffect } from "react";
 
 const { Title, Text } = Typography;
 
 const CreateInvoice = () => {
     const history = useHistory();
+    const {url, path} = useRouteMatch();
+    let mode = url.split('/')[4];
+    mode = `${mode[0].toUpperCase()}${mode.slice(1)}`;
+    const transactionId = useParams()?.transactionId;
     const {AuthCtx} = useAuthentication();
     const {user} = useContext(AuthCtx);
     const [createVoucher, { isLoading, isSuccess, isError, error }] = useCreateVoucherMutation();
+    const [updateVoucher, 
+        { isLoading:isLoading2, isSuccess:isSuccess2, isError:isError2, error:error2 }] = useUpdateVoucherEntryMutation();
     let selectedOrg;
     const {data} = useGetSelectedOrgQuery(user.id);
     if (data) selectedOrg = data.selectedOrg;
     const orgId = selectedOrg && selectedOrg['_id'];
+    const {data:vchData, isLoading: isLoading1, isError: isGetDataError, isSuccess:isSucess1}
+        = useGetVoucherDataQuery({orgId, voucher:'Sales', transactionId}, {skip: (mode === "New" || !orgId)});
+    const initialValues = vchData ? constructInitialValues(vchData.voucher) : {
+        discount:{value:0, unit:'absolute'},
+        customerNotes: "Thanks for your business."
+    };
+    const itemTableDetails = vchData?.voucher.otherDetails.itemDetails.map(
+        ({details, quantity, rate, amount}) => ({itemDetails:details, itemQuantity:quantity, itemRate:rate,
+            amount})) || [{}];
     const [form] = Form.useForm();
     let customerList = [];
     const customersObj = {};
@@ -35,9 +52,11 @@ const CreateInvoice = () => {
             return {label:e.name, value:e['_id']}
         });
     }
-    const [selectedCustomer, setSelectedCustomer] = useState();
+    const [selectedCustomer, setSelectedCustomer] = useState(
+        initialValues.customer ? customersObj[initialValues.customer] : null);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [tableFigures, setTableFigures] = useState({subTotal:"0.00", discount:"0.00", round:"0.00", total:"0.00"});
+
     const {data: masters} = useFetchMastersQuery(orgId);
     const {data: cbData} = useGetLedgerBalanceQuery(orgId);
     const ledgerMasters = masters?.ledgers || [];
@@ -102,7 +121,10 @@ const CreateInvoice = () => {
         const requestObject = transformData(dataObj);
         const invoiceData = {org: selectedOrg, ...requestObject, discount: tableFigures.discount, 
             subTotal:tableFigures.subTotal, rounding:tableFigures.round};
-        !isSuccess && createVoucher({...requestObject, orgId});
+        (mode==='New' && !isSuccess) && createVoucher({...requestObject, orgId});
+        (mode==='Edit' && !isSuccess2) && updateVoucher(
+            {params:{orgId, transactionId, otherDetailsId: vchData.voucher.otherDetails['_id']}, 
+            body:requestObject});
         isSuccess && generatePdf(invoiceData);
     };
 
@@ -135,11 +157,20 @@ const CreateInvoice = () => {
             />
         </Form.Item>
     );
+
+    useEffect(() => {
+        if(isSucess1 && mode == 'Edit'){ 
+            const {subTotal, discount, rounding:round, otherDetails:{totalAmount:total}} = vchData.voucher;
+            setSelectedCustomer(customersObj[initialValues.customer]);
+            setTableFigures({subTotal, discount, round, total});
+        }
+    }, [isLoading1]);
     
+    if ((mode === 'New') || (!isLoading1))
     return (
-        <Spin size="large" spinning={isLoading}>
+        <Spin size="large" spinning={isLoading || isLoading1}>
             <div style={{textAlign:"left", marginLeft:"20px"}}>
-                <Title level={3}><FileTextOutlined /> New Invoice</Title>
+                <Title level={3}><FileTextOutlined /> {mode} Invoice</Title>
             </div>
             <Divider/>
             <Form
@@ -153,11 +184,7 @@ const CreateInvoice = () => {
                 labelWrap={true}
                 layout="horizontal"
                 scrollToFirstError
-                initialValues={{
-                    // invoiceDate: moment(),
-                    discount:{value:0, unit:'absolute'},
-                    customerNotes: "Thanks for your business."
-                }}
+                initialValues={initialValues}
                 style={{
                     display: "block",
                     marginLeft: "20px",
@@ -265,7 +292,7 @@ const CreateInvoice = () => {
                         <Input placeholder="Let your customer know what this Invoice is for"/>
                     </Form.Item> 
                 </div>
-                <ItemsListTable formObj={form} updateTotal={updateTableFigures}/>
+                <ItemsListTable formObj={form} updateTotal={updateTableFigures} itemList={itemTableDetails}/>
                 <div style={{marginBottom: "20px"}}>
                     <Row gutter={50}>
                         <Col span={12}>
@@ -343,12 +370,15 @@ const CreateInvoice = () => {
                 </div>
             </Form>
             <div style={{position:'sticky', bottom:0, backgroundColor:"whitesmoke", borderTop:"2px outset", display:"flex", alignContent:"center", justifyContent:"flex-start",padding:"12px"}}>
-                <Button onClick={handleSubmit} type='primary'>Save and Print</Button>
+                
+                <Button onClick={handleSubmit} type='primary'>
+                    {mode==='New' ? 'Save and Print' : 'Update'}
+                </Button>
                 <Button type='secondary' onClick={() => {history.goBack()}} style={{borderColor: "#ddd", margin:"0 10px"}}>Cancel</Button>
-                {isError && <Text type="danger">Error in creating invoice!</Text>}
-                {isError && console.log(error)}
+                {(isError || isError2) && <Text type="danger">{error?.data?.error || error2?.data?.error}</Text>}
+                {(isError || isError2) && console.log(error)}
                 {isSuccess && handleSubmit()}
-                {isSuccess && history.goBack()}
+                {(isSuccess || isSuccess2) && history.goBack()}
             </div>
         </Spin>
     );

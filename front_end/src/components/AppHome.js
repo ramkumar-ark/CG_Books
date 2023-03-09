@@ -41,10 +41,12 @@ export default () =>{
                         <Route path='/app/home/invoices/new'>
                             <CreateInvoice/>
                         </Route>
-                        <Route path='/app/home/invoices/:transactionId'>
+                        <Route path='/app/home/invoices/view/:transactionId'>
                             <SingleInvoiceView/>
                         </Route>
-                        
+                        <Route path='/app/home/invoices/edit/:transactionId'>
+                            <CreateInvoice/>
+                        </Route>
                     </Switch>
                 </Content>
             </Layout>

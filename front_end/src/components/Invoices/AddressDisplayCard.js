@@ -19,7 +19,7 @@ const AddressDisplayCard = ({datas}) => {
             <div>
                 {data.attention && <><Text strong>{data.attention}</Text><br/></>}
                 {data.street1 && <><Text>{data.street1}</Text><br/></>}
-                {data.Street2 && <><Text>{data.street2}</Text><br/></>}
+                {data.street2 && <><Text>{data.street2}</Text><br/></>}
                 {data.city && <><Text>{data.city}</Text><br/></>}
                 {(data.state || data.pincode) && <><Text>{(data.state || "") + " " + (data.pincode || "")}</Text><br/></>}
                 {data.country && <><Text>{data.country}</Text><br/></>}

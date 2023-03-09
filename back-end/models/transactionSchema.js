@@ -17,7 +17,7 @@ const transactionSchema = new Schema({
     otherDetails:{type:Schema.Types.ObjectId, ref:'OtherDetails'},
     createdOn:{type:Date, required:true, default:Date.now},
     createdBy:{type:Schema.Types.ObjectId, ref:'User', required:true},
-    lastModifiedOn:{type:Date},
+    lastModifiedOn:{type:Date, },
     lastModifiedBy:{type:Schema.Types.ObjectId, ref:'User'},
 });
 

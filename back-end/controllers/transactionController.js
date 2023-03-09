@@ -29,4 +29,18 @@ export default class TransactionController{
             return Promise.reject(error);
         }
     }
+
+    async update(id, data){
+        try {
+            const voucherType = data.voucherTypeId;
+            const otherDetails = data.otherDetailsId;
+            const lastModifiedBy = data.userId;
+            const lastModifiedOn = Date.now();
+            const doc = await this.model.replaceOne({_id: id}, 
+                {...data, voucherType, otherDetails, lastModifiedBy, lastModifiedOn});
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }
