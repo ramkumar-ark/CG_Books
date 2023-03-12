@@ -9,6 +9,7 @@ import CreateCustomer from "./customers/CreateCustomer";
 import Invoices from "./Invoices/Invoices";
 import SingleInvoiceView from "./Invoices/SingleInvoiceView";
 import CreateInvoice from "./Invoices/CreateInvoice";
+import SingleCustomerView from "./customers/SingleCustomerView";
 
 const {Content, Header} = Layout;
 
@@ -34,6 +35,9 @@ export default () =>{
                         </Route>
                         <Route path='/app/home/customers/new'>
                             <CreateCustomer/>
+                        </Route>
+                        <Route path='/app/home/customers/view/:entityId'>
+                            <SingleCustomerView/>
                         </Route>
                         <Route exact path='/app/home/invoices'>
                             <Invoices/>

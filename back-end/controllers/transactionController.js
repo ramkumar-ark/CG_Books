@@ -43,4 +43,27 @@ export default class TransactionController{
             return Promise.reject(error);
         }
     }
+
+    async getCustomerIncomeTransactions(customerLedgerId, incomeLedgerIds){
+        try {
+            console.log(customerLedgerId, incomeLedgerIds);
+            const docs = await this.model.find(
+                {
+                    $and:[
+                        {$or: [
+                            {'debits':{$elemMatch: {ledger:customerLedgerId}}},
+                            {'credits':{$elemMatch: {ledger:customerLedgerId}}}
+                        ]},
+                        {$or:[
+                            {'debits': {$elemMatch: {ledger:{$in: incomeLedgerIds}}}},
+                            {'credits': {$elemMatch:{ledger:{$in: incomeLedgerIds}}}},
+                        ]},
+                    ]
+                }
+            ).exec();
+            return Promise.resolve(docs);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }

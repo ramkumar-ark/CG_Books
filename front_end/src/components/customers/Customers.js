@@ -6,6 +6,7 @@ import CustomersTable from "./CustomersTable";
 import { useGetSelectedOrgQuery } from "../../service/appApi";
 import useAuthentication from "../../useAuthentication";
 import { useContext } from "react";
+import { useGetLedgerBalanceQuery } from "../../service/transactionsApi";
 
 const { Title, Text } = Typography;
 
@@ -30,7 +31,15 @@ const Customers = () => {
     const {data} = useGetSelectedOrgQuery(user.id);
     const selectedOrg = data?.selectedOrg;
     const {data: data1} = useGetCustomersQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
+    const {data: data2} = useGetLedgerBalanceQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
     const customers = data1?.customers || [];
+    let customersTableData = [];
+    if (data1 && data2){
+        customersTableData = customers.map(e => ({
+            name:e.name, companyName:e.companyName, email:e.primaryContact.email, 
+            workPhone: e.primaryContact.workPhone, receivables: data2[e.ledger['_id']], id:e['_id'],
+        }))
+    }
     if (customers.length === 0){
         return (
             <div style={{display:"flex", flexDirection:"column", placeContent:"space-around",minHeight:"70%"}}>
@@ -57,7 +66,7 @@ const Customers = () => {
                 </Space>
             </div>
         </div>
-        <CustomersTable/>
+        <CustomersTable data={customersTableData}/>
         </>
     );
 };

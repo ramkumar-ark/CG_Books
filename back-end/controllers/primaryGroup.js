@@ -1,3 +1,4 @@
+import mongoose, { Mongoose } from "mongoose";
 
 export default class PrimaryGroupsController {
     constructor(primaryGroupModel) {
@@ -51,6 +52,22 @@ export default class PrimaryGroupsController {
         try {
             const groups = await this.model.find({});
             return Promise.resolve(groups);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getIncomeGroups(incomeTypeId){
+        try {
+            const primaryGroups = await this.model.find(
+                {isSubGroup:false, category:incomeTypeId},
+            ).populate({path:'category'});
+            const primaryGroupIds = primaryGroups.map(e => e.id);
+            const subGroups = await this.model.find(
+                {'category._id': {$in:primaryGroupIds}},
+            ).populate({path:'category'});
+            const subGroupIds = subGroups.map(e => e.id);
+            return Promise.resolve([...primaryGroupIds, ...subGroupIds]);
         } catch (error) {
             return Promise.reject(error);
         }

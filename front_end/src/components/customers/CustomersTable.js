@@ -1,94 +1,42 @@
 import { Table } from 'antd';
+import { useHistory } from 'react-router-dom';
+
 const columns = [
   {
-    title: 'Name',
+    title: 'NAME',
     dataIndex: 'name',
-    filters: [
-      {
-        text: 'Joe',
-        value: 'Joe',
-      },
-      {
-        text: 'Jim',
-        value: 'Jim',
-      },
-      {
-        text: 'Submenu',
-        value: 'Submenu',
-        children: [
-          {
-            text: 'Green',
-            value: 'Green',
-          },
-          {
-            text: 'Black',
-            value: 'Black',
-          },
-        ],
-      },
-    ],
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
     sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-    // sortDirections: ['descend'],
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    defaultSortOrder: 'descend',
-    sorter: (a, b) => a.age - b.age,
+    title: 'COMPANY NAME',
+    dataIndex: 'companyName',
+    sorter: (a, b) => a.companyName.toLowerCase().localeCompare(b.companyName.toLowerCase()),
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    filters: [
-      {
-        text: 'London',
-        value: 'London',
-      },
-      {
-        text: 'New York',
-        value: 'New York',
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-  },
-];
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    title: 'EMAIL',
+    dataIndex: 'email',
   },
   {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    title: 'WORK PHONE',
+    dataIndex: 'workPhone',
   },
   {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    name: 'Awesome Arjun',
-    age: 28,
-    address: 'New Delhi',
+    title: 'RECEIVABLES',
+    dataIndex: 'receivables',
+    sorter: (a, b) => a.receivables - b.receivables,
+    render: (text, record, index) => `₹ ${Number(text || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}`
   }
 ];
 const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);
 };
-const CustomersTable = () => <Table columns={columns} dataSource={data} onChange={onChange} sticky={{offsetHeader:135}}/>;
+const CustomersTable = ({data}) => {
+  const history = useHistory();  
+  return (
+    <Table columns={columns} dataSource={data} onChange={onChange} 
+      sticky={{offsetHeader:135}} rowClassName='selectableTableRow' onRow={(record, rowIndex) => ({
+        onClick: (event) => {history.push(`/app/home/customers/view/${record.id}`)}
+      })}
+    />);
+}
 export default CustomersTable;

@@ -31,4 +31,14 @@ export default class LedgerController {
         }
     }
 
+    async getIncomeLedgerIds(incomeGroupIds){
+        try {
+            const ledgers = await this.model.find({'group':{'$in':incomeGroupIds}}, {'_id':1});
+            const ledgerIds = ledgers.map(e => e.id);
+            return Promise.resolve(ledgerIds);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
 }
