@@ -6,7 +6,7 @@ const debitCreditSchema = new Schema({
 }, {_id:false});
 
 const transactionSchema = new Schema({
-    voucherType:{type:Schema.Types.ObjectId, ref:'Voucher', required:true},
+    voucherType:{type:Schema.Types.ObjectId, ref:'VoucherType', required:true},
     transactionDate: {type:Date, required:true},
     debits:[debitCreditSchema],
     credits:[debitCreditSchema],

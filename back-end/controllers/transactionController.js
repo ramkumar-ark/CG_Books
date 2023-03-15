@@ -46,7 +46,6 @@ export default class TransactionController{
 
     async getCustomerIncomeTransactions(customerLedgerId, incomeLedgerIds){
         try {
-            console.log(customerLedgerId, incomeLedgerIds);
             const docs = await this.model.find(
                 {
                     $and:[
@@ -61,6 +60,23 @@ export default class TransactionController{
                     ]
                 }
             ).exec();
+            return Promise.resolve(docs);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getCustomerTransactions(customerLedgerId){
+        try {
+            const docs = await this.model.find({
+                $or:[
+                {'debits':{$elemMatch: {ledger:customerLedgerId}}},
+                {'credits':{$elemMatch: {ledger:customerLedgerId}}},
+                ]
+            })
+            .sort('transactionDate')
+            .populate({path:'voucherType', select: 'primaryType'})
+            .populate({path:'otherDetails'}).exec();
             return Promise.resolve(docs);
         } catch (error) {
             return Promise.reject(error);

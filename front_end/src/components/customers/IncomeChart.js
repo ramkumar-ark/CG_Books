@@ -1,7 +1,6 @@
 import { Column } from '@ant-design/plots';
 
 const CustomerIncomeChart = ({data}) => {
-  console.log(data);  
   const config = {
     data,
     xField: 'month',

@@ -21,6 +21,7 @@ import getVoucherData from "./getVoucherData";
 import deleteVoucherData from "./deleteVoucherEntry";
 import updateVoucher from "./updateVoucher";
 import getCustomerMonthlyIncome from "./getCustomerMonthlyIncome";
+import getCustomerTransactions from "./getCustomerTransactions";
 
 const router =Router();
 
@@ -37,6 +38,7 @@ router.get("/getorgdata/:orgId", protectApi, getOrgData);
 router.post("/createentity", protectApi, createEntity);
 router.get("/getcustomers/:orgId", protectApi, getCustomers);
 router.get("/getcustomermonthlyincome/:orgId/:customerLedgerId", protectApi, getCustomerMonthlyIncome);
+router.get("/getcustomertransactions/:orgId/:customerLedgerId", protectApi, getCustomerTransactions);
 router.post("/createvoucher", protectApi, createVoucher);
 router.get("/getvouchers/:orgId/:voucherName", protectApi, getVouchers);
 router.get("/getvoucherdata/:orgId/:voucherName/:transactionId", protectApi, getVoucherData);

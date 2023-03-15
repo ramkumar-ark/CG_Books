@@ -24,6 +24,32 @@ export default class VoucherTypeController{
         }
     }
 
+    async getVoucherNumbers(transactionIds){
+        try {
+            let idsFound = 0;
+            const doc = await this.model.find(
+                {}, { transactions: 1, _id:0},
+            ).transform((res) => {
+                const voucherNumbers = {};
+                for (const obj of res){
+                    for (const finYr of obj.transactions){
+                        for (const transac of finYr.transactions){
+                            if (idsFound === transactionIds.length) return voucherNumbers;
+                            if (transactionIds.includes(transac.transaction.toString())){
+                                voucherNumbers[transac.transaction.toString()] = transac.voucherNumber;
+                                idsFound++;
+                            }
+                        }
+                    }
+                }
+                return voucherNumbers;
+            });
+            return Promise.resolve(doc)
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async addVoucherTransaction(voucherDate, voucherName, transactionId, voucherNumber ){
         try {
             const financialYear = VoucherTypeController.getFinancialYearFromDate(new Date(voucherDate));

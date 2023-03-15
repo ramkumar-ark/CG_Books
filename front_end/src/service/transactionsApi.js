@@ -27,6 +27,10 @@ export const transactionsApi = createApi({
             query: (params) => `/api/getcustomermonthlyincome/${params.orgId}/${params.customerLedgerId}`,
             providesTags: ['ClosingBalance'],
         }),
+        getCustomerTransactions: builder.query({
+            query: (params) => `/api/getcustomertransactions/${params.orgId}/${params.customerLedgerId}`,
+            providesTags: ['ClosingBalance'],
+        }),
         createVoucher: builder.mutation({
             query: (requestObject) => ({
                 url: `/api/createvoucher`,
@@ -58,4 +62,5 @@ export const transactionsApi = createApi({
 export const { 
     useGetLedgerBalanceQuery, useCreateVoucherMutation, useGetVouchersQuery , useGetVoucherDataQuery,
     useDeleteVoucherEntryMutation, useUpdateVoucherEntryMutation, useGetCustomerMonthlyIncomeQuery,
+    useGetCustomerTransactionsQuery,
 } = transactionsApi;

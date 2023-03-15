@@ -41,4 +41,13 @@ export default class LedgerController {
         }
     }
 
+    async getOpeningBalance(ledgerId){
+        try {
+            const opBalance = await this.model.findOne({'_id': ledgerId}, {'opBalance': 1, '_id':0}).exec();
+            return Promise.resolve(opBalance.opBalance);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
 }

@@ -6,7 +6,8 @@ import { useGetSelectedOrgQuery } from "../../service/appApi";
 import { useGetCustomersQuery } from "../../service/mastersApi";
 import useAuthentication from "../../useAuthentication";
 import OverviewTab from "./OverviewTab";
-import { useGetCustomerMonthlyIncomeQuery, useGetLedgerBalanceQuery } from "../../service/transactionsApi";
+import { useGetCustomerMonthlyIncomeQuery, useGetCustomerTransactionsQuery, useGetLedgerBalanceQuery } from "../../service/transactionsApi";
+import StatementTab from "./StatementTab";
 
 const { Text, Title, Link } = Typography;
 
@@ -14,10 +15,10 @@ const items = [
     {label:'Invoice', key:0},{label:'Customer Payment', key:1}, {label:'Journals', key:2}
 ];
 
-const tabItems = (customer) => [
+const tabItems = (customer, organization) => [
     {key:'1', label:'Overview', children:<OverviewTab entity={customer}/>},
     {key:'2', label:'Transactions', children:'Contents of Transactions Tab'},
-    {key:'3', label:'Statement', children:'Contents of Statement Tab'},
+    {key:'3', label:'Statement', children:<StatementTab entity={customer} organization={organization}/>},
 ];
 
 const SingleCustomerView = () => {
@@ -30,12 +31,15 @@ const SingleCustomerView = () => {
     const {data:data1, isLoading} = useGetCustomersQuery(orgId, {skip: !orgId});
     const {data:data2} = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
     const customer = data1?.customers.find(e => e['_id'] === entityId);
+    const customerLedgerId = customer?.ledger?.['_id'];
     const {data:data3} = useGetCustomerMonthlyIncomeQuery(
-        {orgId, customerLedgerId: customer?.ledger?.['_id']}, {skip: !data1}
+        {orgId, customerLedgerId}, {skip: !data1}
     );
+    const {data:data4} = useGetCustomerTransactionsQuery({orgId, customerLedgerId}, {skip:!customerLedgerId});
+    const customerTransactions = data4?.transactions;
     const monthlyIncome = data3 && Object.entries(data3).map(([k, v]) => ({month:k, income:v}));
-    const receivable = {receivables: data2?.[customer?.ledger['_id']] || 0}
-    if (customer && data2 && monthlyIncome)
+    const receivable = {receivables: data2?.[customerLedgerId] || 0}
+    if ([customer, data2, monthlyIncome, customerTransactions].every(e => e !== undefined))
     return (
         <>
         <div style={{display: 'flex', justifyContent:'space-between', margin:'0px 10px',
@@ -52,9 +56,13 @@ const SingleCustomerView = () => {
                 </Link>
             </Space>
         </div>
-        <Tabs defaultActiveKey="1" items={tabItems({...customer, ...receivable, monthlyIncome})} 
-            size='small' tabBarStyle={{position:'sticky', top:'122px', backgroundColor:"whitesmoke", 
-            zIndex:99, paddingLeft:'10px', marginBottom:0}}/>
+        <Tabs 
+            defaultActiveKey="1" 
+            items={tabItems({...customer, ...receivable, monthlyIncome, customerTransactions}, data?.selectedOrg)}
+            size='small' 
+            tabBarStyle={{position:'sticky', top:'122px', backgroundColor:"whitesmoke", 
+                zIndex:99, paddingLeft:'10px', marginBottom:0}}
+        />
         </>
     );
 };
