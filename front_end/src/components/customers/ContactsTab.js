@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { PlusOutlined } from "@ant-design/icons";
-import { Table, Form, Input, Typography, Select } from 'antd';
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { Table, Form, Input, Typography, Select, Space } from 'antd';
 
 const { Link } = Typography;
 
-const EditableTable = () => {
-  const [dataSource, setDataSource] = useState([{}]);
-
+const EditableTable = ({sourceData}) => {
+  const [dataSource, setDataSource] = useState(sourceData);
+  console.log(dataSource);
   const handleAddRow = () => {
     setDataSource([...dataSource, {}]);
+  };
+
+  const handleDeleteRow = () => {
+    setDataSource(dataSource.slice(0, dataSource.length - 1));
   };
 
   const columns = [
@@ -92,7 +96,10 @@ const EditableTable = () => {
                 />
             </Input.Group>
         </Form.Item>
-        <Link onClick={handleAddRow}><PlusOutlined/>Add Contact Person</Link>
+        <Space size='middle' style={{marginBottom:30}}>
+          <Link onClick={handleAddRow}><PlusOutlined/>Add Contact Person</Link>
+          <Link onClick={handleDeleteRow}><MinusOutlined/>Remove Last Contact</Link>
+        </Space>
     </div>
   );
 };

@@ -13,6 +13,15 @@ export default class BankDetailsController{
         }
     }
 
+    async update(bankDetails, id){
+        try {
+            const doc = await this.model.findOneAndReplace({'_id':id, bankDetails});
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async delete(id){
         try {
             await this.model.deleteOne({"_id": id});

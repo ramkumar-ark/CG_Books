@@ -13,6 +13,15 @@ export default class LedgerController {
         }
     }
 
+    async update(name, groupId, description, opBalance, ledgerId){
+        try {
+            const ledger = await this.model.findOneAndReplace({'_id':ledgerId}, {name, group:groupId, description, opBalance: opBalance || 0}, {new:true});
+            return Promise.resolve(ledger);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async getAllLedgers(){
         try {
             const ledgers = await this.model.find({});

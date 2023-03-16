@@ -9,10 +9,12 @@ import {
 } from 'antd';
 import TabsCreateContact from './TabsCreateContact';
 import { useHistory } from 'react-router-dom';
+import constructInitialValues from './constructInitialValues';
 
-const CreateContactForm = ({onSubmit}) => {
+const CreateContactForm = ({onSubmit, entityData}) => {
     const history = useHistory();
-    const [form] = Form.useForm(); 
+    const [form] = Form.useForm();
+    const initialValues = entityData ? constructInitialValues(entityData) : {creditPeriod: {unit: "days"}};
     const onSave = (values) => {
         console.log(values);
         const data = {...values, type:"customer"};
@@ -25,9 +27,7 @@ const CreateContactForm = ({onSubmit}) => {
             form={form}
             name='createCustomerContact'
             onFinish={onSave}
-            initialValues={{
-                creditPeriod: {unit: "days"}
-            }}
+            initialValues={initialValues}
             labelAlign='left'
             labelCol={{
                 span: 4,
@@ -111,7 +111,7 @@ const CreateContactForm = ({onSubmit}) => {
             <Form.Item label="Website" name="website" >
                 <Input/>
             </Form.Item>
-            <TabsCreateContact formObj={form}/>
+            <TabsCreateContact formObj={form} contactsData={entityData?.contacts || [{}]}/>
             
         </Form>
         

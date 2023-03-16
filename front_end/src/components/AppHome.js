@@ -39,6 +39,9 @@ export default () =>{
                         <Route path='/app/home/customers/view/:entityId'>
                             <SingleCustomerView/>
                         </Route>
+                        <Route path='/app/home/customers/edit/:entityId'>
+                            <CreateCustomer/>
+                        </Route>
                         <Route exact path='/app/home/invoices'>
                             <Invoices/>
                         </Route>

@@ -12,10 +12,12 @@ export const mastersApi = createApi({
     }),
     endpoints: (builder) => ({
         fetchMasters: builder.query({
-            query: (orgId) => `/api/getmasters/${orgId}`
+            query: (orgId) => `/api/getmasters/${orgId}`,
+            providesTags: ['mastersCreation']
         }),
         getCustomers: builder.query({
-            query: (orgId) => `/api/getcustomers/${orgId}`
+            query: (orgId) => `/api/getcustomers/${orgId}`,
+            providesTags: ['mastersCreation'],
         }),
         createEntity: builder.mutation({
             query: (entity) => ({
@@ -23,8 +25,19 @@ export const mastersApi = createApi({
                 method: 'POST',
                 body: entity,
             }),
+            providesTags: ['mastersCreation'],
+        }),
+        updateEntity: builder.mutation({
+            query: ({params, body}) => ({
+                url: `api/updateentity/${params.entityId}`,
+                method: 'PATCH',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation'],
         })
     })
 });
 
-export const { useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation } = mastersApi;
+export const { 
+    useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation 
+} = mastersApi;

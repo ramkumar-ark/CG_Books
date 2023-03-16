@@ -46,7 +46,7 @@ const SingleCustomerView = () => {
             position:'sticky', top:'64px', backgroundColor:'whitesmoke', zIndex:99}}>
             <Title level={2} style={{margin:"10px 0px"}}>{customer.name}</Title>
             <Space>
-                <Button>Edit</Button>
+                <Button href={`/app/home/customers/edit/${entityId}`}>Edit</Button>
                 <Dropdown menu={{items,}} trigger={['click']}>
                     <Button type="primary">New Transaction<CaretDownOutlined/></Button>
                 </Dropdown>

@@ -1,11 +1,9 @@
-import initiateAccountingDb, { getDbController } from "../../db/accountingDb";
+import { getDbController } from "../../db/accountingDb";
 
 const isAllValuesUndefiend = (obj) =>
     (Object.values(obj).every((element) => element === undefined));
 
-const createEntity = async(req, res) => {
-    const createdMasters = [];
-    let organizationId;
+const updateEntity = async(req, res) => {
     try {
         const {
             name,
@@ -25,78 +23,79 @@ const createEntity = async(req, res) => {
             userId,
             orgId,
         } = req.body;
+        const {entityId} = req.params;
         // get the database controllers of the active organization
-        organizationId = orgId;
-        console.log(orgId);
         let dbController = await getDbController(orgId);
-        console.log("Received Database Controllers")
+        const entity = await dbController.entity.getEntity(entityId);
         // check for invalid entity type
         const mapGroupToType = {customer: "Accounts Receivable", vendor:"Accounts Payable"};
         if (!(Object.keys(mapGroupToType).includes(type))) 
             return res.status(403).json({error:"Invalid Entity Type"});
         // create address documents and store Ids of the same in array
-        const addressIds = [];
+        const addressIds = entity.addresses;
+        let index = 0;
         for (const address of [{...shippingAddress, type:"shipping"}, billingAddress]){
             if (address && !isAllValuesUndefiend(address)){
-                const addressId = await dbController.address.create(address);
-                addressIds.push(addressId);
-                createdMasters.push({controller: "address", docId: addressId});
+                if (addressIds.length > index)
+                    await dbController.address.update(address, addressIds[index]);
+                else{
+                    const addressId = await dbController.address.create(address);
+                    addressIds.push(addressId);
+                }
+            }else if (addressIds.length > index){
+                await dbController.address.delete(addressIds[index]);
+                addressIds.splice(index, 1);
             }
+            index++;
         }
-        console.log("created required address documents")
+        console.log("updated required address documents")
         // create contact for primary contact and get back the id of the document.
-        let primaryContactId;
+        let primaryContactId = entity.primaryContact;
         if (!isAllValuesUndefiend(primaryContact)){
-            primaryContactId = await dbController.contact.create(primaryContact);
-            createdMasters.push({controller: "contact", docId: primaryContactId});
+            const doc = await dbController.contact.update(primaryContact, primaryContactId);
         }
-        console.log("Created contact document for primary contact.")
+        console.log("Updated contact document for primary contact.")
         // create contacts documents and store Ids of the same in array
-        const contactIds = [];
+        const contactIds = entity.contacts;
         const contactsArray = contacts || [];
+        index = 0;
         for (const contact of contactsArray){
             if (contact && !isAllValuesUndefiend(contact)){
-                const contactId = await dbController.contact.create(contact);
-                contactIds.push(contactId);
-                createdMasters.push({controller: "contact", docId: contactId});
+                const contactId = contactIds.length>index ? 
+                    await dbController.contact.update(contact, contactIds[index]) :
+                    await dbController.contact.create(contact);
+                !(contactIds.length>index) && contactIds.push(contactId);
             }
+            index++;
         }
         console.log("Created contact documents for other contacts.")
         // create bankDetails document and get back the id of the document.
-        let bankDetailsId;
+        let bankDetailsId = entity.bankDetails;
         if (bankDetails && !isAllValuesUndefiend(bankDetails)){
-            bankDetailsId = await dbController.bankDetails.create(bankDetails);
-            createdMasters.push({controller: "bankDetails", docId: bankDetailsId});
+            if (bankDetailsId) await dbController.bankDetails.update(bankDetails, bankDetailsId)
+            else bankDetailsId = await dbController.bankDetails.create(bankDetails);
         }
         // create ledger document and get back the id of the document.
         const groupId = await dbController.primaryGroup.getByName(mapGroupToType[type]);
-        const ledgerId = await dbController.ledger.create(
+        await dbController.ledger.update(
             `${name} - ${type} A/c`,
             groupId,
             `Ledger for tracking amount receivable from ${type} ${name}`,
             openingBalance,
+            entity.ledger,
         );
-        createdMasters.push({controller: "ledger", docId: ledgerId});
-        // Create entity document and return the id of document as response.
+        // Update entity document and return the id of document as response.
         const entityDetails = {
-            name, companyName, website, pan, creditPeriod, remarks, type, userId, addressIds,
-            primaryContactId, contactIds, bankDetailsId, ledgerId, customerType
+            entityId, name, companyName, website, pan, creditPeriod, remarks, type, userId, addressIds,
+            contactIds, customerType
         };
-        const entityDoc = await dbController.entity.create(entityDetails);
+        const entityDoc = await dbController.entity.update(entityDetails);
         res.json({entityId: entityDoc.id});
 
     } catch (error) {
         console.log(error);
-        try {
-            const dbController = getDbController(organizationId);
-            for (master of createdMasters){
-                await dbController[master.controller].delete(master.docId);
-            }
-        } catch (err) {
-            return res.status(403).json({err});
-        }
         res.status(403).json({error});
     }
 };
 
-export default createEntity;
+export default updateEntity;

@@ -17,10 +17,13 @@ const entitySchema = new Schema({
     bankDetails: {type: Schema.Types.ObjectId, ref: 'BankDetails'},
     isActive: {type: Boolean, required: true, default: true},
     type: {type: String, required: true },
+    customerType: {type:String},
     remarks: { type: String },
     ledger: {type: Schema.Types.ObjectId, required: true, ref: 'Ledger'},
     createdOn: {type: Date, required: true, default: Date.now},
-    createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true}
+    lastUpdatedOn: {type: Date},
+    createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    updatedBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 });
 
 export default entitySchema;
