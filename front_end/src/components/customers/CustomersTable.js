@@ -1,16 +1,17 @@
 import { Table } from 'antd';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const columns = [
   {
     title: 'NAME',
     dataIndex: 'name',
-    sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+    // sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
   },
   {
     title: 'COMPANY NAME',
     dataIndex: 'companyName',
-    sorter: (a, b) => a.companyName.toLowerCase().localeCompare(b.companyName.toLowerCase()),
+    // sorter: (a, b) => a.companyName.toLowerCase().localeCompare(b.companyName.toLowerCase()),
   },
   {
     title: 'EMAIL',
@@ -23,17 +24,18 @@ const columns = [
   {
     title: 'RECEIVABLES',
     dataIndex: 'receivables',
-    sorter: (a, b) => a.receivables - b.receivables,
+    // sorter: (a, b) => a.receivables - b.receivables,
     render: (text, record, index) => `₹ ${Number(text || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}`
   }
 ];
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
+
 const CustomersTable = ({data}) => {
-  const history = useHistory();  
+  const history = useHistory();
+  console.log(data);
+  const [tableData , setTableData] = useState(data);
+  useEffect(() => {setTableData(data)}, [data]);
   return (
-    <Table columns={columns} dataSource={data} onChange={onChange} 
+    <Table columns={columns} dataSource={tableData} pagination={false}
       sticky={{offsetHeader:135}} rowClassName='selectableTableRow' onRow={(record, rowIndex) => ({
         onClick: (event) => {history.push(`/app/home/customers/view/${record.id}`)}
       })}

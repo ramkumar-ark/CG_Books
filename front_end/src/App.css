@@ -172,3 +172,7 @@ th.tableHeader.ant-table-cell.ant-table-column-has-sorters{
 .ant-collapse .ant-collapse-content>.ant-collapse-content-box{
   padding-left: 0px;
 }
+
+.customerFilterDropdownText{
+  font-size: 24px;
+}

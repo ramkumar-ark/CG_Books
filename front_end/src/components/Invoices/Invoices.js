@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Typography, Space, Button, Dropdown } from "antd";
 import { DownOutlined, PlusOutlined, EllipsisOutlined, InteractionTwoTone } from "@ant-design/icons";
 import { Link, Route, Switch } from "react-router-dom";
@@ -22,24 +23,30 @@ const items = [
     {label: <Text>Refresh List</Text>, icon: <InteractionTwoTone style={{fontSize:"15px"}}/>,key:9},
 ];
 
-const items1 = [
-    {label: <Text>All</Text>, key:11},
-    {label: <Text>Draft</Text>, key:12},
-    {label: <Text>Unpaid</Text>, key:13},
-    {label: <Text>Paid</Text>, key:14},
-    {label: <Text>Partially Paid</Text>, key:15},
-    {label: <Text>Overdue</Text>, key:16},
-];
-
 const Invoices = () => {
+    const [filterField, setFilterField] = useState('All')
+
+    const items1 = [
+        {label: 'All', key:11},
+        {label: 'Draft', key:12},
+        {label: 'Unpaid', key:13},
+        {label: 'Paid', key:14},
+        {label: 'Partially Paid', key:15},
+        {label: 'Overdue', key:16},
+    ];
+
+    const filterDropdownRender = (menu) => (
+        <Text onClick={(event) => {setFilterField(event.target.innerText)}}>{menu}</Text>
+    ); 
+
     return (
         <>
             <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
                 <div style={{textAlign:"left", margin:"0px 10px", display:"flex", justifyContent:"space-between" }}>
-                    <Dropdown trigger={['click']} menu={{items: items1}}>
+                    <Dropdown trigger={['click']} menu={{items: items1}} dropdownRender={filterDropdownRender}>
                         <Link onClick={(e) => e.preventDefault()}>
                             <Title level={3}>
-                                All Invoices<DownOutlined style={{color:"#408dfb", fontSize:"15px"}}/>
+                                {filterField} Invoices <DownOutlined style={{color:"#408dfb", fontSize:"15px"}}/>
                             </Title>
                         </Link>
                     </Dropdown>
