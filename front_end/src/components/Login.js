@@ -13,8 +13,9 @@ export default function Login(){
     const {from} = (location && location.state) || {from: {pathname: "/"}};
     const {AuthCtx} = useAuthentication();
     const {signin, user, error} = useContext(AuthCtx);
+    const errorMessage = error && typeof error != 'String' ? error : 'Network Error! Please try later.';
 
-    useEffect(() => {user && history.replace(from)}, [user, from, history]);
+    useEffect(() => {user && history.replace('/')}, [user, history]);
 
     return (
         <>
@@ -26,7 +27,7 @@ export default function Login(){
         initialValues={{remember: true,}}
         onFinish={signin}
         >
-            {error ? <Alert style={{marginBottom: "12px"}} message={error} type="error" /> : null}
+            {error ? <Alert style={{marginBottom: "12px"}} message={errorMessage} type="error" /> : null}
             <Form.Item
             name="email"
             rules={[

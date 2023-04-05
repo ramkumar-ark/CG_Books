@@ -1,9 +1,22 @@
-import { Table } from "antd";
-import { useContext, useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Table, Typography } from "antd";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { useGetSelectedOrgQuery } from "../../service/appApi";
 import { useGetVouchersQuery } from "../../service/transactionsApi";
 import useAuthentication from "../../useAuthentication";
+
+const {Text} = Typography;
+
+const invoiceStatusRenderer = (status, invoiceData) => {
+    if (status === 'unPaid'){
+        const today = Date.now();
+        const dueDate = new Date(invoiceData.dueDate);
+        const diffInDays = Math.floor((today-dueDate)/(1000*60*60*24));
+        if (today > dueDate) 
+            return <Text style={{color:'#f76831'}}>OVERDUE BY {diffInDays} DAYS</Text>
+        else return <Text style={{color:'#408dfb'}}>DUE IN {diffInDays*-1} DAYS</Text>
+    }else return <Text style={{color:'green'}}>PAID</Text>
+};
 
 const columns = [
     {
@@ -35,6 +48,7 @@ const columns = [
         title: 'STATUS',
         dataIndex: 'status',
         sorter:(a, b) => a.status.toLowerCase().localeCompare(b.status.toLowerCase()),
+        render:(text, record, index) =>invoiceStatusRenderer(text, record),
         className: 'tableHeader',
     },
     {
@@ -60,23 +74,16 @@ const columns = [
     }
 ];
 
-const InvoiceTable = () => {
-    const history = useHistory();
-    const { AuthCtx } = useAuthentication();
-    const { user } = useContext(AuthCtx);
-    const {data:org} = useGetSelectedOrgQuery(user.id);
-    // get invoice data
-    const orgId = org?.selectedOrg?.['_id'];
-    const {data} = useGetVouchersQuery({orgId, voucher:'Sales'}, {skip: !orgId});
-    
+const InvoiceTable = ({tableData, onInvoiceRowClick}) => {
     return (
         <Table 
             columns={columns} 
-            dataSource={data?.vouchers || []} sticky={{offsetHeader:135}} 
+            dataSource={tableData} 
+            sticky={{offsetHeader:135}} 
             pagination={false}
             rowClassName='selectableTableRow'
             onRow={(record, rowIndex) => ({
-                onClick: (event) => {history.push(`/app/home/invoices/view/${record.transactionId}`)},
+                onClick: (event) => {onInvoiceRowClick(record.transactionId)},
             })}
         />
     );

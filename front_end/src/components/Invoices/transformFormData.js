@@ -8,10 +8,9 @@ const transformData = (data) => {
     const creditTerms = {value:data.creditPeriod.value, unit:data.creditPeriod.unit}
     const dueDate = data.creditPeriod.dueDate.toDate().toISOString();
     const status = "unPaid";
-    const pendingAmount = totalAmount;
     const otherDetails = {
         linkedEntity, partyName, shippingAddress, billingAddress, subject, notes, termsAndConditions,
-        orderNumber, totalAmount, itemDetails, creditTerms, dueDate, status, pendingAmount, discount
+        orderNumber, totalAmount, itemDetails, creditTerms, dueDate, status, discount
     };
     const voucherType = "Sales";
     const transactionDate = data.invoiceDate.toDate().toISOString();

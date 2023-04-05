@@ -24,8 +24,9 @@ const periodOptions = [
 
 const getPeriod = (period='thisMonth') => {
     const today = new Date();
-    let startDate = new Date();
-    let endDate = new Date();
+    today.setHours(0, 0, 0, 0);
+    let startDate = new Date(today);
+    let endDate = new Date(today);
     switch (period) {
         case 'thisYear':
             startDate = new Date(today.getFullYear()-(today.getMonth()<3 ? 1 : 0), 3, 1);
@@ -49,7 +50,7 @@ const getPeriod = (period='thisMonth') => {
         case 'thisQuarter':
             startDate.setMonth(Math.floor(today.getMonth() / 3) * 3);
             startDate.setDate(1);
-            endDate.setMonth(startDate.getMonth() + 3);
+            endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 3, 1);
             endDate.setDate(0);
             return {startDate, endDate};
             break;
@@ -72,7 +73,7 @@ const getPeriod = (period='thisMonth') => {
         case 'previousQuarter':
             startDate.setMonth((Math.floor(today.getMonth() / 3) * 3) - 3);
             startDate.setDate(1);
-            endDate.setMonth(startDate.getMonth() + 3);
+            endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 3, 1);
             endDate.setDate(0);
             return {startDate, endDate};
             break;

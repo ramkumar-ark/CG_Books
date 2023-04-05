@@ -1,13 +1,13 @@
 import { getDbController } from '../../db/accountingDb';
 
-const computeNetAmount = (transactions, customerLedgerId) => {
+const computeNetAmount = (transactions, ledgerId) => {
     for (const transac of transactions){
         let netAmount = 0;
         for (const debit of transac.debits){
-            if (debit.ledger.toString() === customerLedgerId) netAmount += debit.amount;
+            if (debit.ledger.toString() === ledgerId) netAmount += debit.amount;
         }
         for (const credit of transac.credits){
-            if (credit.ledger.toString() === customerLedgerId) netAmount -= credit.amount;
+            if (credit.ledger.toString() === ledgerId) netAmount -= credit.amount;
         }
         transac.netAmount = netAmount;
     }
@@ -27,11 +27,15 @@ const transformData = (data, voucherNumbers, opBalance) => {
     let runningBalance = opBalance;
     for (const transac of data){
         runningBalance += transac.netAmount;
+        const voucherNumber = voucherNumbers[transac['_id']];
+        const offsetAmounts = transac.otherDetails.offSetTransactions.map(e => (
+            {amount:e.amount, transaction: e.transaction || 'openingBalance', 
+                voucherNumber: e.transaction ? voucherNumbers[e.transaction] : 'Opening Balance'}));
         const transaction = {
             date: transac.transactionDate, voucherType:transac.voucherType.primaryType, 
-            voucherNumber: voucherNumbers[transac['_id']], dueDate: transac.otherDetails.dueDate,
-            amount:transac.netAmount, referenceNumber: transac.referenceNumber, runningBalance,
-            status:transac.otherDetails.status, pendingAmount:transac.otherDetails.pendingAmount,
+            voucherNumber, dueDate: transac.otherDetails.dueDate, amount:transac.netAmount, 
+            referenceNumber: transac.referenceNumber, runningBalance, status:transac.otherDetails.status,
+            pendingAmount:transac.otherDetails.pendingAmount, offsetAmounts,
         }
         transactions.push(transaction);
     }
@@ -39,16 +43,17 @@ const transformData = (data, voucherNumbers, opBalance) => {
 };
 
 
-const getCustomerTransactions = async (req, res) => {
+const getLedgerTransactions = async (req, res) => {
     try {
-        const { orgId, customerLedgerId } = req.params;
+        const { orgId, ledgerId } = req.params;
         const dbController = await getDbController(orgId);
-        let transactions = await dbController.transaction.getCustomerTransactions(customerLedgerId);
-        transactions = computeNetAmount(transactions, customerLedgerId);
+        let transactions = await dbController.transaction.getLedgerTransactions(ledgerId);
+        transactions = computeNetAmount(transactions, ledgerId);
         const transactionIds = extractTransactionIds(transactions);
         const voucherNumbers = await dbController.voucherType.getVoucherNumbers(transactionIds);
-        const opBalance = await dbController.ledger.getOpeningBalance(customerLedgerId);
+        const opBalance = await dbController.ledger.getOpeningBalance(ledgerId);
         transactions = transformData(transactions, voucherNumbers, opBalance);
+        await dbController.closingBalance.update(ledgerId, transactions.length > 0 ? transactions.at(-1).runningBalance : opBalance);
         res.json({transactions});
     } catch (error) {
         console.log(error);
@@ -56,4 +61,4 @@ const getCustomerTransactions = async (req, res) => {
     }
 };
 
-export default getCustomerTransactions;
+export default getLedgerTransactions;

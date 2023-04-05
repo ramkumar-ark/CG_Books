@@ -4,7 +4,7 @@ const initializeMonthwiseData = () => {
     const today = new Date();
     const eoy = today.getMonth() < 3 
         ? new Date(today.getFullYear(), 2, 31) 
-        : new Date(today.getFullYear() - 1, 2, 31);
+        : new Date(today.getFullYear() + 1, 2, 31);
     const initialData = {};
     for (let i = 23; i >= 0; i--) {
         const date = new Date(eoy.getFullYear(), eoy.getMonth() - i, 1);

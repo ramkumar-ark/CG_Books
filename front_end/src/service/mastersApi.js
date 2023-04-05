@@ -19,13 +19,17 @@ export const mastersApi = createApi({
             query: (orgId) => `/api/getcustomers/${orgId}`,
             providesTags: ['mastersCreation'],
         }),
+        getBankAccounts: builder.query({
+            query: (orgId) => `api/getbankaccounts/${orgId}`,
+            providesTags: ['mastersCreation'],
+        }),
         createEntity: builder.mutation({
             query: (entity) => ({
                 url: `/api/createentity`,
                 method: 'POST',
                 body: entity,
             }),
-            providesTags: ['mastersCreation'],
+            invalidatesTags: ['mastersCreation'],
         }),
         updateEntity: builder.mutation({
             query: ({params, body}) => ({
@@ -34,10 +38,26 @@ export const mastersApi = createApi({
                 body: body,
             }),
             invalidatesTags: ['mastersCreation'],
-        })
+        }),
+        createBankAccount: builder.mutation({
+            query: ({params, body}) => ({
+                url: `api/addbankaccount/${params.orgId}`,
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation'],
+        }),
+        deleteEntity: builder.mutation({
+            query: ({params}) => ({
+                url: `api/deleteentity/${params.orgId}/${params.entityId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['mastersCreation'],
+        }),
     })
 });
 
 export const { 
-    useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation 
+    useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation,
+    useCreateBankAccountMutation, useGetBankAccountsQuery, useDeleteEntityMutation,
 } = mastersApi;

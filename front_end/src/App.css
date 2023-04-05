@@ -163,6 +163,19 @@ th.tableHeader.ant-table-cell.ant-table-column-has-sorters{
   cursor: pointer;
 }
 
+.selectableDiv:hover{
+  cursor: pointer;
+  background-color: #e2dfea;
+}
+
+.selectedDiv{
+  background-color: #f1f1fa;
+}
+
+.selectedDiv:hover{
+  cursor: pointer;
+}
+
 .ant-collapse>.ant-collapse-item.overviewTab >.ant-collapse-header{
   padding-left: 0px;
   padding-bottom: 5px;

@@ -17,20 +17,20 @@ const Customers = () => {
     const {user} = useContext(AuthCtx);
     const {data} = useGetSelectedOrgQuery(user.id);
     const selectedOrg = data?.selectedOrg;
-    const {data: data1, refetch} = useGetCustomersQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
-    const {data: data2} = useGetLedgerBalanceQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
+    const {data: data1, refetch:refetch1} = useGetCustomersQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
+    const {data: data2, refetch:refetch2} = useGetLedgerBalanceQuery(selectedOrg?.['_id'], {skip: !selectedOrg});
     const customers = data1?.customers || [];
     let customersTableData = [];
     if (data1 && data2){
         customersTableData = customers.map(e => ({
-            name:e.name, companyName:e.companyName, email:e.primaryContact.email, 
-            workPhone: e.primaryContact.workPhone, receivables: data2[e.ledger['_id']], id:e['_id'],
+            name:e.name, companyName:e.companyName, email:e.primaryContact?.email, 
+            workPhone: e.primaryContact?.workPhone, receivables: data2[e.ledger['_id']], id:e['_id'],
             createdTime: new Date(e.createdOn), lastModifiedTime: new Date(e.lastUpdatedOn || e.createdOn), 
         }))
     }
     const sortfns = {
         name: (a,b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-        companyName: (a,b) => a.companyName.toLowerCase().localeCompare(b.companyName.toLowerCase()),
+        companyName: (a,b) => a.companyName?.toLowerCase().localeCompare(b.companyName?.toLowerCase()),
         receivables: (a,b) => a.receivables - b.receivables,
         createdTime: (a,b) => a.createdTime - b.createdTime,
         modifiedTime: (a,b) => a.lastModifiedTime - b.lastModifiedTime,
@@ -44,6 +44,11 @@ const Customers = () => {
         {label: <Text onClick={() => {setSortField('modifiedTime')}}>Last Modified Time</Text>, key:5},
     ];
     
+    const refetch = () => {
+        refetch1();
+        refetch2();
+    };
+
     const items = [
         {label: <Text strong>SORT BY</Text>, key:0, type:'group', children:childrenItems},
         {type: 'divider'},

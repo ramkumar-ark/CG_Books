@@ -13,16 +13,20 @@ const OverviewTab = ({entity}) => {
         <Row style={{minHeight:'100vh', textAlign:'left'}}>
             <Col span={8} style={{borderRight:'1px solid #00000040'}}>
                 <Space direction="vertical" style={{padding:'20px 15px', width:'100%'}}>
-                    <div style={{borderBottom:'1px solid #00000040', paddingBottom:'10px'}}>
-                        <Text>{entity.companyName}</Text>
-                    </div>
+                    {entity.companyName && 
+                        <div style={{borderBottom:'1px solid #00000040', paddingBottom:'10px'}}>
+                            <Text>{entity.companyName}</Text>
+                        </div>
+                    }
                     <ContactCard contact={entity.primaryContact}/>
                     <Collapse bordered={false} expandIconPosition='right' ghost>
                         <Panel header="ADDRESS" key="1" className="overviewTab">
-                            <Text>Billing Address</Text>
+                            <Text>Billing Address</Text><br/>
                             <AddressDisplayCard datas={entity.addresses.filter(e => e.type === 'billing')}/>
+                            {entity.addresses.length==0 && <Text>Billing Address not available</Text>}
                             <Text style={{marginTop:'10px'}}>Shipping Address</Text>
                             <AddressDisplayCard datas={entity.addresses.filter(e => e.type === 'shipping')}/>
+                            {entity.addresses.length==0 && <Text>Shipping Address not available</Text>}
                         </Panel>
                         <Panel header={`CONTACT PERSONS (${entity.contacts?.length || 0})`} key="2" className="overviewTab">
                             {entity.contacts?.map(e => <ContactCard contact={e}/>)}                            
@@ -39,7 +43,7 @@ const OverviewTab = ({entity}) => {
                     <Space size={100}>
                         <Text strong>OUTSTANDING RECEIVALBES</Text>
                         <Link>
-                            ₹{Number(entity.receivables).toLocaleString('en-IN', {minimumFractionDigits:2})}
+                            ₹{Number(entity.receivables).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}
                         </Link>
                     </Space>
                     <div style={{display:'flex', justifyContent:'space-between'}}>

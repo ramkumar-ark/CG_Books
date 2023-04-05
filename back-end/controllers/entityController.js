@@ -15,6 +15,7 @@ export default class EntityController{
         contactIds,
         primaryContactId,
         bankDetailsId,
+        otherDetailsId,
         remarks,
         type,
         customerType,
@@ -36,8 +37,9 @@ export default class EntityController{
             for (const [key, value] of Object.entries({
                 companyName: companyName, website: website, pan: pan, creditPeriod: creditPeriod, 
                 remarks: remarks, primaryContact: primaryContact, bankDetails: bankDetails, customerType,
+                otherDetails:otherDetailsId,
             })){
-                if (value) entityDetails[key] = value;    
+                if (value) entityDetails[key] = value;
             }
             const entity = await this.model.create(entityDetails);
             return Promise.resolve(entity.id);
@@ -77,7 +79,6 @@ export default class EntityController{
                 if (value) entityDetails[key] = value;
             }
             const entity = await this.model.findByIdAndUpdate(entityId, entityDetails, {new:true});
-            console.log(entity);
             return Promise.resolve(entity);
         } catch (error) {
             return Promise.reject(error);
@@ -93,6 +94,15 @@ export default class EntityController{
         }
     }
 
+    async delete(id){
+        try {
+            await this.model.deleteOne({"_id": id});
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async fetchCustomers(){
         try {
             const entityDocs = await this.model.find({type:"customer"})
@@ -100,10 +110,23 @@ export default class EntityController{
                 .populate('contacts')
                 .populate('primaryContact')
                 .populate('bankDetails')
-                .populate('ledger');
+                .populate('ledger')
+                .populate('otherDetails');
             return Promise.resolve(entityDocs);
         } catch (error) {
             return Promise.reject(error);
+        }
+    }
+
+    async getEntityOpeningBalanceStatus(entityId){
+        try {
+            const doc = await this.model.findById(entityId).populate({path:'otherDetails'});
+            const openingBalance = doc.otherDetails.totalAmount;
+            const pendingBalance = doc.otherDetails.pendingAmount;
+            const paymentStatus = doc.otherDetails.status;
+            return Promise.resolve({openingBalance, pendingBalance, paymentStatus});
+        } catch (error) {
+            return Promise.resolve(error);
         }
     }
 }

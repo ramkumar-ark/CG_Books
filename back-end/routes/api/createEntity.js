@@ -1,4 +1,4 @@
-import initiateAccountingDb, { getDbController } from "../../db/accountingDb";
+import { getDbController } from "../../db/accountingDb";
 
 const isAllValuesUndefiend = (obj) =>
     (Object.values(obj).every((element) => element === undefined));
@@ -77,6 +77,16 @@ const createEntity = async(req, res) => {
             openingBalance,
         );
         createdMasters.push({controller: "ledger", docId: ledgerId});
+        // update closing balance
+        if (openingBalance) {
+            const docId = await dbController.closingBalance.update(ledgerId, openingBalance);
+            createdMasters.push({controller: "closingBalance", docId})
+        }
+        // create other details document
+        const otherDetailsId = await dbController.otherDetails.create({
+            totalAmount:openingBalance, status:'unPaid',
+        })
+        createdMasters.push({controller: "otherDetails", docId: otherDetailsId});
         // Create entity document and return the id of document as response.
         const entityDetails = {
             name, companyName, website, pan, creditPeriod, remarks, type, userId, addressIds,
@@ -89,8 +99,9 @@ const createEntity = async(req, res) => {
         console.log(error);
         try {
             const dbController = getDbController(organizationId);
-            for (master of createdMasters){
+            for (const master of createdMasters){
                 await dbController[master.controller].delete(master.docId);
+                console.log(`Deleted document of ${master.controller}`);
             }
         } catch (err) {
             return res.status(403).json({err});

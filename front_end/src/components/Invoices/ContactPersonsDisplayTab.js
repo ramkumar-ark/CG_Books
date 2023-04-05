@@ -4,6 +4,7 @@ import { UserOutlined, PhoneOutlined, MobileOutlined, StarFilled } from "@ant-de
 const { Text } = Typography;
 
 export const ContactCard = ({contact}) => {
+    if (contact)
     return (
         <Space style={{alignItems:"flex-start"}}>
             <div><Avatar shape="square" size='large' icon={<UserOutlined/>}/></div>

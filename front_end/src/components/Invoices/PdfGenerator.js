@@ -212,7 +212,7 @@ export const Invoice = ({ invoice }) => {
               {textGenerator(invoice.otherDetails.shippingAddress.street1)}
               {textGenerator(invoice.otherDetails.shippingAddress.street2)}
               {textGenerator(invoice.otherDetails.shippingAddress.city)}
-              {textGenerator(`${invoice.otherDetails.shippingAddress.state} ${invoice.otherDetails.shippingAddress.pincode}`)}
+              {textGenerator(`${invoice.otherDetails.shippingAddress.state || ''} ${invoice.otherDetails.shippingAddress.pincode || ''}`)}
               {textGenerator(invoice.otherDetails.shippingAddress.phone ? `Phone: ${invoice.otherDetails.shippingAddress.phone}`: undefined)}
               {textGenerator(invoice.otherDetails.shippingAddress.fax ? `Fax: ${invoice.otherDetails.shippingAddress.fax}`: undefined)}
             </View>

@@ -9,10 +9,8 @@ const { Title, Text } = Typography;
 
 
 
-const CustomerDetails = ({isOpen, onClose, data, data1}) => {
+const CustomerDetails = ({isOpen, onClose, data, receivable}) => {
     const [open, setOpen] = useState(isOpen);
-    // const [customer, setCustomer] = 
-    // const {data: data1} = useGetLedgerBalanceQuery(data.orgId);
 
     const items = [
         {
@@ -68,7 +66,7 @@ const CustomerDetails = ({isOpen, onClose, data, data1}) => {
             <div style={{margin: 0, padding: 20}}>
                 <Space direction='vertical'>
                     <Text type='secondary' strong>Outstanding Receivables</Text>
-                    <Text style={{fontSize:"24px"}}>₹ {data1?.[data.ledger?.['_id']] || "0.00"}</Text>
+                    <Text style={{fontSize:"24px"}}>₹ {Number(receivable).toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
                     <Space direction='vertical' style={{margin: "20px 0 0"}}>
                         <Text type='secondary' strong>Credit Terms:</Text>
                         <Text>{`${data.creditPeriod?.value || 0} ${data.creditPeriod?.unit} from Invoice`}</Text>

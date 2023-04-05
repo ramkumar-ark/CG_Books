@@ -10,13 +10,17 @@ import Invoices from "./Invoices/Invoices";
 import SingleInvoiceView from "./Invoices/SingleInvoiceView";
 import CreateInvoice from "./Invoices/CreateInvoice";
 import SingleCustomerView from "./customers/SingleCustomerView";
+import Banking from "./banking/Banking";
+import AddBank from "./banking/AddBank";
+import RecordReceipt from "./paymentsReceived/RecordReceipt";
+import PaymentsReceived from "./paymentsReceived/PaymentsReceived";
 
 const {Content, Header} = Layout;
 
 export default () =>{
     const [isSiderCollapsed, setIsSiderCollapsed] = useState(false);
     return (
-        <Layout style={{ minHeight: '100vh',}} hasSider>
+        <Layout style={{ minHeight: '89.75vh',}} hasSider>
             <SiderNavMenu onCollapse={(value) => setIsSiderCollapsed(value)}/>
             <Layout className="site-layout" style={{marginLeft: isSiderCollapsed ? "50px" : "200px"}}>
                 <Content >
@@ -53,6 +57,15 @@ export default () =>{
                         </Route>
                         <Route path='/app/home/invoices/edit/:transactionId'>
                             <CreateInvoice/>
+                        </Route>
+                        <Route exact path='/app/home/banking'>
+                            <Banking/>
+                        </Route>
+                        <Route path='/app/home/banking/new'>
+                            <AddBank/>
+                        </Route>
+                        <Route path='/app/home/paymentsreceived'>
+                            <PaymentsReceived basePath='/app/home/paymentsreceived'/>
                         </Route>
                     </Switch>
                 </Content>

@@ -40,6 +40,15 @@ export default class LedgerController {
         }
     }
 
+    async getGroupLedgers(groupIds){
+        try {
+            const ledgers = await this.model.find({'group':{'$in':groupIds}}).populate({path:'group', select:'name'});
+            return Promise.resolve(ledgers);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async getIncomeLedgerIds(incomeGroupIds){
         try {
             const ledgers = await this.model.find({'group':{'$in':incomeGroupIds}}, {'_id':1});

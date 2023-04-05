@@ -230,12 +230,13 @@ const CreateInvoice = () => {
                                 <IdcardOutlined/> View Customer Details 
                             </Typography.Link>
                         }
+                        {selectedCustomer && 
                         <CustomerDetails 
-                            data={{...selectedCustomer, orgId}} 
-                            data1={cbData}
+                            data={selectedCustomer} 
+                            receivable={cbData?.[selectedCustomer.ledger?.['_id']] || "0.00"}
                             isOpen={openDrawer} 
                             onClose={() => setOpenDrawer(false)} 
-                        />
+                        />}
                         </Input.Group>
                     </Space>
                 </Form.Item>

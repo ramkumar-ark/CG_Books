@@ -1,4 +1,5 @@
 import { getDbController } from "../../db/accountingDb";
+import updateClosingBalances from "../../utils/updateClosingBalances";
 
 const createVoucher = async (req, res) => {
     let createdDocuments = [];
@@ -13,6 +14,8 @@ const createVoucher = async (req, res) => {
         const voucherTypeId = await dbController.voucherType.getId(voucherType);
         const transactionId = await dbController.transaction.create({...transaction, otherDetailsId, voucherTypeId});
         createdDocuments.push({controller:"transaction", docId:transactionId});
+        // calculate and update closing balance of associated ledgers
+        await updateClosingBalances(transaction, orgId);
         // add transaction to sales voucher
         const doc = await dbController.voucherType.addVoucherTransaction(
             transaction.transactionDate, voucherType, transactionId, voucherNumber

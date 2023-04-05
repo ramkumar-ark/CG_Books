@@ -1,4 +1,5 @@
 import { getDbController } from "../../db/accountingDb";
+import updateLedgerClosingBalance from "../../utils/updateLedgerClosingBalance";
 
 const isAllValuesUndefiend = (obj) =>
     (Object.values(obj).every((element) => element === undefined));
@@ -31,6 +32,8 @@ const updateEntity = async(req, res) => {
         const mapGroupToType = {customer: "Accounts Receivable", vendor:"Accounts Payable"};
         if (!(Object.keys(mapGroupToType).includes(type))) 
             return res.status(403).json({error:"Invalid Entity Type"});
+        // update other details document for opening balance
+        await dbController.otherDetails.update(entity.otherDetails, {totalAmount: openingBalance});
         // create address documents and store Ids of the same in array
         const addressIds = entity.addresses;
         let index = 0;
@@ -84,6 +87,8 @@ const updateEntity = async(req, res) => {
             openingBalance,
             entity.ledger,
         );
+        // update closing balance of ledger of the entity.
+        await updateLedgerClosingBalance(orgId, entity.ledger);
         // Update entity document and return the id of document as response.
         const entityDetails = {
             entityId, name, companyName, website, pan, creditPeriod, remarks, type, userId, addressIds,

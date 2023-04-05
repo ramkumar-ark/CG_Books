@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Typography, Space, Button, Dropdown } from "antd";
 import { DownOutlined, PlusOutlined, EllipsisOutlined, InteractionTwoTone } from "@ant-design/icons";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import InvoiceTable from "./InvoiceTable";
+import useGetInvoiceTableData from "./useGetInvoiceTableData";
 
 const { Title, Text } = Typography;
 
@@ -25,10 +26,10 @@ const items = [
 
 const Invoices = () => {
     const [filterField, setFilterField] = useState('All')
-
+    const {invoiceTableData, filterTableData, refetchVouchers, onInvoiceRowClick} = useGetInvoiceTableData();
     const items1 = [
         {label: 'All', key:11},
-        {label: 'Draft', key:12},
+        // {label: 'Draft', key:12},
         {label: 'Unpaid', key:13},
         {label: 'Paid', key:14},
         {label: 'Partially Paid', key:15},
@@ -36,7 +37,10 @@ const Invoices = () => {
     ];
 
     const filterDropdownRender = (menu) => (
-        <Text onClick={(event) => {setFilterField(event.target.innerText)}}>{menu}</Text>
+        <Text onClick={(event) => {
+            setFilterField(event.target.innerText);
+            filterTableData(event.target.innerText);
+        }}>{menu}</Text>
     ); 
 
     return (
@@ -58,7 +62,7 @@ const Invoices = () => {
                     </Space>
                 </div>
             </div>
-            <InvoiceTable/>
+            <InvoiceTable tableData={invoiceTableData} onInvoiceRowClick={onInvoiceRowClick}/>
         </>        
     );
 };

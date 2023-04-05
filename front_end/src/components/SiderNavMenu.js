@@ -23,19 +23,19 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem(<Link to="/app/home/dashboard">Dashboard</Link>, '1', <PieChartOutlined />),
-  getItem('Items', '2', <ShoppingOutlined />),
-  getItem('Banking', '3', <BankOutlined />),
+  // getItem(<Link to="/app/home/dashboard">Items</Link>, '2', <ShoppingOutlined />),
+  getItem(<Link to="/app/home/banking">Banking</Link>, '3', <BankOutlined />),
   getItem('Sales', 'sub1', <ShoppingCartOutlined />, [
     getItem(<Link to="/app/home/customers">Customers</Link>, '4'),
     getItem(<Link to="/app/home/invoices">Invoices</Link>, '5'),
-    getItem('Payments Received', '6'),
-    getItem('Credit Notes', '7'),
+    getItem(<Link to="/app/home/paymentsreceived">Payments Received</Link>, '6'),
+    // getItem('Credit Notes', '7'),
   ]),
   getItem('Purchases', 'sub2', <WalletOutlined />, [
     getItem('Vendors', '8'), 
     getItem('Bills', '9'),
     getItem('Payments Made', '10'),
-    getItem('Debit Notes', '11'),
+    // getItem('Debit Notes', '11'),
 ]),
   getItem('Accountant', 'sub3', <SolutionOutlined />, [
     getItem('Manual Journals', '12'),

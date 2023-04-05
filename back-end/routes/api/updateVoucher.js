@@ -1,4 +1,5 @@
 import { getDbController } from "../../db/accountingDb";
+import updateClosingBalances from "../../utils/updateClosingBalances";
 
 const updateVoucher = async (req, res) => {
     try {
@@ -14,10 +15,13 @@ const updateVoucher = async (req, res) => {
         }
         await dbController.otherDetails.update(otherDetailsId, otherDetails);
         const voucherTypeId = await dbController.voucherType.getId(voucherType);
-        await dbController.transaction.update(
+        const oldTransaction = await dbController.transaction.get(transactionId);
+        const result = await dbController.transaction.update(
             transactionId, 
             {...transaction, otherDetailsId, voucherTypeId, createdBy:doc.transaction.createdBy}
         );
+        console.log('updated transaction doc: ', oldTransaction);
+        await updateClosingBalances(transaction, orgId, oldTransaction);
         res.json({message: 'success'});
     } catch (error) {
         console.log(error);

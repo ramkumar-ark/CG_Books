@@ -20,10 +20,11 @@ const entitySchema = new Schema({
     customerType: {type:String},
     remarks: { type: String },
     ledger: {type: Schema.Types.ObjectId, required: true, ref: 'Ledger'},
+    otherDetails:{type: Schema.Types.ObjectId, ref:'OtherDetails'},
     createdOn: {type: Date, required: true, default: Date.now},
     lastUpdatedOn: {type: Date},
     createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-    updatedBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    updatedBy: {type: Schema.Types.ObjectId, ref: 'User'},
 });
 
 export default entitySchema;

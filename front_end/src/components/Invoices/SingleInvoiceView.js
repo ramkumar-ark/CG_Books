@@ -62,7 +62,6 @@ const SingleInvoiceView = () => {
             <Link onClick={() => history.goBack()}>
                 <CloseOutlined style={{fontSize:20, color:'grey'}}/>
             </Link>
-                
         </div>
         <div style={{position:"sticky", top:'121px', borderBottom: 'ridge', backgroundColor:'#fff',
             display:"flex", justifyContent:'flex-start'}}

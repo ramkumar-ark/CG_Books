@@ -13,9 +13,20 @@ export default class ClosingBalanceController{
         }
     }
 
+    async delete(id, ledgerId=null){
+        try {
+            let doc;
+            if(id) doc = await this.model.findByIdAndDelete(id);
+            else doc = await this.model.findOneAndDelete({ledger:ledgerId});
+            return Promise.resolve(doc); 
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async update(ledgerId, balance){
         try {
-            const doc = await this.model.findOneAndUpdate({ledger: ledgerId}, {balance}, {upsert:true});
+            const doc = await this.model.findOneAndUpdate({ledger: ledgerId}, {balance}, {upsert:true, new:true});
             return Promise.resolve(doc.id);
         } catch (error) {
             return Promise.reject(error);

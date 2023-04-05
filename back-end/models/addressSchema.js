@@ -2,9 +2,9 @@ import { Schema } from "mongoose";
 
 const addressSchema = new Schema({
     attention: {type: String},
-    country:{type: String, required: true},
-    state:{type: String, requried: true},
-    city: {type: String, required: true},
+    country:{type: String, },
+    state:{type: String, },
+    city: {type: String, },
     street1: {type: String},
     street2: {type: String},
     pincode: {type: Number},

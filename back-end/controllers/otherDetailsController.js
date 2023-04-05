@@ -24,10 +24,24 @@ export default class OtherDetailsController{
 
     async update(id, data){
         try {
-            const doc = await this.model.replaceOne({_id: id}, data);
+            const doc = await this.model.findByIdAndUpdate(id, data);
+            // await doc.updateOne(data);
             return Promise.resolve(doc);
         } catch (error) {
             return Promise.reject(error);
         }
     }
+
+    async addOffSetTransaction(id, offsetTransaction, isDelete=false){
+        try {
+            // updateQuery = isDelete ? $push:{offSetTransactions:offsetTransaction}}
+            const doc = await this.model.findByIdAndUpdate(id, 
+                {[isDelete ? '$pull' : '$push']:{offSetTransactions:offsetTransaction}});
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    // async deleteOffSetTransaction(id, offsetTransaction)
 }

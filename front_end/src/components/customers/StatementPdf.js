@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#ffffff',
         color:'black',
         fontSize:11,
+        padding:'10px 0',
     },
     alternateRow2:{
         display:'flex',
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#f6f5f5',
         color:'black',
         fontSize:11,
+        padding:'10px 0',
     },
     balanceDueRow:{
         display: 'flex',
@@ -107,16 +109,16 @@ export const Statement = ({entity, organization, period}) => {
     let endIndex = 0;
     let isStartIndexFound = false;
     for (const transac of entity.customerTransactions){
-        if (!isStartIndexFound && (new Date(transac.date) > new Date(period.startDate))){
+        if (!isStartIndexFound && 
+                (new Date(transac.date).setHours(0, 0, 0, 0) > new Date(period.startDate).setHours(0, 0, 0, 0))){
             isStartIndexFound = true;
         }
         !isStartIndexFound && startIndex++;
-        if (new Date(transac.date) > new Date(period.endDate)){
+        if (new Date(transac.date).setHours(0, 0, 0, 0) > new Date(period.endDate).setHours(0, 0, 0, 0)){
             break;
         }
         endIndex++;
     }
-    console.log(startIndex, endIndex);
     if (startIndex > 0) openingBalance = entity.customerTransactions[startIndex-1].runningBalance;
     entity.customerTransactions.slice(startIndex,endIndex).forEach(e => {
         e.voucherType === 'receipt' ? receivedAmount += e.amount * -1 : invoicedAmount += e.amount;
@@ -141,12 +143,12 @@ export const Statement = ({entity, organization, period}) => {
                     <View style={styles.entityAddress}>
                         <Text style={{fontWeight:'bold'}}>To</Text>
                         <Text style={{color:'blue', fontWeight:'bold'}}>{entity.name}</Text>
-                        {textGenerator(entityAddress.street1)}
-                        {textGenerator(entityAddress.street2)}
-                        {textGenerator(entityAddress.city)}
-                        {textGenerator(`${entityAddress.state} ${entityAddress.pincode}`)}
-                        {textGenerator(entityAddress.phone ? `Phone: ${entityAddress.phone}`: undefined)}
-                        {textGenerator(entityAddress.fax ? `Fax: ${entityAddress.fax}`: undefined)}
+                        {textGenerator(entityAddress?.street1)}
+                        {textGenerator(entityAddress?.street2)}
+                        {textGenerator(entityAddress?.city)}
+                        {entityAddress && textGenerator(`${entityAddress?.state} ${entityAddress?.pincode}`)}
+                        {textGenerator(entityAddress?.phone ? `Phone: ${entityAddress?.phone}`: undefined)}
+                        {textGenerator(entityAddress?.fax ? `Fax: ${entityAddress.fax}`: undefined)}
             
                     </View>
                     <View style={styles.statementHeading}>
@@ -206,11 +208,14 @@ export const Statement = ({entity, organization, period}) => {
                     <Text style={{flex:1.3, padding:5, textAlign:'right'}}>{openingBalance.toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
                 </View>
                 {entity.customerTransactions.slice(startIndex,endIndex).map((e,i)=> (
-                    <View style={(i%2)===2 ? styles.alternateRow1: styles.alternateRow2}>
+                    <View style={(i%2)!==0 ? styles.alternateRow1: styles.alternateRow2}>
                         <Text style={{flex:1, padding:5}}>{new Date(e.date).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}</Text>
                         <Text style={{flex:1.2, padding:5}}>{e.voucherType}</Text>
-                        <Text style={{flex:2, padding:5, textAlign:'center'}}>
-                            {e.voucherNumber} - due on {new Date(e.dueDate).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}
+                        <Text style={{flex:2, padding:5, textAlign:'left'}}>
+                            {e.voucherType === 'sales'
+                            ? `${e.voucherNumber} - due on ${new Date(e.dueDate).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}`
+                            : `${e.voucherNumber}
+                            ${e.offsetAmounts.map(elem => `₹${Number(elem.amount).toLocaleString('en-IN', {minimumFractionDigits:2})} for payment of ${elem.voucherNumber}`+'\n')}${e.pendingAmount > 0 ? `₹${Number(e.pendingAmount).toLocaleString('en-IN', {minimumFractionDigits:2})} in excess payment` : ''}`}
                         </Text>
                         <Text style={{flex:1, padding:5, textAlign:'right'}}>
                             {e.voucherType === 'receipt' ? "" : e.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}
