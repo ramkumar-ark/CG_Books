@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import header from "./createAuthHeader";
 
+const apiEndPoint = process.env.REACT_APP_API_END_POINT;
+
 export const appApi = createApi({
     reducerPath: "appApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3001",
+        baseUrl: apiEndPoint,
         prepareHeaders: (headers) => {
             headers.set('Authorization', header['Authorization']);
             return headers;

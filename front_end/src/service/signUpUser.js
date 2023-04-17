@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseEndpoint = "http://localhost:3001/api/signup";
+const apiBaseEndpoint = `${process.env.REACT_APP_API_END_POINT}/api/signup`;
 
 const signUpUser = ({nickname, email, password, phone}) => 
     new Promise((resolve, reject) => {

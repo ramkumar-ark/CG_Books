@@ -1,7 +1,7 @@
 import axios from "axios"
 import header from "./createAuthHeader";
 
-const apiBaseEndpoint = "http://localhost:3001/api/getassociatedorgs";
+const apiBaseEndpoint = `${process.env.REACT_APP_API_END_POINT}/api/getassociatedorgs`;
 
 export default function getOrgsOfUsers(userId){
     return new Promise((resolve, reject) => {

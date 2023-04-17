@@ -1,7 +1,7 @@
 import axios from "axios";
 import header from "./createAuthHeader";
 
-const apiBaseEndpoint = "http://localhost:3001/api/createorg";
+const apiBaseEndpoint = `${process.env.REACT_APP_API_END_POINT}/api/createorg`;
 
 const createOrg = (orgDetails) => new Promise((resolve, reject) => {
     axios.post(apiBaseEndpoint, orgDetails, {headers:header})

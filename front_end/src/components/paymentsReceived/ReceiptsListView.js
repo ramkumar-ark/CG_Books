@@ -2,6 +2,7 @@ import Header from "./Header";
 import useGetForViewReceipts from "./useGetForViewReceipts";
 import ReceiptListItem from "./ReceiptListItem";
 import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useRef } from "react";
 
 const ReceiptsListView = () => {
     const {receiptsData, sortOptions, refetchVouchers} = useGetForViewReceipts();
