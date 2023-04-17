@@ -1,11 +1,12 @@
 import { useDeleteVoucherEntryMutation } from "../service/transactionsApi";
 import useSelectedOrg from "./useSelectedOrg";
-import { Modal } from 'antd';
+import { Modal, Typography } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 const { confirm } = Modal;
+const { Text } = Typography;
 
 function useDeleteVoucher(transactionId, voucherData){
     const history = useHistory();
@@ -39,7 +40,21 @@ function useDeleteVoucher(transactionId, voucherData){
             },
         });
     };
-    return [showConfirm, {isLoading, isDeleted}];
+    const showModalOnSubmitFailed = () => {
+        Modal.error({
+            title:'CANNOT DELETE!', 
+            content:<Text>
+                    This {voucherData.voucherName} cannot be deleted since there are payments linked to this {voucherData.voucherName}.                
+                </Text>,         
+        });
+    };
+    const initiateDelete = () => {
+        if (['Sales', 'Purchase'].includes(voucherData.voucherName) && 
+            voucherData.otherDetails.offSetTransactions.length > 0)
+            showModalOnSubmitFailed();
+        else showConfirm();
+    };
+    return [initiateDelete, {isLoading, isDeleted}];
 }
 
 export default useDeleteVoucher;

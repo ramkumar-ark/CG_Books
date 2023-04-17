@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import AppHeader from './components/Header';
 import Home from './components/homePage/Home';
 import Login from './components/Login';
@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>  
       <div className="App">
-        <Layout>
+        <Layout style={{height:'100vh'}}>
           <AppHeader user={user}/>
             <Content>
               <Switch>
@@ -27,7 +27,10 @@ function App() {
                   <Route path="/signup"><SignUp/></Route>
                   <ProtectedComponent user={user} path="/app"><AppStart/></ProtectedComponent>
                   <Route>
+                    <>
                     <h1>404 Requested Resource Not Found.</h1>
+                    <Link to={'/'}>Go to Home Page.</Link>
+                    </>
                   </Route>
               </Switch>
             </Content>

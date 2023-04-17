@@ -3,8 +3,9 @@ import AddressTab from './AddressTab';
 import OtherDetailsTab from './OtherDetailsTab';
 import EditableTable from './ContactsTab';
 import Remarks from './RemarksTab';
+import BankDetailsTab from '../vendors/BankDetailsTab';
 
-const TabsCreateContact = ({formObj, contactsData}) => {
+const TabsCreateContact = ({formObj, contactsData, bankDetails, entityType}) => {
     const items = [
         {
           key: '1',
@@ -30,5 +31,8 @@ const TabsCreateContact = ({formObj, contactsData}) => {
           forceRender: true,
         }
     ];
+    const bankDetailsTabItem = {key:'5', label:'Bank Details', children:<BankDetailsTab data={bankDetails}/>, forceRender:true};
+    if (entityType==='vendor') items.splice(3,0,bankDetailsTabItem);
+    console.log(items);
     return <Tabs defaultActiveKey="1" items={items} />};
 export default TabsCreateContact;

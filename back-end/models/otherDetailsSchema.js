@@ -3,7 +3,8 @@ import addressSchema from "./addressSchema";
 
 const itemListSchema = new Schema({
     details:{type:String, required: true},
-    quantity:{type:Number, required: true},
+    ledger:{type:Schema.Types.ObjectId, ref:'Ledger'},
+    quantity:{type:Number, default:1, required: true},
     rate:{type:Number, required:true},
     amount:{type:Number, required:true},
 }, {_id:false});
@@ -55,7 +56,6 @@ otherDetailsSchema.pre('save', function(next){
                 }else{ return e;}
             })
         if (isDuplicateFound) this.offSetTransactions = offsetData;
-        console.log('isDuplicateFound: ', isDuplicateFound);
     }
     // calculate pendingAmount value
     if (this.offSetTransactions){
@@ -65,7 +65,6 @@ otherDetailsSchema.pre('save', function(next){
     }else{
         this.pendingAmount = this.totalAmount;
     }
-    console.log('Pending Amount: ', this.pendingAmount);
     next();
 });
 

@@ -32,9 +32,9 @@ const items = [
     // getItem('Credit Notes', '7'),
   ]),
   getItem('Purchases', 'sub2', <WalletOutlined />, [
-    getItem('Vendors', '8'), 
-    getItem('Bills', '9'),
-    getItem('Payments Made', '10'),
+    getItem(<Link to="/app/home/vendors">Vendors</Link>, '8'), 
+    getItem(<Link to="/app/home/bills">Bills</Link>, '9'),
+    getItem(<Link to="/app/home/paymentsmade">Payments Made</Link>, '10'),
     // getItem('Debit Notes', '11'),
 ]),
   getItem('Accountant', 'sub3', <SolutionOutlined />, [
@@ -69,7 +69,7 @@ const SiderNavMenu = ({onCollapse}) => {
               onCollapse(!collapsed);
             }}
             collapsedWidth={50}
-            style={{overflow:'auto', height:'80vh', position:'fixed', left:0, backgroundColor:"#f7f7fe"}}
+            style={{overflow:'auto', height:520, position:'fixed', left:0, backgroundColor:"#f7f7fe"}}
         >
         <Menu defaultSelectedKeys={[selection.selected]} defaultOpenKeys={selection.expanded} mode="inline" items={items} style={{backgroundColor:"#f7f7fe", textAlign:"start"}} />
       </Sider>

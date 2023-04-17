@@ -16,7 +16,7 @@ const AddBank = () => {
     const [ createBankAccount, {isError, isSuccess, error, isLoading} ] = useCreateBankAccountMutation();
     return (
         <>
-        <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
+        <div style={{borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke"}}>
             <div style={{textAlign:"left", margin:"0px 20px", display:"flex", justifyContent:"space-between",
                 flexWrap:'wrap'}}>
                 <Title level={3}>Add Bank</Title>
@@ -30,7 +30,6 @@ const AddBank = () => {
             layout='horizontal'
             style={{maxWidth:'100%', margin:'30px 10px'}}  
             onFinish={(values) => {
-                console.log(values);
                 createBankAccount({body: values, params:{orgId}});
             }}
         >
@@ -54,6 +53,9 @@ const AddBank = () => {
                 </Form.Item>
                 <Form.Item label='Description' name='description'>
                     <Input.TextArea placeholder="Max. 500 characters"/>
+                </Form.Item>
+                <Form.Item label="Opening Balance" name="opBalance">
+                    <InputNumber addonBefore={"₹"} style={{width:"100%"}}/>
                 </Form.Item>
             </Col>
             </Row>

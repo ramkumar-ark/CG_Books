@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 
-const ReceiptsTable = ({data}) => {
+const ReceiptsTable = ({data, topOffset}) => {
     const history = useHistory();
     const {pathname} = useLocation();
     const columns = [
@@ -58,7 +58,7 @@ const ReceiptsTable = ({data}) => {
         }
     ];
     return (
-        <Table dataSource={data} columns={columns} sticky={{offsetHeader:64+75}} pagination={false}
+        <Table dataSource={data} columns={columns} sticky={{offsetHeader:topOffset}} pagination={false}
             rowClassName='selectableTableRow' onRow={(record) => ({
                 onClick: () => {history.push(`${pathname}/${record.transactionId}`)}
             })}

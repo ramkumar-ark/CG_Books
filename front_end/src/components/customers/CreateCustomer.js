@@ -38,7 +38,7 @@ const CreateCustomer = () => {
             {error1 && console.log(error1)}
             {(isError || isError1) && <div><Text type="danger">Error Creating Customer</Text></div>}
             {(isSuccess || isSuccess1) && <Redirect to="/app/home/customers" />}
-            <CreateContactForm onSubmit={submitFn} entityData={customer}/>
+            <CreateContactForm onSubmit={submitFn} entityData={customer} entityType='customer'/>
         </Spin>
     );
 };

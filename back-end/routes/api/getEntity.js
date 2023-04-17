@@ -1,15 +1,15 @@
 import { getDbController } from "../../db/accountingDb";
 
-const getCustomers = async(req, res) => {
+const getEntity = async(req, res) => {
     try {
-        const orgId = req.params.orgId;
+        const {orgId, entityId} = req.params;
         const dbController = await getDbController(orgId);
-        const customers = await dbController.entity.fetchCustomers();
-        res.json({customers});
+        const customer = await dbController.entity.getEntity(entityId);
+        res.json({customer});
     } catch (error) {
         console.log(error);
         res.status(403).json({error});
     }
 }
 
-export default getCustomers;
+export default getEntity;

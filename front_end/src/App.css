@@ -83,6 +83,11 @@
   background-color: #f7f7fe !important;
 }
 
+.site-layout{
+  overflow-x: auto;
+  /* height: 89.75vh; */
+}
+
 /* for create contact form */
 #createCustomerContact .ant-form-item-control-input-content{
   display: flex;
@@ -90,6 +95,11 @@
 
 #createCustomerContact .ant-form-item .ant-form-item{
   margin-bottom: 10px;
+}
+
+.addressSectionName{
+  font-weight: bold;
+  color: '#777';
 }
 
 .addressSectionName .ant-form-item-control-input-content{
@@ -146,6 +156,7 @@
 
 .invoiceTotalSection{
   margin-right: 30px;
+  margin-top: 20px;
 }
 .invoiceTotalSection>.ant-row{
   margin-bottom: 20px;
@@ -156,6 +167,10 @@
 }
 
 th.tableHeader.ant-table-cell.ant-table-column-has-sorters{
+  padding: 5px;
+}
+
+.ant-table-thead>tr>th.tableHeader.ant-table-cell{
   padding: 5px;
 }
 

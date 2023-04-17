@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Layout, Menu } from 'antd';
+import { Dropdown, Layout, Menu, Typography } from 'antd';
 import { Link, useLocation } from "react-router-dom";
 import UserDropDown from "./UserDropDown";
 import OrgDropDown from "./OrgDropDown";
 
 const { Header} = Layout;
 
+const scrollToElement = (elementId) => {
+  const element = document.getElementById(elementId);
+  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
 const navItems = {
     login: [
-        {label:"Home", link:""}, 
-        {label:"Sign Up", link: "signup"}
+        {label:<Link to='/'>Home</Link>}, 
+        {label:<Link to='/signup'>Sign Up</Link>}
     ],
     "": [
-        {label:"Home", link:""}, 
-        {label:"Features", link: "#"}, 
-        {label:"Pricing", link: "#"}, 
-        {label:"Contact", link: "#"}, 
-        {label:"Sign In", link: "login", login:true}, 
-        {label:"Sign Up", link: "signup", login:true}
+        {label:<Typography.Link onClick={() => {scrollToElement(`homeSection`)}}>Home</Typography.Link>}, 
+        {label:<Typography.Link onClick={() => {scrollToElement(`featuresSection`)}}>Features</Typography.Link>}, 
+        {label:<Typography.Link onClick={() => {scrollToElement(`pricingSection`)}}>Pricing</Typography.Link>}, 
+        {label:<Typography.Link onClick={() => {scrollToElement(`contactSection`)}}>Contact</Typography.Link>, link: "#"}, 
+        {label:<Link to='/login'>Sign In</Link>, login:true}, 
+        {label:<Link to='/signup'>Sign Up</Link>, login:true}
     ],
     signup: [
-        {label:"Home", link:""}, 
-        {label:"Sign In", link: "login"}
+      {label:<Link to='/'>Home</Link>}, 
+      {label:<Link to='/login'>Sign In</Link>}
     ],
     app:[
         {dd: true, name: "user"},
@@ -39,6 +44,7 @@ const AppHeader = ({user}) => {
         setNavMenuItems(navItems[option]);
     });
 
+    
     return (
       <Header
         style={{
@@ -66,9 +72,10 @@ const AppHeader = ({user}) => {
             color: '#FFFFFF',
             fontWeight: 'bold',
           }}  
+          selectable={false}
           mode="horizontal"
           // defaultSelectedKeys={['2']}
-          items={navMenuItems.map(({label, link, login, dd, name}, index) => {
+          items={navMenuItems?.map(({label, login, dd, name}, index) => {
             if (login && user){
               if (label === "Sign In") 
                 return {key: String(index + 1), label: <UserDropDown/>};
@@ -79,7 +86,7 @@ const AppHeader = ({user}) => {
             }else{
               return {
                 key: String(index + 1),
-                label: (<Link to={'/' + link}>{label}</Link>),
+                label: label,
               };
             }
           })}

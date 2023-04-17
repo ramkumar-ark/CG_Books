@@ -1,9 +1,4 @@
 import { Table, Typography } from "antd";
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { useGetSelectedOrgQuery } from "../../service/appApi";
-import { useGetVouchersQuery } from "../../service/transactionsApi";
-import useAuthentication from "../../useAuthentication";
 
 const {Text} = Typography;
 
@@ -74,12 +69,12 @@ const columns = [
     }
 ];
 
-const InvoiceTable = ({tableData, onInvoiceRowClick}) => {
+const InvoiceTable = ({tableData, onInvoiceRowClick, headerRef}) => {
     return (
         <Table 
             columns={columns} 
             dataSource={tableData} 
-            sticky={{offsetHeader:135}} 
+            sticky={{offsetHeader:headerRef.current?.clientHeight || 50}} 
             pagination={false}
             rowClassName='selectableTableRow'
             onRow={(record, rowIndex) => ({

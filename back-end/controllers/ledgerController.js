@@ -22,6 +22,15 @@ export default class LedgerController {
         }
     }
 
+    async getLedgerByName(ledgerName){
+        try {
+            const ledger = await this.model.findOne({'name': ledgerName});
+            return Promise.resolve(ledger);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async getAllLedgers(){
         try {
             const ledgers = await this.model.find({});
@@ -49,9 +58,9 @@ export default class LedgerController {
         }
     }
 
-    async getIncomeLedgerIds(incomeGroupIds){
+    async getGroupLedgerIds(groupIds){
         try {
-            const ledgers = await this.model.find({'group':{'$in':incomeGroupIds}}, {'_id':1});
+            const ledgers = await this.model.find({'group':{'$in':groupIds}}, {'_id':1});
             const ledgerIds = ledgers.map(e => e.id);
             return Promise.resolve(ledgerIds);
         } catch (error) {

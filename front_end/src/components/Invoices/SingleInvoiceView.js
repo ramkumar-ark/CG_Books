@@ -4,7 +4,7 @@ import { CloseOutlined, EditOutlined, DeleteOutlined, FilePdfOutlined, DollarCir
 import { Invoice, generatePdf } from "./PdfGenerator";
 import { useGetSelectedOrgQuery } from "../../service/appApi";
 import useAuthentication from "../../useAuthentication";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { useDeleteVoucherEntryMutation, useGetVoucherDataQuery } from "../../service/transactionsApi";
 import { PDFViewer } from "@react-pdf/renderer";
 
@@ -23,6 +23,7 @@ const SingleInvoiceView = () => {
         {skip: (!data || isDeleted || isLoading)}
     );
     const invoiceData = {org:data?.selectedOrg, ...data1?.voucher};
+    const headerRef = useRef(null);
     const onDeleteInvoice = () => {
         const requestBody = {
             params: {orgId: data?.selectedOrg['_id']},
@@ -52,10 +53,10 @@ const SingleInvoiceView = () => {
         <>
         <div 
             style={{
-                borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke",
+                borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke",
                 display:'flex', justifyContent:'space-between', padding:"0px 7px 0px 10px", 
                 alignItems:'center'
-            }}
+            }} ref={headerRef}
         >
             {isDeleted && history.goBack()}
             <Title level={4} style={{marginTop:16}}>{invoiceData.voucherNumber}</Title>
@@ -63,8 +64,8 @@ const SingleInvoiceView = () => {
                 <CloseOutlined style={{fontSize:20, color:'grey'}}/>
             </Link>
         </div>
-        <div style={{position:"sticky", top:'121px', borderBottom: 'ridge', backgroundColor:'#fff',
-            display:"flex", justifyContent:'flex-start'}}
+        <div style={{position:"sticky", top:57, borderBottom: 'ridge', 
+            backgroundColor:'#fff', display:"flex", justifyContent:'flex-start'}}
         >
             {
             [

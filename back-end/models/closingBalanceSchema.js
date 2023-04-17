@@ -5,4 +5,8 @@ const closingBalanceSchema = new Schema({
     balance:{type: Number, default: 0, required: true},
 });
 
+closingBalanceSchema.statics.updateOpeningBalanceAdjustmentLedger = async function(amount){
+    
+}
+
 export default closingBalanceSchema;

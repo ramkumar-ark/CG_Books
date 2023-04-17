@@ -17,7 +17,9 @@ export default class VoucherTypeController{
 
     async getId(name){
         try {
-            const doc = await this.model.findOne({name}).exec();
+            const docs = await this.model.find({}).exec();
+            console.log(docs);
+            const doc = await this.model.findOne({name: name});
             return Promise.resolve(doc.id);
         } catch (error) {
             return Promise.reject(error);

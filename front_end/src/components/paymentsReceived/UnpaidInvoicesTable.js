@@ -9,10 +9,10 @@ const { Title, Text } = Typography;
 
 
 const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd}) =>{
-    const [offsetAmounts, setOffsetAmounts] = useState(InvoiceData.map(e => ({transaction:e.transaction, amount:e.receiptAmount})));
+    const [offsetAmounts, setOffsetAmounts] = useState(InvoiceData.map(e => ({transaction:e.transaction, 
+        amount:e.receiptAmount})));
     const [tableData, setTableData] = useStateEffect(InvoiceData, clearAppliedAmount);
     const [openPeiodFilter, setOpenPeriodFilter] = useState();
-    console.log(offsetAmounts);
 
     const [api, contextHolder] = notification.useNotification();
     const showErrorOnInvalidAmount = () => {
@@ -38,7 +38,6 @@ const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd}) =>{
     };
 
     function clearAppliedAmount(){
-        console.log('executed');
         const offsetList = form.getFieldValue('amountOffset') || [];
         offsetList.forEach(e => {e.amount = null});
         form.setFieldsValue({'amountOffset': offsetList});

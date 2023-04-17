@@ -57,7 +57,7 @@ export default class PrimaryGroupsController {
         }
     }
 
-    async getIncomeGroups(incomeTypeId){
+    async getAccountTypeGroups(incomeTypeId){
         try {
             const primaryGroups = await this.model.find(
                 {isSubGroup:false, category:incomeTypeId},

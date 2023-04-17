@@ -10,7 +10,7 @@ const constructInitialValues = (invoiceData) => {
         value: invoiceData.otherDetails.creditTerms.value,
         unit: invoiceData.otherDetails.creditTerms.unit,
         dueDate: dayjs(new Date(invoiceData.otherDetails.dueDate)),
-    }
+    };
     return {
         customer, invoiceNumber, partyName, billingAddress, shippingAddress, orderNumber, invoiceDate,
         creditPeriod, subject, customerNotes, discount, termsAndConditions, discountAmount, roundingOff,

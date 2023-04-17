@@ -23,6 +23,18 @@ export const mastersApi = createApi({
             query: (orgId) => `api/getbankaccounts/${orgId}`,
             providesTags: ['mastersCreation'],
         }),
+        getEntity: builder.query({
+            query: ({params}) => `api/getentity/${params.orgId}/${params.entityId}`,
+            providesTags: ['mastersCreation'],
+        }),
+        getVendors: builder.query({
+            query: (orgId) => `/api/getVendors/${orgId}`,
+            providesTags: ['mastersCreation'],
+        }),
+        getAccountTypeLedgers: builder.query({
+            query: ({params}) => `/api/getledgersunderaccounttype/${params.orgId}/${params.accountType}`,
+            providesTags: ['mastersCreation'],
+        }),
         createEntity: builder.mutation({
             query: (entity) => ({
                 url: `/api/createentity`,
@@ -59,5 +71,6 @@ export const mastersApi = createApi({
 
 export const { 
     useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation,
-    useCreateBankAccountMutation, useGetBankAccountsQuery, useDeleteEntityMutation,
+    useCreateBankAccountMutation, useGetBankAccountsQuery, useDeleteEntityMutation, useGetEntityQuery,
+    useGetVendorsQuery, useGetAccountTypeLedgersQuery,
 } = mastersApi;

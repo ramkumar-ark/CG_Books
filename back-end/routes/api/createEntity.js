@@ -1,4 +1,5 @@
 import { getDbController } from "../../db/accountingDb";
+import updateOpeningBalanceDifference from "../../utils/updateOpeningBalanceDifference";
 
 const isAllValuesUndefiend = (obj) =>
     (Object.values(obj).every((element) => element === undefined));
@@ -63,23 +64,28 @@ const createEntity = async(req, res) => {
         }
         console.log("Created contact documents for other contacts.")
         // create bankDetails document and get back the id of the document.
-        let bankDetailsId;
+        let bankDetailsId=[];
         if (bankDetails && !isAllValuesUndefiend(bankDetails)){
-            bankDetailsId = await dbController.bankDetails.create(bankDetails);
-            createdMasters.push({controller: "bankDetails", docId: bankDetailsId});
+            for (const bankDetail of bankDetails){
+                const docId = await dbController.bankDetails.create(bankDetail);
+                bankDetailsId.push(docId);
+                createdMasters.push({controller: "bankDetails", docId});
+            }
         }
         // create ledger document and get back the id of the document.
         const groupId = await dbController.primaryGroup.getByName(mapGroupToType[type]);
+        const opBal = type === 'customer' ? openingBalance : openingBalance * -1;
         const ledgerId = await dbController.ledger.create(
             `${name} - ${type} A/c`,
             groupId,
             `Ledger for tracking amount receivable from ${type} ${name}`,
-            openingBalance,
+            opBal,
         );
         createdMasters.push({controller: "ledger", docId: ledgerId});
         // update closing balance
         if (openingBalance) {
-            const docId = await dbController.closingBalance.update(ledgerId, openingBalance);
+            const docId = await dbController.closingBalance.update(ledgerId, opBal);
+            await updateOpeningBalanceDifference(orgId);
             createdMasters.push({controller: "closingBalance", docId})
         }
         // create other details document
@@ -90,7 +96,7 @@ const createEntity = async(req, res) => {
         // Create entity document and return the id of document as response.
         const entityDetails = {
             name, companyName, website, pan, creditPeriod, remarks, type, userId, addressIds,
-            primaryContactId, contactIds, bankDetailsId, ledgerId, customerType
+            primaryContactId, contactIds, bankDetailsId, ledgerId, customerType, otherDetailsId,
         };
         const entityDoc = await dbController.entity.create(entityDetails);
         res.json({entityId: entityDoc.id});
@@ -103,6 +109,7 @@ const createEntity = async(req, res) => {
                 await dbController[master.controller].delete(master.docId);
                 console.log(`Deleted document of ${master.controller}`);
             }
+            await updateOpeningBalanceDifference(organizationId);
         } catch (err) {
             return res.status(403).json({err});
         }

@@ -1,8 +1,8 @@
 import { Spin, Typography } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import SubHeader from "./SubHeader";
-import SubHeaderSingleView from "./SubHeaderSingleView";
+import SubHeader from "../individual components/SubHeader";
+import SubHeaderSingleView from "../individual components/SubHeaderSingleView";
 import ReceiptVoucherView from "./ReceiptVoucherView";
 import useGetVoucher from "../../hooks/useGetVoucher";
 import { useRef } from "react";
@@ -15,7 +15,7 @@ const ViewSingleReceipt = () => {
     const history = useHistory();
     const {pathname} = useLocation();
     const {transactionid} = useParams();
-    const voucherData = useGetVoucher(transactionid);
+    const voucherData = useGetVoucher(transactionid, 'Receipt');
     const topHeaderRef = useRef(null);
     const [deleteReceipt, {isLoading}] = useDeleteVoucher(transactionid, voucherData);
 

@@ -27,8 +27,7 @@ const Banking = () => {
     const { data } = useGetSelectedOrgQuery(user.id);
     const orgId = data?.selectedOrg?.['_id'];
     const { data:data1 } = useGetBankAccountsQuery(orgId, {skip: !orgId});
-    const { data:data2 } = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
-    const closingBalances = data2?.balance;
+    const { data:closingBalances } = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
     const cashAccounts = data1?.accounts.filter(e => e.group.name === 'Cash') || [];
     const bankAccounts = data1?.accounts.filter(e => e.group.name === 'Bank') || [];
     const bankFilterOpts = bankAccounts.map(e => ({label:<Typography.Link onClick={()=>{setFilterField(e.name)}}>{e.name}</Typography.Link>, key:e['_id']}));
@@ -46,7 +45,7 @@ const Banking = () => {
     const aggregateClBal = (ledgers) => ledgers.reduce((sum,e) => sum + (closingBalances?.[e['_id']] || 0),0);
     return (
         <>
-            <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
+            <div style={{borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke"}}>
             <div style={{textAlign:"left", margin:"0px 20px", display:"flex", justifyContent:"space-between",
                 flexWrap:'wrap'}}>
                 <Title level={3}>Banking Overview</Title>

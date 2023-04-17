@@ -8,9 +8,9 @@ const deleteVoucherData = async (req, res) => {
             offsetTransactions, entityId} = req.body;
         const {orgId} = req.params;
         const dbController = await getDbController(orgId);
-        if (voucherName === 'Sales'){
+        if (voucherName === 'Sales' || voucherName === 'Purchase'){
             if (offsetTransactions.length > 0) 
-                return res.status(403).json({error:'Payments are linked to this Invoice.'})
+                return res.status(403).json({error:'Payments are linked to this Invoice or Bill.'})
         }else{
             if (offsetTransactions.length > 0){
                 req.body.isDelete = true;

@@ -21,7 +21,7 @@ const EditableTable = ({sourceData}) => {
       dataIndex: 'salutation',
       editable: true,
       render: (text, record, index) => (
-        <Form.Item name={['contacts', index, 'salutation']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'salutation']} initialValue={text} style={{minWidth:130}}>
             <Select 
                 placeholder="Salutation"
                 options={[
@@ -40,7 +40,7 @@ const EditableTable = ({sourceData}) => {
       dataIndex: 'firstName',
       editable: true,
       render: (text, record, index) => (
-        <Form.Item name={['contacts', index, 'firstName']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'firstName']} initialValue={text} style={{minWidth:130}}>
           <Input />
         </Form.Item>
       ),
@@ -49,7 +49,7 @@ const EditableTable = ({sourceData}) => {
       title: 'Last Name',
       dataIndex: 'lastName',
       render: (text, record, index) => (
-        <Form.Item name={['contacts', index, 'lastName']} initialValue={text}>
+        <Form.Item name={['contacts', index, 'lastName']} initialValue={text} style={{minWidth:130}}>
           <Input />
         </Form.Item>
       ),
@@ -58,7 +58,7 @@ const EditableTable = ({sourceData}) => {
         title: 'Email Address',
         dataIndex: 'email',
         render: (text, record, index) => (
-          <Form.Item name={['contacts', index, 'email']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'email']} initialValue={text} style={{minWidth:200}}>
             <Input />
           </Form.Item>
         ),
@@ -67,7 +67,7 @@ const EditableTable = ({sourceData}) => {
         title: 'Work Phone',
         dataIndex: 'workPhone',
         render: (text, record, index) => (
-          <Form.Item name={['contacts', index, 'workPhone']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'workPhone']} initialValue={text} style={{minWidth:130}}>
             <Input />
           </Form.Item>
         ),
@@ -76,7 +76,7 @@ const EditableTable = ({sourceData}) => {
         title: 'Mobile',
         dataIndex: 'mobile',
         render: (text, record, index) => (
-          <Form.Item name={['contacts', index, 'mobile']} initialValue={text}>
+          <Form.Item name={['contacts', index, 'mobile']} initialValue={text} style={{minWidth:130}}>
             <Input />
           </Form.Item>
         ),

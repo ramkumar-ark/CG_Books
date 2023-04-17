@@ -3,8 +3,8 @@ import { useGetLedgerBalanceQuery } from "../service/transactionsApi";
 
 function useGetLedgerBalances(){
     const { '_id': orgId } = useSelectedOrg();
-    const { data } = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
-    return data;
+    const { data, refetch } = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
+    return { data, refetch };
 }
 
 export default useGetLedgerBalances;

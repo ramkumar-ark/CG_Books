@@ -91,7 +91,6 @@ const StatementTab = ({entity, organization}) => {
     const [period, setPeriod] = useState(getPeriod);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [customPeriod, setCustomPeriod] = useState();
-    console.log(entity, organization);
     const onPeriodChange = (value) => {
         if (value === 'custom') setIsModalOpen(true);
         else setPeriod(getPeriod(value));
@@ -135,7 +134,9 @@ const StatementTab = ({entity, organization}) => {
             </div>
             <div style={{margin:'40px 0 20px'}}>
                 <Space direction="vertical">
-                    <Text style={{fontSize:17}}>Customer Statement for {organization.name}</Text>
+                    <Text style={{fontSize:17}}>
+                        {`${entity.type[0].toUpperCase()}${entity.type.slice(1)}`} Statement for {entity.name}
+                    </Text>
                     <Text>From {period.startDate.toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})} to {period.endDate.toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}</Text>
                 </Space>
             </div>

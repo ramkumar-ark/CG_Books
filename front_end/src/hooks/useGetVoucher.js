@@ -1,10 +1,11 @@
 import { useGetVoucherDataQuery } from "../service/transactionsApi";
 import useSelectedOrg from "./useSelectedOrg";
 
-function useGetVoucher(transactionId){
+function useGetVoucher(transactionId, voucherType){
     const orgData = useSelectedOrg();
     const { '_id': orgId } = orgData;
-    const { data } = useGetVoucherDataQuery({orgId, voucher:'Receipt', transactionId}, {skip:!orgId || !transactionId});
+    const { data } = useGetVoucherDataQuery({orgId, voucher:voucherType, transactionId}, 
+        {skip:!orgId || !transactionId});
     return {org:orgData, ...data?.voucher};
 }
 

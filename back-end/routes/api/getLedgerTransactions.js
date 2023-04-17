@@ -22,7 +22,7 @@ const extractTransactionIds = (transactions) => {
     return transactionIds;
 };
 
-const transformData = (data, voucherNumbers, opBalance) => {
+const transformData = (data, voucherNumbers, referenceNumbers, opBalance) => {
     const transactions = [];
     let runningBalance = opBalance;
     for (const transac of data){
@@ -30,7 +30,9 @@ const transformData = (data, voucherNumbers, opBalance) => {
         const voucherNumber = voucherNumbers[transac['_id']];
         const offsetAmounts = transac.otherDetails.offSetTransactions.map(e => (
             {amount:e.amount, transaction: e.transaction || 'openingBalance', 
-                voucherNumber: e.transaction ? voucherNumbers[e.transaction] : 'Opening Balance'}));
+                voucherNumber: e.transaction ? voucherNumbers[e.transaction] : 'Opening Balance',
+                referenceNumber: e.transaction ? referenceNumbers[e.transaction] : 'Opening Balance'
+            }));
         const transaction = {
             date: transac.transactionDate, voucherType:transac.voucherType.primaryType, 
             voucherNumber, dueDate: transac.otherDetails.dueDate, amount:transac.netAmount, 
@@ -51,8 +53,9 @@ const getLedgerTransactions = async (req, res) => {
         transactions = computeNetAmount(transactions, ledgerId);
         const transactionIds = extractTransactionIds(transactions);
         const voucherNumbers = await dbController.voucherType.getVoucherNumbers(transactionIds);
+        const referenceNumbers = await dbController.transaction.getReferenceNumbers(transactionIds);
         const opBalance = await dbController.ledger.getOpeningBalance(ledgerId);
-        transactions = transformData(transactions, voucherNumbers, opBalance);
+        transactions = transformData(transactions, voucherNumbers, referenceNumbers, opBalance);
         await dbController.closingBalance.update(ledgerId, transactions.length > 0 ? transactions.at(-1).runningBalance : opBalance);
         res.json({transactions});
     } catch (error) {

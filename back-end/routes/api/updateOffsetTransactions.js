@@ -22,7 +22,7 @@ const updateOffsetTransactions = async (req, res, isMiddleware=false) => {
         if (offsetTransactionsObj['opBal']){
             const entity = await dbController.entity.getEntity(entityId);
             await dbController.otherDetails.addOffSetTransaction(
-                entity.otherDetails, 
+                entity.otherDetails['_id'], 
                 {transaction:transactionId, amount:offsetTransactionsObj['opBal']},
                 isDelete,
             );

@@ -19,7 +19,7 @@ const OverviewTab = ({entity}) => {
                         </div>
                     }
                     <ContactCard contact={entity.primaryContact}/>
-                    <Collapse bordered={false} expandIconPosition='right' ghost>
+                    <Collapse bordered={false} expandIconPosition='end' ghost>
                         <Panel header="ADDRESS" key="1" className="overviewTab">
                             <Text>Billing Address</Text><br/>
                             <AddressDisplayCard datas={entity.addresses.filter(e => e.type === 'billing')}/>
@@ -31,6 +31,16 @@ const OverviewTab = ({entity}) => {
                         <Panel header={`CONTACT PERSONS (${entity.contacts?.length || 0})`} key="2" className="overviewTab">
                             {entity.contacts?.map(e => <ContactCard contact={e}/>)}                            
                         </Panel>
+                        {entity.type === 'vendor' &&
+                        <Panel header={'BANK ACCOUNT DETAILS'} key="3" className="overviewTab">
+                            {entity.bankDetails.length == 0 &&
+                                <Text type="secondary">No bank account added yet</Text>}
+                            {entity.bankDetails.length > 0 && entity.bankDetails.map((e, i) =>
+                                <div style={{borderBottom:'1px solid #eee', padding:'10px 20px'}} key={i + 1}>
+                                    <Text>Account Ending with {e.accountNo.slice(-4)}</Text>    
+                                </div>)}                                
+                        </Panel>
+                        }
                     </Collapse>
                 </Space>
             </Col>
@@ -38,16 +48,16 @@ const OverviewTab = ({entity}) => {
                 <Space direction="vertical" size='large' style={{padding:'20px', width:'100%'}}>
                     <div>
                         <Text type='secondary'>Payment due period</Text><br/>
-                        <Text>{`${entity.creditPeriod.value} ${entity.creditPeriod.unit} from Invoice`}</Text>
+                        <Text>{`${entity.creditPeriod.value} ${entity.creditPeriod.unit} from ${entity.type === 'customer' ? 'Invoice' : 'Bill'}`}</Text>
                     </div>
                     <Space size={100}>
-                        <Text strong>OUTSTANDING RECEIVALBES</Text>
+                        <Text strong>OUTSTANDING {entity.type === 'customer' ? 'RECEIVALBES' : 'PAYABLES'}</Text>
                         <Link>
                             ₹{Number(entity.receivables).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}
                         </Link>
                     </Space>
                     <div style={{display:'flex', justifyContent:'space-between'}}>
-                        <Text strong>Income</Text>
+                        <Text strong>{entity.type === 'customer' ? 'Income' : 'Expense'}</Text>
                         <Link>
                         <Select defaultValue='12,0' bordered={false} 
                             options={[
@@ -64,6 +74,7 @@ const OverviewTab = ({entity}) => {
                         </Link>
                     </div>
                     <CustomerIncomeChart 
+                        type={entity.type === 'customer' ? 'Income' : 'Expense'}
                         data={entity.monthlyIncome.slice(24-chartPeriod[0], 24-chartPeriod[1])}/>
                 </Space>
             </Col>

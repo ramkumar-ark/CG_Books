@@ -14,7 +14,7 @@ const entitySchema = new Schema({
     addresses: [{type: Schema.Types.ObjectId, ref: 'Address'}],
     contacts: [{type: Schema.Types.ObjectId, ref: 'Contact'}],
     primaryContact: {type: Schema.Types.ObjectId, ref: 'Contact'},
-    bankDetails: {type: Schema.Types.ObjectId, ref: 'BankDetails'},
+    bankDetails: [{type: Schema.Types.ObjectId, ref: 'BankDetails'}],
     isActive: {type: Boolean, required: true, default: true},
     type: {type: String, required: true },
     customerType: {type:String},

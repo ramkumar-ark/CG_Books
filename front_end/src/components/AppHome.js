@@ -1,9 +1,9 @@
 import {Layout} from "antd";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import SiderNavMenu from "./SiderNavMenu";
 import Dashboard from "./dashboard/Dashboard";
 import ChartOfAccounts from "./chartOfAccounts/ChartOfAccounts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Customers from "./customers/Customers";
 import CreateCustomer from "./customers/CreateCustomer";
 import Invoices from "./Invoices/Invoices";
@@ -12,18 +12,30 @@ import CreateInvoice from "./Invoices/CreateInvoice";
 import SingleCustomerView from "./customers/SingleCustomerView";
 import Banking from "./banking/Banking";
 import AddBank from "./banking/AddBank";
-import RecordReceipt from "./paymentsReceived/RecordReceipt";
 import PaymentsReceived from "./paymentsReceived/PaymentsReceived";
+import Vendors from "./vendors/Vendors";
+import Bills from "./bills/bills";
+import useGetViewPortHeight from "../hooks/useGetViewPortHeight";
+import PaymentsMade from "./paymentsMade/paymentsMade";
 
 const {Content, Header} = Layout;
 
 export default () =>{
+    const history = useHistory();
     const [isSiderCollapsed, setIsSiderCollapsed] = useState(false);
+    const viewportHeight = useGetViewPortHeight();
+    useEffect(() =>{
+        if(window.location.pathname === '/app/home'){
+        setTimeout(() => {window.location.reload()}, 1000);
+        history.replace('/app/home/dashboard');
+    }
+    }, [])
     return (
-        <Layout style={{ minHeight: '89.75vh',}} hasSider>
+        <Layout hasSider>
             <SiderNavMenu onCollapse={(value) => setIsSiderCollapsed(value)}/>
-            <Layout className="site-layout" style={{marginLeft: isSiderCollapsed ? "50px" : "200px"}}>
-                <Content >
+            <Layout className="site-layout" style={{marginLeft: isSiderCollapsed ? "50px" : "200px", 
+                height:viewportHeight-64}}>
+                <Content style={{position:'sticky', top:'0px', overflow:'auto', height:viewportHeight-64}}>
                     <Switch>
                         <Route exact path="/app/home">
                             <h1>Welcome User</h1>
@@ -66,6 +78,15 @@ export default () =>{
                         </Route>
                         <Route path='/app/home/paymentsreceived'>
                             <PaymentsReceived basePath='/app/home/paymentsreceived'/>
+                        </Route>
+                        <Route path='/app/home/vendors'>
+                            <Vendors basePath='/app/home/vendors'/>
+                        </Route>
+                        <Route path='/app/home/bills'>
+                            <Bills basePath='/app/home/bills'/>
+                        </Route>
+                        <Route path='/app/home/paymentsmade'>
+                            <PaymentsMade basePath='/app/home/paymentsmade'/>
                         </Route>
                     </Switch>
                 </Content>

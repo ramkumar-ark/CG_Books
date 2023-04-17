@@ -7,11 +7,11 @@ const AddressTab = ({formObj}) =>{
         formObj.setFieldsValue({'shippingAddress': formObj.getFieldValue('billingAddress')});
     };
     return (
-        <Row style={{textAlign:"left"}}>
-            <Col span={12}>
+        <Row style={{textAlign:"left"}} gutter={[0,30]}>
+            <Col lg={12} span={24}>
                 <AddressSection type="billing" />
             </Col>
-            <Col span={12}>
+            <Col lg={12} span={24}>
                 <AddressSection type="shipping" copyFunction={copyBillingAddress} />
             </Col>
         </Row>

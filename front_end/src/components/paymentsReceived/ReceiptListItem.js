@@ -17,7 +17,7 @@ const ReceiptListItem = ({data, isSelected, onClick}) => {
             <Space direction="vertical" style={{textAlign:'right'}}>
                 <Text>₹{Number(data.amount).toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
                 <Text>{data.receiptMode}</Text>
-                <Text type="secondary">Invoice Payment</Text>             
+                <Text type="secondary">Invoice Payment</Text>           
             </Space>
         </div>
     );

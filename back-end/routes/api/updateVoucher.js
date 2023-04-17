@@ -9,7 +9,7 @@ const updateVoucher = async (req, res) => {
         // update voucher number if it is modified.
         const doc = await dbController.voucherType.getVoucherData(transactionId, voucherType);
         const oldVoucherDate = doc.transaction.transactionDate;
-        if (doc.voucherNumber !== voucherNumber){
+        if (doc.voucherNumber !== voucherNumber && voucherType !== 'Purchase'){
             await dbController.voucherType
                 .updateVoucherNumber(transactionId, voucherNumber, oldVoucherDate, voucherType);
         }

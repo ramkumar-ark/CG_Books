@@ -105,6 +105,7 @@ export const Statement = ({entity, organization, period}) => {
     let invoicedAmount = 0;
     let receivedAmount = 0;
     let openingBalance = entity.ledger.opBalance;
+    if (entity.type === 'vendor') openingBalance *= -1; 
     let startIndex = 0;
     let endIndex = 0;
     let isStartIndexFound = false;
@@ -120,9 +121,33 @@ export const Statement = ({entity, organization, period}) => {
         endIndex++;
     }
     if (startIndex > 0) openingBalance = entity.customerTransactions[startIndex-1].runningBalance;
+    const changingFactor = (voucherType) => {
+        switch (voucherType) {
+            case 'receipt':
+            case 'payment':
+                if (entity.type === 'customer') return -1;
+                if (entity.type === 'vendor') return 1;
+                break;
+            case 'sales':
+                return 1;
+                break;
+            case 'purchase':
+                return -1;
+                break;
+            case 'journal':
+                if (entity.type === 'customer') return 1;
+                if (entity.type === 'vendor') return -1;
+                break;
+            default:
+                break;
+        }
+    };
     entity.customerTransactions.slice(startIndex,endIndex).forEach(e => {
-        e.voucherType === 'receipt' ? receivedAmount += e.amount * -1 : invoicedAmount += e.amount;
+        ['receipt', 'payment'].includes(e.voucherType) 
+            ? receivedAmount += e.amount * changingFactor(e.voucherType)
+            : invoicedAmount += e.amount * changingFactor(e.voucherType);
     });
+    
     const textGenerator = (data) => {
         if (data) return <Text>{data}</Text>
       };
@@ -212,19 +237,24 @@ export const Statement = ({entity, organization, period}) => {
                         <Text style={{flex:1, padding:5}}>{new Date(e.date).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}</Text>
                         <Text style={{flex:1.2, padding:5}}>{e.voucherType}</Text>
                         <Text style={{flex:2, padding:5, textAlign:'left'}}>
-                            {e.voucherType === 'sales'
-                            ? `${e.voucherNumber} - due on ${new Date(e.dueDate).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}`
+                            {['sales', 'purchase'].includes(e.voucherType)
+                            ? `${e.voucherType === 'sales' ? e.voucherNumber : e.referenceNumber} - due on ${new Date(e.dueDate).toLocaleDateString('en-IN', {year:'numeric', month:'2-digit', day:'2-digit'})}`
                             : `${e.voucherNumber}
-                            ${e.offsetAmounts.map(elem => `₹${Number(elem.amount).toLocaleString('en-IN', {minimumFractionDigits:2})} for payment of ${elem.voucherNumber}`+'\n')}${e.pendingAmount > 0 ? `₹${Number(e.pendingAmount).toLocaleString('en-IN', {minimumFractionDigits:2})} in excess payment` : ''}`}
+                            ${e.offsetAmounts.map(elem => `₹${Number(elem.amount).toLocaleString('en-IN', {minimumFractionDigits:2})} for payment of ${entity.type === 'vendor' ? elem.referenceNumber : elem.voucherNumber}`+'\n')}${e.pendingAmount > 0 ? `₹${Number(e.pendingAmount).toLocaleString('en-IN', {minimumFractionDigits:2})} in excess payment` : ''}`}
                         </Text>
                         <Text style={{flex:1, padding:5, textAlign:'right'}}>
-                            {e.voucherType === 'receipt' ? "" : e.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}
+                            {['receipt', 'payment'].includes(e.voucherType) 
+                                ? "" 
+                                : (e.amount*changingFactor(e.voucherType)).toLocaleString('en-IN', {minimumFractionDigits:2})}
                         </Text>
                         <Text style={{flex:1, padding:5, textAlign:'right'}}>
-                            {e.voucherType === 'receipt' ? (e.amount * -1).toLocaleString('en-IN', {minimumFractionDigits:2}) : ""}
+                            {['receipt', 'payment'].includes(e.voucherType) 
+                                ? (e.amount*changingFactor(e.voucherType)).toLocaleString('en-IN', {minimumFractionDigits:2}) 
+                                : ""}
                         </Text>
                         <Text style={{flex:1.3, padding:5, textAlign:'right'}}>
-                            {e.runningBalance.toLocaleString('en-IN', {minimumFractionDigits:2})}
+                            {(e.runningBalance*(entity.type==='vendor' ? -1 : 1))
+                                .toLocaleString('en-IN', {minimumFractionDigits:2})}
                         </Text>
                     </View>
                 ))}

@@ -8,9 +8,11 @@ const ReceiptsListView = () => {
     const history = useHistory();
     const {pathname} = useLocation();
     const params = useParams();
+    const headerRef = useRef();
     return (
         <>
-            <Header onRefresh={refetchVouchers} sortOptions={sortOptions} titleLevel={5} topOffset={0}/>
+            <Header onRefresh={refetchVouchers} sortOptions={sortOptions} titleLevel={5} topOffset={0}
+                componentRef={headerRef}/>
             {receiptsData?.map(e => 
                 <ReceiptListItem 
                     data={e} 

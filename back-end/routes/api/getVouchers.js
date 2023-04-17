@@ -12,6 +12,11 @@ const getVouchers = async (req, res) => {
             e => e.transaction.otherDetails.offSetTransactions.forEach(
                 elem => elem.transaction && offsetTransactionIds.add(elem.transaction.toString()))
         );
+        let offsetReferenceNumbers;
+        if (voucherName === 'Payment') 
+            offsetReferenceNumbers = await dbController.transaction.getReferenceNumbers(
+                Array.from(offsetTransactionIds)
+            );
         const offsetVoucherNumbers = await dbController.voucherType.getVoucherNumbers(
             Array.from(offsetTransactionIds)
         );
@@ -20,6 +25,9 @@ const getVouchers = async (req, res) => {
             const offsetTransactions = voucher.transaction.otherDetails.offSetTransactions.map(e => ({
                 voucherNumber: e.transaction ? offsetVoucherNumbers[e.transaction.toString()] : 'Opening Balance',
                 transaction: e.transaction && e.transaction.toString(), amount: e.amount,
+                referenceNumber: offsetReferenceNumbers && (
+                    e.transaction ? offsetReferenceNumbers[e.transaction.toString()] : 'Opening Balance'
+                ),
             }))
             result.push({
                 date:voucher.transaction.transactionDate,

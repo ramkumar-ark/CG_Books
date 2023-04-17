@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Alert } from 'antd';
 import {Typography} from "antd";
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory} from 'react-router-dom';
 import useAuthentication from '../useAuthentication';
 
 const {Title} = Typography;
@@ -15,7 +15,7 @@ export default function Login(){
     const {signin, user, error} = useContext(AuthCtx);
     const errorMessage = error && typeof error != 'String' ? error : 'Network Error! Please try later.';
 
-    useEffect(() => {user && history.replace('/')}, [user, history]);
+    useEffect(() => {user && history.replace('/app/home')}, [user, history]);
 
     return (
         <>

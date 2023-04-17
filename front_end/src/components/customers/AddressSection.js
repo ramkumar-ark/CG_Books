@@ -17,8 +17,8 @@ CountryRegionData.forEach(country => {
 });
 
 const formItemLayout = {
-    labelCol: { span:8 },
-    wrapperCol: { span:12 },
+    labelCol: { md:8, span:24 },
+    wrapperCol: { md:12, span:20},
   };
 
 

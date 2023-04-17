@@ -21,7 +21,6 @@ const getVoucherData = async (req, res) => {
         const resObj = {
             voucherNumber, voucherName, transaction, otherDetails, subTotal, discount, rounding
         };
-        console.log(otherDetails.offSetTransactions);
         res.json({voucher:resObj});
     } catch (error) {
         console.log(error);
@@ -39,6 +38,9 @@ function calculateInvoiceFigures(debits, credits, totalAmount){
                 break;
             case 'Discount':
                 discount = entry.amount * -1;
+                break;
+            case 'Purchase Discounts':
+                discount = entry.amount;
                 break;
             case 'Other Charges':
                 rounding = entry.amount;
@@ -68,18 +70,19 @@ async function getOffsetTransactions(offSetTransactions, dbController, entityId)
             if (transac.transaction){
                 const doc = await dbController.transaction.get(transac.transaction);
                 offsetTransactions[index].voucherDate = doc.transactionDate;
+                offsetTransactions[index].referenceNumber = doc.referenceNumber;
                 offsetTransactions[index].voucherAmount = doc.otherDetails.totalAmount;
                 offsetTransactions[index].pendingAmount = doc.otherDetails.pendingAmount 
                     + offSetTransactions[index].amount;
                 offsetTransactions[index].dueDate = doc.otherDetails.dueDate;
             }else{
                 const doc = await dbController.entity.getEntityOpeningBalanceStatus(entityId);
+                offsetTransactions[index].referenceNumber = 'Opening Balance';
                 offsetTransactions[index].voucherAmount = doc.openingBalance;
                 offsetTransactions[index].pendingAmount = doc.pendingBalance + offSetTransactions[index].amount;
             }
             index++;
         }
-        console.log(offsetTransactions);
         return Promise.resolve(offsetTransactions);
     } catch (error) {
         return Promise.reject(error);

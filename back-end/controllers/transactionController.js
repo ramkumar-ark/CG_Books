@@ -53,7 +53,7 @@ export default class TransactionController{
         }
     }
 
-    async getCustomerIncomeTransactions(customerLedgerId, incomeLedgerIds){
+    async getCommonTransactions(customerLedgerId, incomeLedgerIds){
         try {
             const docs = await this.model.find(
                 {
@@ -112,6 +112,18 @@ export default class TransactionController{
             return Promise.resolve(docs);
         } catch (error) {
             return Promise.reject(error);
+        }
+    }
+
+    async getReferenceNumbers(transactionIds) {
+        try {
+            const docs = await this.model.find({'_id': {$in:transactionIds}}, {'referenceNumber':1}).exec();
+            const referenceNumbers = {};
+            for (const doc of docs)
+                referenceNumbers[doc.id] = doc.referenceNumber;
+            return Promise.resolve(referenceNumbers);
+        } catch (error) {
+            return Promise.reject(error);            
         }
     }
 }

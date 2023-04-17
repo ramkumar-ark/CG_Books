@@ -4,9 +4,7 @@ const hundreds = ['', 'one hundred', 'two hundred', 'three hundred', 'four hundr
 const thousands = ['', 'thousand', 'lakh', 'crore'];
 
 function toSentenceCase(text){
-  console.log(text);
-    console.log(text.split(' '));
-    return text.split(' ').map(e => e &&`${e[0].toUpperCase()}${e.slice(1)}`).join(' ');
+  return text.split(' ').map(e => e &&`${e[0].toUpperCase()}${e.slice(1)}`).join(' ');
 }
 
 function convertToWords(num) {
@@ -15,7 +13,7 @@ function convertToWords(num) {
   }
 
   if (num === 0) {
-    return 'zero';
+    return '';
   }
 
   let i = 0;
@@ -44,5 +42,5 @@ function convertToWords(num) {
 }
 
 export default function numberToWords(num){
-  return `Indian Rupee ${convertToWords(num)}`
+  return `Indian Rupee ${convertToWords(num)} Only`
 }

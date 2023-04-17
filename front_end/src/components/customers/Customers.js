@@ -5,7 +5,7 @@ import { useGetCustomersQuery } from "../../service/mastersApi";
 import CustomersTable from "./CustomersTable";
 import { useGetSelectedOrgQuery } from "../../service/appApi";
 import useAuthentication from "../../useAuthentication";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useGetLedgerBalanceQuery } from "../../service/transactionsApi";
 
 const { Title, Text } = Typography;
@@ -28,6 +28,7 @@ const Customers = () => {
             createdTime: new Date(e.createdOn), lastModifiedTime: new Date(e.lastUpdatedOn || e.createdOn), 
         }))
     }
+    const headerRef = useRef(null);
     const sortfns = {
         name: (a,b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
         companyName: (a,b) => a.companyName?.toLowerCase().localeCompare(b.companyName?.toLowerCase()),
@@ -88,7 +89,8 @@ const Customers = () => {
 
     return (
         <>
-        <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
+        <div style={{borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke"}}
+            ref={headerRef}>
             <div style={{textAlign:"left", margin:"0px 10px", display:"flex", justifyContent:"space-between" }}>
                 <Dropdown trigger={['click']} menu={{items: filterOptions}} dropdownRender={filterDropdownRender}>
                         <Link onClick={(e) => e.preventDefault()}>
@@ -105,7 +107,7 @@ const Customers = () => {
                 </Space>
             </div>
         </div>
-        <CustomersTable data={customersTableData}/>
+        <CustomersTable data={customersTableData} offsetHeader={headerRef.current?.clientHeight+3}/>
         </>
     );
 };

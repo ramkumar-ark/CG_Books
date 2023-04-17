@@ -87,7 +87,14 @@ export default class EntityController{
 
     async getEntity(id){
         try {
-            const entity = await this.model.findById(id).exec();
+            const entity = await this.model.findById(id)
+                .populate('addresses')
+                .populate('contacts')
+                .populate('primaryContact')
+                .populate('bankDetails')
+                .populate('ledger')
+                .populate('otherDetails')
+                .exec();
             return Promise.resolve(entity);
         } catch (error) {
             return Promise.reject(error);
@@ -106,6 +113,21 @@ export default class EntityController{
     async fetchCustomers(){
         try {
             const entityDocs = await this.model.find({type:"customer"})
+                .populate('addresses')
+                .populate('contacts')
+                .populate('primaryContact')
+                .populate('bankDetails')
+                .populate('ledger')
+                .populate('otherDetails');
+            return Promise.resolve(entityDocs);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getVendors(){
+        try {
+            const entityDocs = await this.model.find({type:"vendor"})
                 .populate('addresses')
                 .populate('contacts')
                 .populate('primaryContact')

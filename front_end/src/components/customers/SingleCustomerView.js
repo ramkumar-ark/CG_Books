@@ -1,35 +1,27 @@
-import { Alert, Button, Dropdown, Popconfirm, Space, Tabs, Typography } from "antd";
+import { Alert, Button, Dropdown, Popconfirm, Space, Typography } from "antd";
 import {CaretDownOutlined, CloseOutlined} from "@ant-design/icons"
-import { useContext } from "react";
+import { useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useGetSelectedOrgQuery } from "../../service/appApi";
-import { useDeleteEntityMutation, useGetCustomersQuery } from "../../service/mastersApi";
-import useAuthentication from "../../useAuthentication";
-import OverviewTab from "./OverviewTab";
+import { useDeleteEntityMutation } from "../../service/mastersApi";
 import { useGetCustomerMonthlyIncomeQuery, useGetLedgerTransactionsQuery, useGetLedgerBalanceQuery } from "../../service/transactionsApi";
-import StatementTab from "./StatementTab";
+import useGetEntity from "../../hooks/useGetEntity";
+import TabsCustomerView from "./TabsCustomerView";
+import useSelectedOrg from "../../hooks/useSelectedOrg";
 
 const { Text, Title, Link } = Typography;
 
-const tabItems = (customer, organization) => [
-    {key:'1', label:'Overview', children:<OverviewTab entity={customer}/>},
-    {key:'2', label:'Transactions', children:'Contents of Transactions Tab'},
-    {key:'3', label:'Statement', children:<StatementTab entity={customer} organization={organization}/>},
-];
+
 
 const SingleCustomerView = () => {
     const history = useHistory();
     const {entityId} = useParams();
-    const {AuthCtx} = useAuthentication();
-    const {user} = useContext(AuthCtx);
-    const {data} = useGetSelectedOrgQuery(user.id);
-    const orgId = data?.selectedOrg['_id'];
-    const {data:data1, isLoading} = useGetCustomersQuery(orgId, {skip: !orgId});
+    const selectedOrg = useSelectedOrg();
+    const orgId = selectedOrg['_id'];
     const {data:data2} = useGetLedgerBalanceQuery(orgId, {skip: !orgId});
-    const customer = data1?.customers.find(e => e['_id'] === entityId);
+    const {customer} = useGetEntity();
     const customerLedgerId = customer?.ledger?.['_id'];
     const {data:data3} = useGetCustomerMonthlyIncomeQuery(
-        {orgId, customerLedgerId}, {skip: !data1}
+        {orgId, customerLedgerId}, {skip: !customer}
     );
     const {data:data4} = useGetLedgerTransactionsQuery({orgId, ledgerId: customerLedgerId}, {skip:!customerLedgerId});
     const customerTransactions = data4?.transactions;
@@ -45,13 +37,14 @@ const SingleCustomerView = () => {
         {label:<Link onClick={() => {history.push('/app/home/paymentsreceived/new')}}>Customer Payment</Link>, key:1}, 
         {label:'Journals', key:2}
     ];
+    const headerRef = useRef();
     if ([customer, data2, monthlyIncome, customerTransactions].every(e => e !== undefined))
     return (
         <>
         {data5?.result==="success" && history.goBack()}
         <div style={{display: 'flex', justifyContent:'space-between', margin:'0px 10px',
-            position:'sticky', top:'64px', backgroundColor:'whitesmoke', zIndex:99}}>
-            <Title level={2} style={{margin:"10px 0px"}}>{customer.name}</Title>
+            position:'sticky', top:0, backgroundColor:'whitesmoke', zIndex:99}} ref={headerRef}>
+            <Title level={2} style={{margin:"10px 0px", wordBreak:'normal'}}>{customer.name}</Title>
             <Space>
                 <Button href={`/app/home/customers/edit/${entityId}`}>Edit</Button>
                 <Dropdown menu={{items,}} trigger={['click']}>
@@ -68,13 +61,8 @@ const SingleCustomerView = () => {
         </div>
         {data5?.result==='failed' && <Alert message="Cannot Delete! There are transactions associated with the customer." type="error" closable showIcon={true} />}
         {isError && <Alert message="Operation Failed!" description="There was an error deleting the customer. Please try again later or contact support if the error persists." type="error" closable/>}
-        <Tabs 
-            defaultActiveKey="1" 
-            items={tabItems({...customer, ...receivable, monthlyIncome, customerTransactions}, data?.selectedOrg)}
-            size='small' 
-            tabBarStyle={{position:'sticky', top:'122px', backgroundColor:"whitesmoke", 
-                zIndex:99, paddingLeft:'10px', marginBottom:0}}
-        />
+        <TabsCustomerView customer={{...customer, ...receivable, monthlyIncome, customerTransactions}}
+            organization={selectedOrg} headerRef={headerRef}/>
         </>
     );
 };

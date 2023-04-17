@@ -50,11 +50,11 @@ const getCustomerMonthlyIncome = async (req, res) => {
         // get ledger ids of all ledgers under income type
         // 1. get all ids of groups and sub-groups under the income account type.
         const incomeTypeId = await dbController.accountTypes.getId('Income');
-        const incomeGroupIds = await dbController.primaryGroup.getIncomeGroups(incomeTypeId);
+        const incomeGroupIds = await dbController.primaryGroup.getAccountTypeGroups(incomeTypeId);
         // 2. get all ids of ledgers under income groups.
-        const incomeLedgerIds = await dbController.ledger.getIncomeLedgerIds(incomeGroupIds);
+        const incomeLedgerIds = await dbController.ledger.getGroupLedgerIds(incomeGroupIds);
         // get associated transactions with income ledgers and customer ledger
-        const IncomeTransactions = await dbController.transaction.getCustomerIncomeTransactions(
+        const IncomeTransactions = await dbController.transaction.getCommonTransactions(
             customerLedgerId, incomeLedgerIds
         );
         // compute monthwise total income of customer

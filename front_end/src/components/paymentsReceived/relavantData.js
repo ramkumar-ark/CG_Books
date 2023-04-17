@@ -6,6 +6,6 @@ export const sortOptions = [
     {label:'Receipt#', sortField:'voucherNumber'}, 
     {label:'Customer Name', sortField:'name'},
     {label:'Mode', sortField:'receiptMode'}, 
-    {label:'Amount', sortField:'amount'}, 
+    {label:'Amount', sortField:'closingBalance'}, 
     {label:'Unused Amount', sortField:'pendingAmount'}
 ];

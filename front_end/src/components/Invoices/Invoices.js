@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Typography, Space, Button, Dropdown } from "antd";
 import { DownOutlined, PlusOutlined, EllipsisOutlined, InteractionTwoTone } from "@ant-design/icons";
 import { Link, } from "react-router-dom";
@@ -43,9 +43,12 @@ const Invoices = () => {
         }}>{menu}</Text>
     ); 
 
+    const headerRef = useRef();
+
     return (
         <>
-            <div style={{borderBottom:"ridge", position:"sticky", top:"64px", zIndex:999, backgroundColor:"whitesmoke"}}>
+            <div style={{borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke"}}
+                ref={headerRef}>
                 <div style={{textAlign:"left", margin:"0px 10px", display:"flex", justifyContent:"space-between" }}>
                     <Dropdown trigger={['click']} menu={{items: items1}} dropdownRender={filterDropdownRender}>
                         <Link onClick={(e) => e.preventDefault()}>
@@ -62,7 +65,7 @@ const Invoices = () => {
                     </Space>
                 </div>
             </div>
-            <InvoiceTable tableData={invoiceTableData} onInvoiceRowClick={onInvoiceRowClick}/>
+            <InvoiceTable tableData={invoiceTableData} onInvoiceRowClick={onInvoiceRowClick} headerRef={headerRef}/>
         </>        
     );
 };
