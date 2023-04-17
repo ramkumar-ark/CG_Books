@@ -28,6 +28,10 @@ app.use(morgan("dev", {stream}));
 // Handling api routes
 app.use("/api", api);
 
+app.get('/statuscheck', function(req,res) {
+    res.status(200).json({message:'ok'});
+});
+
 const portNo = process.env.port;
 
 Promise.all([connectToDb()])
