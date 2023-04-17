@@ -1,6 +1,7 @@
 import axios from "axios";
+import REACT_APP_API_END_POINT from "./apiEndpoint";
 
-const apiBaseEndpoint = `${process.env.REACT_APP_API_END_POINT}/api/signup`;
+const apiBaseEndpoint = `${REACT_APP_API_END_POINT}/api/signup`;
 
 const signUpUser = ({nickname, email, password, phone}) => 
     new Promise((resolve, reject) => {

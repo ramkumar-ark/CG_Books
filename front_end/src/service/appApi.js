@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import header from "./createAuthHeader";
+import REACT_APP_API_END_POINT from "./apiEndpoint";
 
-const apiEndPoint = process.env.REACT_APP_API_END_POINT;
+const apiEndPoint = REACT_APP_API_END_POINT;
 
 export const appApi = createApi({
     reducerPath: "appApi",

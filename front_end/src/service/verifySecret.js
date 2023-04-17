@@ -1,6 +1,7 @@
 import axios from "axios";
+import REACT_APP_API_END_POINT from "./apiEndpoint";
 
-const apiBaseEndpoint = `${process.env.REACT_APP_API_END_POINT}/api/verify/secret`;
+const apiBaseEndpoint = `${REACT_APP_API_END_POINT}/api/verify/secret`;
 
 const verifyAuth = (token) => 
     new Promise((resolve, reject) => {
