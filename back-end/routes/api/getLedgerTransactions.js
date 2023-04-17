@@ -56,7 +56,6 @@ const getLedgerTransactions = async (req, res) => {
         const referenceNumbers = await dbController.transaction.getReferenceNumbers(transactionIds);
         const opBalance = await dbController.ledger.getOpeningBalance(ledgerId);
         transactions = transformData(transactions, voucherNumbers, referenceNumbers, opBalance);
-        await dbController.closingBalance.update(ledgerId, transactions.length > 0 ? transactions.at(-1).runningBalance : opBalance);
         res.json({transactions});
     } catch (error) {
         console.log(error);
