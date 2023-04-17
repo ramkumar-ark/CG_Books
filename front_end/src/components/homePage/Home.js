@@ -3,6 +3,7 @@ import useGetViewPortHeight from "../../hooks/useGetViewPortHeight";
 import { Button, Card, Col, Row, Space, Typography } from "antd";
 import './home.css';
 import contactUsImg from '../../resources/images/contact-us-image.jpg';
+import { Link } from "react-router-dom";
 
 const {Text, Title} = Typography;
 
@@ -18,10 +19,11 @@ const Home = () => {
             Are you tired of juggling multiple spreadsheets and struggling to keep track of your business finances? Look no further than our accounting application – the all-in-one solution for small Indian businesses.
             With our easy-to-use platform, you can manage invoices, track receivables, and keep an eye on payables all in one place. No more headaches from managing multiple systems or manually reconciling financial data.
             </Text>
-            <Button size="large" style={{backgroundColor:'yellowgreen', marginTop:40, height:50}}
-                href="/app/home/dashboard">
-                <Text style={{color:'white', fontWeight:'bold', fontSize:16}}>Access CG Books</Text>
-            </Button>
+            <Link to="/app/home/dashboard">
+                <Button size="large" style={{backgroundColor:'yellowgreen', marginTop:40, height:50}}>
+                    <Text style={{color:'white', fontWeight:'bold', fontSize:16}}>Access CG Books</Text>
+                </Button>
+            </Link>
         </div>
         <section id='featuresSection' className="features">
             <Row><Col span={24}><h1 className="title">Features</h1></Col></Row>
@@ -67,15 +69,17 @@ const Home = () => {
             <Card style={{margin:'40px 0', display:'flex'}}>
                 <Row gutter={[40, 20]} style={{display:'flex', alignItems:"center"}}>
                     <Col lg={18} span={24}><Text style={{fontSize:20, color:'royalblue', fontWeight:'bold'}}>With these powerful features and more, our accounting application will help you streamline your financial management, save time, and grow your business. Try it today and see the difference it can make for your business!</Text></Col>
-                    <Col lg={6} span={24}><Button href='/app/home/dashboard' type="primary" size="large">
-                        Access CG Books</Button></Col>
+                    <Col lg={6} span={24}>
+                        <Link to='/app/home/dashboard'>
+                            <Button type="primary" size="large">Access CG Books</Button>
+                        </Link>
+                    </Col>
                 </Row>
             </Card>
             </Col></Row>
         </section>
         <section id='pricingSection' className='pricing'>
             <Row><Col span={24}><Title className="title">PRICING</Title></Col></Row>
-            {/* <Title className="title">It's Completely Free</Title> */}
             <Title level={3} style={{color:'white'}}>
                 We are Happy to annouce that CG Books is completely free to use.{'\n'}
                 In order to facilitate Indian micro and small businesses, we have made CG Books as free to use platform.

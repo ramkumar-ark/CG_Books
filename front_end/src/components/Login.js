@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Alert } from 'antd';
 import {Typography} from "antd";
-import { useLocation, useHistory} from 'react-router-dom';
+import { useLocation, useHistory, Link} from 'react-router-dom';
 import useAuthentication from '../useAuthentication';
 
 const {Title} = Typography;
@@ -73,7 +73,7 @@ export default function Login(){
                 <Button type="primary" htmlType="submit" className="login-form-button">
                 Log in
                 </Button>
-                Or <a href="/signup">Sign Up Now!</a>
+                Or <Link to="/signup">Sign Up Now!</Link>
             </Form.Item>
     </Form>
     </>
