@@ -28,8 +28,10 @@ app.use(morgan("dev", {stream}));
 // Handling api routes
 app.use("/api", api);
 
+const portNo = process.env.port;
+
 Promise.all([connectToDb()])
-    .then(() => app.listen(3001, () => console.log("The Express app is listening at port 3001")))
+    .then(() => app.listen(portNo, () => console.log(`The Express app is listening at port ${portNo}`)))
     .catch((reason) => {
         console.log(`MongoDB Atlas Error: ${reason}`);
         process.exit();
