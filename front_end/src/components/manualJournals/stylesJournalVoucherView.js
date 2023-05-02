@@ -1,0 +1,112 @@
+export const styles = {
+    page: {
+        padding: 30,
+        backgroundColor: '#ffffff',
+        fontFamily: 'Roboto',
+        fontWeight:'normal',
+    },
+    titleContainer: {
+        padding:'35px 0 50px', 
+        textAlign:'Right',
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'space-between',
+        alignItems:'flex-end',
+    },
+    documentTitle:{
+        fontFamily:'Roboto',
+        fontWeight:'bold',
+        fontSize:'38px',
+    },
+    normalText:{
+        fontFamily:'Roboto',
+        fontSize:'14px',
+    },
+    journalDetails: {
+        marginTop: 20,
+        display:'flex',
+        flexDirection:'row',
+    },
+    notes:{
+        flexBasis:'60%',
+        textAlign:'left',
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'flex-end',
+    },
+    otherDetails:{
+        flexBasis:'40%',
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'flex-start',
+    },
+    labelAndValue:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        flexWrap:'nowrap',
+    },
+    label:{
+        fontSize:14,
+        fontFamily:'Roboto',
+        flexBasis:"50%",
+        padding:"6px 5px",
+        textAlign:'right',
+        wordBreak:'normal',
+    },
+    value:{
+        fontSize:14,
+        fontFamily:'Roboto',
+        flexBasis:"50%",
+        justifyContent:'flex-end',
+        textAlign:'right',
+        margin:"6px 0",
+        display:"flex",
+        alignItems:"end",
+        wordBreak:'normal',
+    },
+    entriesTable:{
+        marginTop:20,
+    },
+    tableHeader: {
+        backgroundColor:'#3c3d3a',
+        display:'flex',
+        flexDirection: 'row',
+        borderBottom: 1,
+        borderBottomColor: '#aaaaaa',
+      },
+    th:{
+        fontFamily:'Roboto',
+        fontWeight:'bold',
+        fontSize:12,
+        color:'white',
+    },
+    tdAlignCenter: {
+        textAlign: 'center',
+        padding:'5px 0px 5px 5px',
+    },
+    tdAlignLeft: {
+        textAlign: 'left',
+        padding:'5px 10px 5px 20px',
+    },
+    tdAlignRight: {
+        textAlign: 'right',
+        padding:'5px 10px 5px 5px',
+    },
+    tr: {
+        display:'flex',
+        flexDirection: 'row',
+        borderBottom: '1px solid #adadad',
+        padding:'5px 0px 10px 0px',
+    },
+    td: {
+        fontFamily:'Roboto',
+        fontWeight:'normal',
+        fontSize:12,
+    },
+    total:{
+        fontFamily:'Roboto',
+        fontWeight:'bold',
+        fontSize:12,
+    },
+};

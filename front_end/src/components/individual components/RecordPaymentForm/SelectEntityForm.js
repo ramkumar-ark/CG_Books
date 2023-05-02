@@ -14,7 +14,7 @@ const SelectEntityForm = ({entityType, selectedEntity, onEntitySelect, form, dis
             layout='horizontal'
             style={{ padding:'40px 20px 0', textAlign:'left'}}
             disabled={disabled}  
-            initialValues={initialValues}
+            initialValues={{[entityType]: initialValues}}
         >
             <Form.Item label={`${entityTypeDisplay} Name`} required={true}  >
                 <Space style={{display:"block"}}>

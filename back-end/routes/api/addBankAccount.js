@@ -5,14 +5,15 @@ const addBankAccount = async (req, res) => {
     let ledger;
     try {
         orgId = req.params.orgId;
-        const {name, beneficiaryName, accountNumber: accountNo, bankName, ifsc, description} = req.body;
+        const {name, beneficiaryName, accountNumber: accountNo, bankName, ifsc, description, opBalance} = req.body;
         const defaultDescription = `Ledger used to track transactions in the bank account - ${name}`;
         const dbController = await getDbController(orgId);
         const group = await dbController.primaryGroup.getByName('Bank');
-        ledger = await dbController.ledger.create(name, group['_id'], description || defaultDescription);
+        ledger = await dbController.ledger.create(name, group['_id'], description || defaultDescription, opBalance);
         const bankDetailsId = await dbController.bankDetails.create({
             beneficiaryName, accountNo, bankName, ifsc, ledger,
         });
+        opBalance && await dbController.closingBalance.update(ledger, opBalance);
         res.json({bankDetailsId});
     } catch (error) {
         console.log(error);

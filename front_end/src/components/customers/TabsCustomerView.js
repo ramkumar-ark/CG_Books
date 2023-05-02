@@ -12,7 +12,7 @@ const TabsCustomerView = ({customer, organization, headerRef}) => {
     }, [headerRef, viewPortHeight]);
     const tabItems = [
         {key:'1', label:'Overview', children:<OverviewTab entity={customer}/>},
-        {key:'2', label:'Transactions', children:'Contents of Transactions Tab'},
+        // {key:'2', label:'Transactions', children:'Contents of Transactions Tab'},
         {key:'3', label:'Statement', children:<StatementTab entity={customer} organization={organization}/>},
     ];
     return (

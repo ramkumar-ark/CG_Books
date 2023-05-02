@@ -72,4 +72,14 @@ export default class PrimaryGroupsController {
             return Promise.reject(error);
         }
     }
+
+    async getAllSubGroupsOfGroup(groupId) {
+        try {
+            const subGroups = await this.model.find({category:groupId});
+            const subGroupIds = subGroups.map(e => e.id);
+            return Promise.resolve(subGroupIds);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }

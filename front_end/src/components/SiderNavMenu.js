@@ -38,10 +38,10 @@ const items = [
     // getItem('Debit Notes', '11'),
 ]),
   getItem('Accountant', 'sub3', <SolutionOutlined />, [
-    getItem('Manual Journals', '12'),
+    getItem(<Link to="/app/home/manualjournals">Manual Journals</Link>, '12'),
     getItem(<Link to="/app/home/chartofaccounts">Chart Of Accounts</Link>, '13'),
   ]),
-  getItem('Reports', '14', <BarChartOutlined/>)
+  // getItem('Reports', '14', <BarChartOutlined/>)
 ];
 
 const SiderNavMenu = ({onCollapse}) => {

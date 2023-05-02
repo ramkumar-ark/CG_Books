@@ -75,16 +75,16 @@ export default class TransactionController{
         }
     }
 
-    async getLedgerTransactions(ledgerId){
+    async getLedgerTransactions(ledgerIds){
         try {
             const docs = await this.model.find({
                 $or:[
-                {'debits':{$elemMatch: {ledger:ledgerId}}},
-                {'credits':{$elemMatch: {ledger:ledgerId}}},
+                {'debits':{$elemMatch: {ledger:{$in:ledgerIds}}}},
+                {'credits':{$elemMatch: {ledger:{$in:ledgerIds}}}},
                 ]
             })
             .sort('transactionDate')
-            .populate({path:'voucherType', select: 'primaryType'})
+            .populate({path:'voucherType', select: 'primaryType name'})
             .populate({path:'otherDetails'}).exec();
             return Promise.resolve(docs);
         } catch (error) {

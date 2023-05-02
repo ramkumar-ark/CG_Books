@@ -43,6 +43,7 @@ const getVouchers = async (req, res) => {
                 transactionId: voucher.transaction['_id'],
                 createdOn: voucher.transaction.createdOn,
                 modifiedOn: voucher.transaction.lastModifiedOn,
+                notes: voucher.transaction.otherDetails.notes,
             });
         }
         res.json({vouchers:result});

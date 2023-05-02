@@ -24,17 +24,17 @@ const OrgDropDown = () => {
     ];
 
     return (
-        <Dropdown menu={{items}} trigger={['click']} >
+        // <Dropdown menu={{items}} trigger={['click']} >
             <a onClick={e => e.preventDefault()}>
-                <Space>
+                {/* <Space> */}
                     {/* <Space direction='vertical'> */}
                         Organization:
                         {selectedOrg && selectedOrg.name}
                     {/* </Space> */}
-                    <DownOutlined/>
-                </Space>
+                    {/* <DownOutlined/>
+                </Space> */}
             </a>
-        </Dropdown>
+        // </Dropdown>
 
     );
 

@@ -13,6 +13,25 @@ export default class BankDetailsController{
         }
     }
 
+    async getDetails(id) {
+        try {
+            console.log(id);
+            const doc = await this.model.findById(id).populate('ledger');
+            return Promise.resolve(doc);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async getAllAccounts() {
+        try {
+            const docs = await this.model.find({});
+            return Promise.resolve(docs);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
     async update(bankDetails, id){
         try {
             const doc = await this.model.findOneAndReplace({'_id':id, bankDetails});

@@ -4,7 +4,7 @@ import morgan from "morgan";
 import {createStream} from "rotating-file-stream";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectToDb from "./db";
+import connectToDb from './db/index'
 import api from "./routes/api/index";
 
 const app = express();

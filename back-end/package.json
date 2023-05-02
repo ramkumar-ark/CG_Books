@@ -6,6 +6,9 @@
   "bin": {
     "cg-books": "bin/index.js"
   },
+  "engines": {
+    "node": "16.17.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin",

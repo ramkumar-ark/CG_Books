@@ -11,12 +11,12 @@ import SingleInvoiceView from "./Invoices/SingleInvoiceView";
 import CreateInvoice from "./Invoices/CreateInvoice";
 import SingleCustomerView from "./customers/SingleCustomerView";
 import Banking from "./banking/Banking";
-import AddBank from "./banking/AddBank";
 import PaymentsReceived from "./paymentsReceived/PaymentsReceived";
 import Vendors from "./vendors/Vendors";
 import Bills from "./bills/bills";
 import useGetViewPortHeight from "../hooks/useGetViewPortHeight";
 import PaymentsMade from "./paymentsMade/paymentsMade";
+import ManualJournals from "./manualJournals/ManualJournals";
 
 const {Content, Header} = Layout;
 
@@ -44,7 +44,7 @@ export default () =>{
                             <Dashboard/>
                         </Route>
                         <Route path={`/app/home/chartofaccounts`}>
-                            <ChartOfAccounts/>
+                            <ChartOfAccounts basePath={`/app/home/chartofaccounts`}/>
                         </Route>
                         <Route exact path='/app/home/customers'>
                             <Customers/>
@@ -70,11 +70,8 @@ export default () =>{
                         <Route path='/app/home/invoices/edit/:transactionId'>
                             <CreateInvoice/>
                         </Route>
-                        <Route exact path='/app/home/banking'>
-                            <Banking/>
-                        </Route>
-                        <Route path='/app/home/banking/new'>
-                            <AddBank/>
+                        <Route path='/app/home/banking'>
+                            <Banking basePath='/app/home/banking'/>
                         </Route>
                         <Route path='/app/home/paymentsreceived'>
                             <PaymentsReceived basePath='/app/home/paymentsreceived'/>
@@ -87,6 +84,9 @@ export default () =>{
                         </Route>
                         <Route path='/app/home/paymentsmade'>
                             <PaymentsMade basePath='/app/home/paymentsmade'/>
+                        </Route>
+                        <Route path='/app/home/manualjournals'>
+                            <ManualJournals basePath={'/app/home/manualjournals'}/>
                         </Route>
                     </Switch>
                 </Content>

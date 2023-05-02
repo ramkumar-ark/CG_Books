@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Statement } from "./StatementPdf";
 import { downloadPdf } from "../../utilities/downloadPdf";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const periodOptions = [

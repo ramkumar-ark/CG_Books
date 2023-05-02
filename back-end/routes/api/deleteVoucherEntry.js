@@ -9,7 +9,7 @@ const deleteVoucherData = async (req, res) => {
         const {orgId} = req.params;
         const dbController = await getDbController(orgId);
         if (voucherName === 'Sales' || voucherName === 'Purchase'){
-            if (offsetTransactions.length > 0) 
+            if (offsetTransactions && offsetTransactions.length > 0) 
                 return res.status(403).json({error:'Payments are linked to this Invoice or Bill.'})
         }else{
             if (offsetTransactions.length > 0){

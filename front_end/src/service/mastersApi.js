@@ -36,6 +36,10 @@ export const mastersApi = createApi({
             query: ({params}) => `/api/getledgersunderaccounttype/${params.orgId}/${params.accountType}`,
             providesTags: ['mastersCreation'],
         }),
+        getBankAccount: builder.query({
+            query: ({params}) => `/api/getbankaccount/${params.orgId}/${params.bankDetailsId}`,
+            providesTags: ['mastersCreation'],
+        }),
         createEntity: builder.mutation({
             query: (entity) => ({
                 url: `/api/createentity`,
@@ -60,6 +64,30 @@ export const mastersApi = createApi({
             }),
             invalidatesTags: ['mastersCreation'],
         }),
+        updateBankAccount: builder.mutation({
+            query: ({params, body}) => ({
+                url: `api/updatebankaccount/${params.orgId}/${params.bankDetailsId}`,
+                method: 'PATCH',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation'],
+        }),
+        createAccount: builder.mutation({
+            query: ({params, body}) => ({
+                url:`api/createledgeraccount/${params.orgId}`,
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation'],
+        }),
+        updateAccount: builder.mutation({
+            query: ({params, body}) => ({
+                url:`api/updateledgeraccount/${params.orgId}/${params.ledgerId}`,
+                method:'PATCH',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation'],
+        }),
         deleteEntity: builder.mutation({
             query: ({params}) => ({
                 url: `api/deleteentity/${params.orgId}/${params.entityId}`,
@@ -73,5 +101,6 @@ export const mastersApi = createApi({
 export const { 
     useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation,
     useCreateBankAccountMutation, useGetBankAccountsQuery, useDeleteEntityMutation, useGetEntityQuery,
-    useGetVendorsQuery, useGetAccountTypeLedgersQuery,
+    useGetVendorsQuery, useGetAccountTypeLedgersQuery, useCreateAccountMutation, useUpdateAccountMutation,
+    useGetBankAccountQuery, useUpdateBankAccountMutation,
 } = mastersApi;

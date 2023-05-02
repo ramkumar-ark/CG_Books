@@ -8,7 +8,7 @@ const constructInitialValues = (data, bankChargesLedgerId, bankAccounts) => {
         const bankCharges = data.transaction.debits.find(e => e.ledger['_id'] == bankChargesLedgerId)?.amount || 0;
         const date = dayjs(new Date(data.transaction.transactionDate));
         const mode = data.otherDetails.receiptMode;
-        const bankLedger = data.transaction.debits.find(e => 
+        const bankLedger = [...data.transaction.debits, ...data.transaction.credits].find(e => 
             bankAccountIds.includes(e?.ledger?.['_id']))?.ledger['_id'];
         const referenceNumber = data.transaction.referenceNumber;
         const notes = data.transaction.narration;

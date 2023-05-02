@@ -1,8 +1,10 @@
-import { Dropdown, Space, Table } from "antd";
+import { Dropdown, Space, Table, Typography } from "antd";
 import Icon, { BankOutlined, DownCircleOutlined } from "@ant-design/icons"
 import { ReactComponent as CashIconSvg} from '../../resources/images/CashIcon2.svg';
-import { Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+const {Link} = Typography; 
 
 const CashIcon = (props) => <Icon component={CashIconSvg} {...props} />;
 const CashIconMod = () => (
@@ -17,10 +19,22 @@ const BankIconMod = () => (
 );
 
 const OverviewTable = ({data}) => {
+    const history = useHistory();
+    const {pathname} = useLocation();
     const [dataSource, setDataSource] = useState(data);
-    const actionOptions = [
-        {label:'Edit Account', key:1}, {label:'View Transactions', key:2},
-    ];
+    const actionOptions = (record) =>{
+        console.log(record);
+        if (record.type==='cash') return[
+            {label:<Link onClick={() => history.push(`${pathname}/edit/cashaccount/${record.ledgerId}`)}>
+                Edit Account
+                </Link>, key:1}, 
+            {label:'View Transactions', key:2},
+        ];
+        else return [
+            {label:<Link onClick={() => history.push(`${pathname}/edit/${record.bankDetailsId}`)}>Edit Account</Link>, key:1}, 
+            {label:'View Transactions', key:2},
+        ];
+    };
     const columns = [
         {
             title:'ACCOUNT DETAILS',
@@ -43,17 +57,18 @@ const OverviewTable = ({data}) => {
         {
             key:'action',
             align: 'center',
-            render: () => (
-                <Dropdown trigger={['click']} menu={{items: actionOptions}}>
+            render: (text, record, index) => (
+                <Dropdown trigger={['click']} menu={{items: actionOptions(record)}}>
                     <DownCircleOutlined style={{fontSize:16}}/>
-                    </Dropdown>
+                </Dropdown>
             ),
         }
     ];
 
     useEffect(() => {setDataSource(data)}, [data]);
     
-    return <Table dataSource={dataSource} columns={columns} pagination={false}/>
+    return <Table dataSource={dataSource} columns={columns} pagination={false}/>;
+     
 };
 
 export default OverviewTable;

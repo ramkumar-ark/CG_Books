@@ -12,10 +12,10 @@ const UserDropDown = () => {
           label: <a href="/app">Dashboard</a>,
           key: '0',
         },
-        {
-          label: <a href="#">My Account</a>,
-          key: '1',
-        },
+        // {
+        //   label: <a href="#">My Account</a>,
+        //   key: '1',
+        // },
         {
           type: 'divider',
         },

@@ -4,5 +4,8 @@ export default class AccountGroupsController {
         this.model = GroupsModel;
     }
 
+    // async getAccountGroupsList() {
+    //     const docs = await this.model.find()
+    // }
     
 }

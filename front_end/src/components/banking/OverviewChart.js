@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Line } from '@ant-design/plots';
 
-const OverviewChart = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    asyncFetch();
-  }, []);
-
-  const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/bmw-prod/e00d52f4-2fa6-47ee-a0d7-105dd95bde20.json')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
+const OverviewChart = ({data}) => {
+  
   const config = {
-    data,
+    data:data || [],
     height:225,
-    xField: 'year',
-    yField: 'gdp',
+    xField: 'period',
+    yField: 'closingBalance',
     seriesField: 'name',
     yAxis: {
       label: {
-        formatter: (v) => `${(v / 10e8).toFixed(1)} B`,
+        formatter: (v) => `₹${v.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
       },
     },
     legend: {

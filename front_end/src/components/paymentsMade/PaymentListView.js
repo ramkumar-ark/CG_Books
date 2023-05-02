@@ -17,8 +17,8 @@ const PaymentsListView = () => {
             {paymentsData?.map(e => 
                 <PaymentListItem 
                     data={e} 
-                    isSelected={e.transactionId.toString() === params.transactionid}
-                    onClick={() => {history.replace(pathname.replace(params.transactionid, e.transactionId))}}
+                    isSelected={e.transactionId.toString() === params.transactionId}
+                    onClick={() => {history.replace(pathname.replace(params.transactionId, e.transactionId))}}
                 />
             )}
         </>

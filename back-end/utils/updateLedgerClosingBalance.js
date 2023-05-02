@@ -4,7 +4,7 @@ const updateLedgerClosingBalance = async (orgId, ledgerId) => {
     try {
         const dbController = await getDbController(orgId);
         // get all transactions associated with ledger.
-        const transactions = await dbController.transaction.getLedgerTransactions(ledgerId);
+        const transactions = await dbController.transaction.getLedgerTransactions([ledgerId]);
         // get opening balance of the ledger.
         const opBalance = await dbController.ledger.getOpeningBalance(ledgerId);
         // compute closing balance

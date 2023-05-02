@@ -4,7 +4,7 @@ import { getUnpaidForEditPayment, getUnpaidVouchersOfEntity } from "./getUnpaidF
 export default function useManageEntity(entityDataObj, closingBalances, unpaidVouchers, voucherData) {
     const [selectedEntity, setSelectedEntity] = useState(initState(entityDataObj, closingBalances, 
         unpaidVouchers, voucherData));
-    
+    console.log(selectedEntity);
     const handleCustomerSelection = (entityId) => {
         const closingBalance = getClosingBalanceOfEntity(entityDataObj[entityId], closingBalances);
         
@@ -30,7 +30,7 @@ function initState(entityDataObj, closingBalances, unpaidVouchers, voucherData) 
         const unpaid = getUnpaidVouchersOfEntity(entityId, unpaidVouchers, entityDataObj, opBalDate);
         const updatedUnpaidData = getUnpaidForEditPayment(
             unpaid, voucherData.otherDetails.offSetTransactions, opBalDate);
-        return {...entityDataObj[entityId], closingBalance, updatedUnpaidData}
+        return {...entityDataObj[entityId], closingBalance, unpaid:updatedUnpaidData}
     }
 }
 

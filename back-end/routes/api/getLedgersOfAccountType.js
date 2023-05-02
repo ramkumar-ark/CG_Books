@@ -10,7 +10,8 @@ const getLedgersOfAccountType = async (req, res) => {
         const accountGroupIds = await dbController.primaryGroup.getAccountTypeGroups(accountTypeId);
         // 2. get all ids of ledgers under income groups.
         const accountLedgers = await dbController.ledger.getGroupLedgers(accountGroupIds);
-        res.json({ledgers:accountLedgers});
+        if (req.isMiddleware) return accountLedgers;
+        else res.json({ledgers:accountLedgers});
     } catch (error) {
         res.status(403).json({error});
     }
