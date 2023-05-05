@@ -18,9 +18,9 @@ import useGetViewPortHeight from "../hooks/useGetViewPortHeight";
 import PaymentsMade from "./paymentsMade/paymentsMade";
 import ManualJournals from "./manualJournals/ManualJournals";
 
-const {Content, Header} = Layout;
+const {Content} = Layout;
 
-export default () =>{
+export default function AppHome() {
     const history = useHistory();
     const [isSiderCollapsed, setIsSiderCollapsed] = useState(false);
     const viewportHeight = useGetViewPortHeight();
@@ -29,7 +29,7 @@ export default () =>{
         setTimeout(() => {window.location.reload()}, 1000);
         history.replace('/app/home/dashboard');
     }
-    }, [])
+    }, [history])
     return (
         <Layout hasSider>
             <SiderNavMenu onCollapse={(value) => setIsSiderCollapsed(value)}/>

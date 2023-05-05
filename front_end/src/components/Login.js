@@ -13,7 +13,7 @@ export default function Login(){
     const {from} = (location && location.state) || {from: {pathname: "/"}};
     const {AuthCtx} = useAuthentication();
     const {signin, user, error} = useContext(AuthCtx);
-    const errorMessage = error && typeof error != 'String' ? error : 'Network Error! Please try later.';
+    const errorMessage = error && typeof error === 'string' ? error : 'Network Error! Please try later.';
 
     useEffect(() => {user && history.replace('/app/home')}, [user, history]);
 
@@ -59,15 +59,15 @@ export default function Login(){
                 placeholder="Password"
                 />
             </Form.Item>
-            <Form.Item>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:20}}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                     <Checkbox>Remember me</Checkbox>
                 </Form.Item>
 
-                {/* <a className="login-form-forgot" href="">
+                <a className="login-form-forgot" href="/resetpassword">
                 Forgot password
-                </a> */}
-            </Form.Item>
+                </a>
+            </div>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">

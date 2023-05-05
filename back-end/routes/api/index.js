@@ -40,9 +40,11 @@ import updateBankAccount from "./updateBankAccount";
 import getCashFlowMonthlyData from "./getCashFlowMonthlyData";
 import getMonthlyIncomeAndExpense from "./getMonthlyIncomeAndExpense";
 import getAllExpenses from "./getAllExpenses";
+import resetPasswordRoutes from "./resetPasswordRoutes"
 
 const router =Router();
 
+router.use("/resetpassword", resetPasswordRoutes);
 router.post("/signup", signUpUser);
 router.post("/signin", signInUser);
 router.post("/verify/secret", verify);

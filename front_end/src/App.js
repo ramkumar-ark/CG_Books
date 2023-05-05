@@ -9,6 +9,7 @@ import useAuthentication from './useAuthentication';
 import React, { useContext } from 'react';
 import AppStart from './components/AppStart';
 import ProtectedComponent from './components/ProtectedComponent';
+import ResetPassword from './components/ResetPassword';
 
 const { Content } = Layout
 
@@ -25,6 +26,7 @@ function App() {
                   <Route exact path="/"><Home/></Route>
                   <Route path="/login"><Login/></Route>
                   <Route path="/signup"><SignUp/></Route>
+                  <Route path="/resetpassword"><ResetPassword/></Route>
                   <ProtectedComponent user={user} path="/app"><AppStart/></ProtectedComponent>
                   <Route>
                     <>

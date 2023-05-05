@@ -6,6 +6,7 @@ export default async(req, res) => {
         const {user, token} = await signup({name, email, password, mobileNo});
         res.json({user, token});
     } catch (error) {
+        console.log(error);
         let errMsg = "";
         switch (error.error.code) {
             case 11000:

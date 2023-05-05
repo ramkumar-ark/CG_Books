@@ -5,12 +5,13 @@ import {
     Form,
     Input,
     Typography,
-    Alert
+    Alert,
+    Modal,
   } from 'antd';
 import { useLocation, useHistory } from 'react-router-dom';
 import useAuthentication from "../useAuthentication";
 
-const {Title} = Typography;
+const {Title, Link} = Typography;
 
 const formItemLayout = {
     labelCol: { xs: { span: 24 }, sm: { span: 8 } },
@@ -22,6 +23,27 @@ const tailFormItemLayout = {
         xs: { span: 24, offset: 0 },
         sm: { span: 16, offset: 8 },
     },
+};
+
+const showModal = () => {
+    Modal.info({
+        title:'Terms and Conditions',
+        content:(
+            <body>
+                <p>By using this CG Books accounting app, you agree to the following terms and conditions:</p>
+                <ol>
+                  <li>This app is for educational purposes only and should not be used for commercial purposes.</li>
+                  <li>You are responsible for maintaining the security and confidentiality of your login credentials.</li>
+                  <li>We may collect and use your personal information in accordance with our privacy policy.</li>
+                  <li>You agree to use this app in compliance with all applicable laws and regulations.</li>
+                  <li>We reserve the right to modify or terminate this app at any time without notice.</li>
+                  <li>You agree to indemnify and hold us harmless from any claims, damages, or expenses arising out of your use of this app.</li>
+                </ol>
+                <p>By checking the "I have read the agreement" checkbox, you acknowledge that you have read and agree to these terms and conditions.</p>
+            </body>
+        ),
+        onOk() {},
+    });
 };
 
 const SignUp = () => {
@@ -148,7 +170,7 @@ const SignUp = () => {
                     {...tailFormItemLayout}
                 >
                     <Checkbox>
-                        I have read the <a href="">agreement</a>
+                        I have read the <Link onClick={showModal}>agreement</Link>
                     </Checkbox>
                 </Form.Item>
 

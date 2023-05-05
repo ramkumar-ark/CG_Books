@@ -2,9 +2,16 @@ import {Schema, model} from "mongoose";
 import bcrypt from "bcrypt";
 
 const organizationsSchema = new Schema({
-    orgId: {type: Schema.Types.ObjectId, ref:'Organization', unique:true},
+    orgId: {type: Schema.Types.ObjectId, ref:'Organization'},
     role:{type:String, default:String("admin")},
 }, {_id:false});
+
+const passwordResetRequest = new Schema({
+    requestToken: {type:String},
+    otp:{type:String},
+    sentOn:{type:Date},
+    attempt:{type:Number},
+}, {_id:false})
 
 const userScheme = new Schema({
     name:{type:String, required:true},
@@ -16,6 +23,7 @@ const userScheme = new Schema({
     lastSelectedOrg: {type: Schema.Types.ObjectId, ref: 'Organization', default: null},
     createdAt:{type:Date, default:Date.now},
     lastLoggedIn:{type:Date, default:Date.now},
+    passwordResetRequest: passwordResetRequest,
 });
 
 userScheme.pre("save", function(next){
@@ -23,6 +31,14 @@ userScheme.pre("save", function(next){
         return next();
     }
     this.password = bcrypt.hashSync(this.password, 10);
+    next();
+});
+
+userScheme.pre("findOneAndUpdate", function(next){
+    const update = this.getUpdate();
+    if (update.$set && update.$set.password) {
+        update.$set.password = bcrypt.hashSync(update.$set.password, 10);
+    }
     next();
 });
 

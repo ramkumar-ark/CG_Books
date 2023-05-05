@@ -1,14 +1,16 @@
-import {Col, Row, Form, Input, Switch, Typography, Button, Space, Alert} from "antd";
+import {Col, Row, Form, Input, Switch, Typography, Button, Alert, Layout} from "antd";
 import { useState, useContext, useEffect } from "react";
 import {useHistory} from "react-router-dom";
 import useAuthentication from "../../useAuthentication"
 import StateSelector from "./StateSelector";
 import createOrg from "../../service/createOrg";
 import { useSetSelectedOrgMutation } from "../../service/appApi";
+import useGetViewPortHeight from "../../hooks/useGetViewPortHeight";
 
 const {Title, Text} = Typography;
+const {Content} = Layout;
 
-export default function(){
+export default function CreateOrganization(){
     const [form] = Form.useForm();
     const [isGstEnabled, setIsGstEnabled] = useState(false);
     const [error, setIsError] = useState(false);
@@ -26,12 +28,14 @@ export default function(){
                 setIsError(true);
             });
     };
-
+    const viewportHeight = useGetViewPortHeight();
     useEffect(() =>{
         if(isSuccess) history.replace({pathname:"/app/home/dashboard", state:{from:"/app"}});
     }, [isSuccess, history]);
     
     return (
+        <Layout className="site-layout" style={{height:viewportHeight-64}}>
+        <Content style={{position:'sticky', top:'0px', overflow:'auto', height:viewportHeight-64}}>
         <Form
             form={form}
             name="createOrgForm"
@@ -143,5 +147,7 @@ export default function(){
                 </Col>
             </Row>
         </Form>
+        </Content>
+        </Layout>
     );
 }

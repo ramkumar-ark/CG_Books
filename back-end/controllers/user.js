@@ -120,3 +120,72 @@ export const setLastSelectedOrg = async (userId, orgId) => {
         return Promise.reject(error);
     }
 };
+
+export const verifyEmail = async (email) => {
+    try {
+        const doc = await User.findOne({email});
+        if (doc) return Promise.resolve(doc.name);
+        else return Promise.resolve(false);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const storeOtp = async (email, otp, requestToken) => {
+    try {
+        await User.findOneAndUpdate({email}, {
+            passwordResetRequest: {
+                requestToken,
+                otp,
+                sentOn: new Date(),
+                attempt:3,
+            },
+        }, {new:true},);
+        return Promise.resolve();
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const verifyOtp = async (email, otp, requestToken, newRequestToken) => {
+    try {
+        const doc = await User.findOne({$and:[{email}, {'passwordResetRequest.requestToken':requestToken}]});
+        if (doc) {
+            const isOtpExpired = (Date.now() - doc.passwordResetRequest.sentOn) > (10*60*1000);
+            const isAttemptExpired = doc.passwordResetRequest.attempt < 1;
+            if (isAttemptExpired || isOtpExpired) {
+                await doc.update({$unset:{passwordResetRequest: 1}});
+                return Promise.resolve('OTP Expired');
+            } else {
+                if (doc.passwordResetRequest.otp === otp) {
+                    await doc.update({$set: {passwordResetRequest:{
+                        requestToken:newRequestToken, otp:'', attempt:0, sentOn:new Date(),
+                    }}});
+                    return Promise.resolve('OTP Verified');
+                } else {
+                    await doc.update({$set:{'passwordResetRequest.attempt': doc.passwordResetRequest.attempt - 1}});
+                    return Promise.resolve('Incorrect OTP');
+                }
+            }
+        } else {
+            return Promise.reject('Invalid or Unauthorized Request');
+        }
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const updatePassword = async (email, password, requestToken) => {
+    try {
+        console.log(email, password, requestToken);
+        const doc = await User.findOneAndUpdate(
+            {email, 'passwordResetRequest.requestToken':requestToken}, 
+            {$set: {password}, $unset:{passwordResetRequest: 1}},
+            {new:true},
+        );
+        if (doc) return Promise.resolve(doc.name);
+        else return Promise.reject('Invalid Request');
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};

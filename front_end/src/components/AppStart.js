@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import useAuthentication from "../useAuthentication";
 import { Switch, Route, useHistory } from "react-router-dom";
 import { Spin } from "antd";
@@ -12,7 +12,7 @@ const AppStart = () => {
     let organizations, selectedOrg;
     const {data, isLoading: isLoading1} = useGetUserOrgsQuery(user.id);
     if (data) organizations = data.organizations;
-    const {data: data1, isLoading: isLoading2, isError} = useGetSelectedOrgQuery(user.id);
+    const {data: data1, isLoading: isLoading2} = useGetSelectedOrgQuery(user.id);
     if (data1) selectedOrg = data1.selectedOrg;
     const isLoading = [isLoading1, isLoading2];
     const history = useHistory();

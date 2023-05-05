@@ -26,14 +26,44 @@ export const appApi = createApi({
         }),
         setSelectedOrg: builder.mutation({
             query: (userId, orgId) => ({
-                url: `api/setselectedorg/${userId}`,
+                url: `/api/setselectedorg/${userId}`,
                 method: 'PATCH',
                 body: {orgId},
             }),
             invalidatesTags: ['Organizations'],
         }),
+        validateUser: builder.mutation({
+            query: (email) => ({
+                url: `/api/resetpassword/validateuser`,
+                method: 'POST',
+                body: {email},
+            }),
+        }),
+        resendOtp: builder.mutation({
+            query: (email) => ({
+                url: `/api/resetpassword/resendotp`,
+                method: 'POST',
+                body: {email},
+            }),
+        }),
+        verifyOtp: builder.mutation({
+            query: ({email, otp, resetToken}) => ({
+                url: `/api/resetpassword/verifyotp`,
+                method: 'POST',
+                body: {email, otp, resetToken},
+            }),
+        }),
+        resetPassword: builder.mutation({
+            query: ({email, password, requestToken}) => ({
+                url: `/api/resetpassword/changepassword`,
+                method: 'POST',
+                body: {email, password, requestToken},
+            }),
+        }),
 
     })
 });
 
-export const { useGetSelectedOrgQuery, useGetUserOrgsQuery, useSetSelectedOrgMutation } = appApi;
+export const { useGetSelectedOrgQuery, useGetUserOrgsQuery, useSetSelectedOrgMutation, 
+    useValidateUserMutation, useResendOtpMutation, useVerifyOtpMutation, useResetPasswordMutation 
+} = appApi;

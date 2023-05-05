@@ -28,6 +28,10 @@ const navItems = {
       {label:<Link to='/'>Home</Link>}, 
       {label:<Link to='/login'>Sign In</Link>}
     ],
+    resetpassword:[
+        {label:<Link to='/'>Home</Link>}, 
+        {label:<Link to='/login'>Sign In</Link>}
+    ],
     app:[
         {dd: true, name: "user"},
         {dd: true, name: "org"}
