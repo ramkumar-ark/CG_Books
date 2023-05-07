@@ -121,7 +121,7 @@ function PaymentVoucherView({data, isPdf=false}){
                     </View>
                     {data.otherDetails.offSetTransactions.map( elem =>(
                         <View style={styles.tr}>
-                            {(isPdf || elem[offsetDocumentNoRef] == 'Opening Balance') 
+                            {(isPdf || elem[offsetDocumentNoRef] === 'Opening Balance') 
                                 ? <Text style={styles.td}>{elem[offsetDocumentNoRef]}</Text>
                                 :<Link to={`/app/home/${offsetDocument.toLowerCase()}s/${offsetDocument==='Invoice' ? 'view/' : ''}${elem.transaction}`} style={styles.td}>
                                     {elem[offsetDocumentNoRef]}</Link>}

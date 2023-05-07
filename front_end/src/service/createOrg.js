@@ -10,7 +10,7 @@ const createOrg = (orgDetails) => new Promise((resolve, reject) => {
             console.log(res.data);
             resolve(res.data.orgId);
         })
-        .catch(err => reject(err));
+        .catch(err => {reject(err)});
 });
 
 export default createOrg;

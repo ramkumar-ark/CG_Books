@@ -65,10 +65,15 @@ export default function createAccountingControllers(modelsObject) {
     };
 
     const createPrimaryMasters = async() => {
-        await accountTypes.createDefaultTypes();
-        await createDefaultPrimaryGroups();
-        await createLedgerMasters();
-        await voucherType.createDefaultVoucherTypes();
+        try {
+            await accountTypes.createDefaultTypes();
+            await createDefaultPrimaryGroups();
+            await createLedgerMasters();
+            await voucherType.createDefaultVoucherTypes();
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        }
     };
 
     const getAllMasters = async() => {

@@ -18,7 +18,7 @@ const AddBank = () => {
         <div style={{borderBottom:"ridge", position:"sticky", top:0, zIndex:999, backgroundColor:"whitesmoke"}}>
             <div style={{textAlign:"left", margin:"0px 20px", display:"flex", justifyContent:"space-between",
                 flexWrap:'wrap'}}>
-                <Title level={3}>Add Bank</Title>
+                <Title level={3}>{bankDetailsId ? 'Edit' : 'Add'} Bank</Title>
             </div>
         </div>
         {!(bankDetailsId && !bankDetail) &&
@@ -63,7 +63,7 @@ const AddBank = () => {
             </Row>
             <div style={{padding:15, borderTop:'1px solid #dee2e6', textAlign:'left'}}>
                 <Space size='middle'>
-                    <Button type="primary" htmlType="submit" loading={isLoading}>Save</Button>
+                    <Button type="primary" htmlType="submit" loading={isLoading || isUpdating}>Save</Button>
                     <Button onClick={() => {history.goBack();}}>Cancel</Button>
                 </Space>
             </div>

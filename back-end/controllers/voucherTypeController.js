@@ -7,7 +7,6 @@ export default class VoucherTypeController{
 
     async create(name, primaryType){
         try {
-            console.log('creating vouchertype ', primaryType);
             const doc = await this.model.create({name, primaryType});
             return Promise.resolve(doc.id);
         } catch (error) {
@@ -18,7 +17,6 @@ export default class VoucherTypeController{
     async getId(name){
         try {
             const docs = await this.model.find({}).exec();
-            console.log(docs);
             const doc = await this.model.findOne({name: name});
             return Promise.resolve(doc.id);
         } catch (error) {

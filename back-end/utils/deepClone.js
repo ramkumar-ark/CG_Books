@@ -7,7 +7,6 @@ export default function deepClone(obj) {
     
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
-        console.log(obj[key]);
         clone[key] = deepClone(obj[key]);
       }
     }

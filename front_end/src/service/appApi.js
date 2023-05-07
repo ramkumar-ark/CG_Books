@@ -25,7 +25,7 @@ export const appApi = createApi({
             // transformErrorResponse: (response, meta, arg) => response.data,
         }),
         setSelectedOrg: builder.mutation({
-            query: (userId, orgId) => ({
+            query: ({userId, orgId}) => ({
                 url: `/api/setselectedorg/${userId}`,
                 method: 'PATCH',
                 body: {orgId},

@@ -22,9 +22,10 @@ export default function CreateOrganization(){
         createOrg({...values, userId:user.id})
             .then((res) => {
                 setIsError(false);
-                setSelectedOrg(user.id, res);
+                setSelectedOrg({userId:user.id, orgId:res});
             })
             .catch((reason) => {
+                alert("System Error! Contact Support.");
                 setIsError(true);
             });
     };
@@ -142,7 +143,7 @@ export default function CreateOrganization(){
                 </Col>
                 <Col md={6} span={24}>
                     <Form.Item>
-                        <Button size="large" style={{backgroundColor: "#f5f5f5"}}>Back</Button>
+                        <Button size="large" style={{backgroundColor: "#f5f5f5"}} onClick={() => {history.goBack()}}>Back</Button>
                     </Form.Item>
                 </Col>
             </Row>

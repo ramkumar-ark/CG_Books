@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function useSummaryDataManager(voucherData) {
     const [summaryData, setSummaryData] = useState(() => initState(voucherData));
     const changeReceivedAmount = (value) => {
         setSummaryData({...summaryData, received:value});
-        console.log('receiptAmt');
     };
-    const changeUsedAmount = (value) =>{
+    const changeUsedAmount = useCallback((value) =>{
         setSummaryData({...summaryData, used:value});
-    };
+    }, [summaryData]);
     return {summaryData, changeReceivedAmount, changeUsedAmount};
 }
 

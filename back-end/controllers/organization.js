@@ -6,7 +6,6 @@ const processDetails = (orgDetails) => {
     const details = {name};
     const address = {addressLine1: street1, addressLine2: street2, city, pinCode, state, country, addedBy: userId};
     details.address = {principlePlace:[address]};
-    console.log(details.address.principlePlace);
     details.users = [userId];
     details.isGstApplicable = !!isGst;
     if (details.isGstApplicable) {

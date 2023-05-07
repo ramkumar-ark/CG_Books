@@ -39,9 +39,13 @@ function getMonthlyData(groupTransactions, opBalDate, opBalance) {
     if (opBalance) {
         const month = `${opBalDate.toLocaleString('default', { month: 'short' })} ${opBalDate.getFullYear()}`;
         if (!monthlyDataObj[month]) 
-            monthlyDataObj[month] = {openingBalance:0, closingBalance:opBalance, 
-                totalCredit:opBalance<0 ? Math.abs(opBalance) : 0, 
-                totalDebit:opBalance>0 ? opBalance : 0};
+            monthlyDataObj[month] = {
+                openingBalance:0,  
+                totalDebit:opBalance>0 ? opBalance : 0, 
+                totalCredit:opBalance<0 ? Math.abs(opBalance) : 0,
+                closingBalance:opBalance, 
+                month,
+            };
         else monthlyDataObj[month] = {...monthlyDataObj[month], openingBalance:0, 
             totalCredit:monthlyDataObj[month].totalCredit + (opBalance<0 ? Math.abs(opBalance) : 0), 
             totalDebit:monthlyDataObj[month].totalDebit + (opBalance>0 ? opBalance : 0),};

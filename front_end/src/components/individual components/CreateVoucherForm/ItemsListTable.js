@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Table, Form, Input, Typography, InputNumber, Select } from 'antd';
 
@@ -14,7 +14,7 @@ const ItemsListTable = ({updateTotal, itemList, accountSelectList, changeItems, 
       let total = items.reduce((acc, item) => acc + Number(item.amount), 0);
       total = Number(total).toFixed(2);
       changeItems(items);
-      updateTotal("subTotal", total);
+      updateTotal(total);
       setDataSource(items);
   };
 
@@ -24,15 +24,14 @@ const ItemsListTable = ({updateTotal, itemList, accountSelectList, changeItems, 
   };
 
   const deleteItem = (index) => {
-    console.log(index);
     if (dataSource.length > 1){
     const oldList = [...dataSource];
-    console.log(oldList.splice(index,1));
+    oldList.splice(index,1);
     let total = oldList.reduce((acc, item) => acc + Number(item.amount), 0);
     total = Number(total).toFixed(2);
     changeItems(oldList);
     setDataSource(oldList);
-    updateTotal('subTotal', total);
+    updateTotal(total);
     }
   };
 
@@ -95,7 +94,7 @@ const ItemsListTable = ({updateTotal, itemList, accountSelectList, changeItems, 
         width:50,
         align:'center',
         render: (text, record, index) => (
-            <Link onClick={() => deleteItem(index)}><DeleteOutlined/></Link>
+           (dataSource?.length > 1) && <Link onClick={() => deleteItem(index)}><DeleteOutlined/></Link>
         ),
     },
    

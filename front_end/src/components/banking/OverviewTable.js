@@ -28,11 +28,11 @@ const OverviewTable = ({data}) => {
             {label:<Link onClick={() => history.push(`${pathname}/edit/cashaccount/${record.ledgerId}`)}>
                 Edit Account
                 </Link>, key:1}, 
-            {label:'View Transactions', key:2},
+            {label:<Link onClick={() => {history.push(`${pathname}/${record.ledgerId}`)}}>View Transactions</Link>, key:2},
         ];
         else return [
             {label:<Link onClick={() => history.push(`${pathname}/edit/${record.bankDetailsId}`)}>Edit Account</Link>, key:1}, 
-            {label:'View Transactions', key:2},
+            {label:<Link onClick={() => {history.push(`${pathname}/${record.ledgerId}`)}}>View Transactions</Link>, key:2},
         ];
     };
     const columns = [
@@ -43,7 +43,9 @@ const OverviewTable = ({data}) => {
             render: (text, record) => (
                 <Space size='large'>
                     {record.type === 'cash' ? <CashIconMod/> : <BankIconMod />}
-                    <Link style={{fontSize:16}}> {text}</Link>
+                    <Link style={{fontSize:16}} onClick={() => {history.push(`${pathname}/${record.ledgerId}`)}}> 
+                        {text}
+                    </Link>
                 </Space>
             ),
         },

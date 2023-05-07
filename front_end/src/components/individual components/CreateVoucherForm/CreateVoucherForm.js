@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import useGetRequiredLedgerIds from "./useGetRequiredLedgerIds";
 import transformDataOnSubmit from "./transformDataOnSubmit";
 
-const {Text, Title} = Typography;
+const {Text} = Typography;
 
 const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, entityDataObj}) => {
     const entityType = voucherType === 'invoice' ? 'customer' : 'vendor';
@@ -25,15 +25,16 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
         = useFormDataManager(form);
     const [selectedEntity, onEntitySelect] = useManageEntity(entityDataObj, changeCreditPeriod, initialValues[entityType]);
     const [tableTotals, updateTableTotals] = useTableDataManager(initialValues);
-    const ledgersSelectList = useGetAccountSelectList(entityType == 'customer' ? 'Income' : 'Expense');
+    const ledgersSelectList = useGetAccountSelectList(entityType === 'customer' ? 'Income' : 'Expense');
     const requiredLedgerIds = useGetRequiredLedgerIds();
     const itemTableDetails = voucherData?.otherDetails?.itemDetails || [{}];
-    const onDiscountChange = () => {
+    const updateTotalData = (subtotalAmount=tableTotals.subTotal) => {
+        console.log(subtotalAmount);
         const {value, unit} = form.getFieldValue('discount');
-        if (unit === "absolute") updateTableTotals('discount', Number(value).toFixed(2));
+        if (unit === "absolute") updateTableTotals(Number(value), subtotalAmount);
         else {
-            let discount = (tableTotals.subTotal * Number(value).toFixed(2)) / 100;
-            updateTableTotals('discount', discount.toFixed(2));
+            let discount = (subtotalAmount * Number(value)) / 100;
+            updateTableTotals(discount, subtotalAmount);
         }
     };
     const selectDiscountUnit = (
@@ -43,7 +44,7 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
                 {label:"₹", value:"absolute"},
                 {label:"%", value:"percentage"},
             ]}
-            onSelect={onDiscountChange}
+            onSelect={() => {updateTotalData()}}
             />
         </Form.Item>
     );
@@ -80,7 +81,7 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
                     {selectedEntity && 
                         <EntityDetailsView entityData={selectedEntity} 
                             entityTypeDisplay={entityTypeDisplay} />}
-                    {(selectedEntity && entityType=='customer') && 
+                    {(selectedEntity && entityType==='customer') && 
                         <DisplayAddress entityData={selectedEntity}/>}
                 </Input.Group>
             </Space>
@@ -107,7 +108,7 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
                 <Input placeholder="Let your customer know what this Invoice is for"/>
             </Form.Item> 
         </div>}
-        <ItemsListTable updateTotal={updateTableTotals} itemList={itemTableDetails}
+        <ItemsListTable updateTotal={updateTotalData} itemList={itemTableDetails}
             accountSelectList={ledgersSelectList} changeItems={changeItemDetailsList} 
             getItems={getItemDetailsList}/>
         <div style={{marginBottom: "20px"}}>
@@ -143,7 +144,7 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
                             <Col span={18}>
                                 <Form.Item name={["discount", "value"]} label="Discount" labelCol={{span:8}} wrapperCol={{span:16}} style={{marginBottom:0}}>
                                     <InputNumber addonAfter={selectDiscountUnit} min={0}
-                                        style={{width:"130px"}} onChange={onDiscountChange}
+                                        style={{width:"130px"}} onChange={() => {updateTotalData()}}
                                     />
                                 </Form.Item>
                             </Col>

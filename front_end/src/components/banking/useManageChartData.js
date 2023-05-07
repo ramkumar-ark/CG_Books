@@ -20,6 +20,6 @@ export default function useManageChartData() {
     const prevData = usePrevious(last30DaysData['group']);
     useEffect(() => {
         if (prevData === undefined && last30DaysData['group']) setChartData(last30DaysData['group']);
-    }, [last30DaysData]);
+    }, [last30DaysData, prevData]);
     return [chartData, onPeriodChange];
 }

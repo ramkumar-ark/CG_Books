@@ -28,7 +28,6 @@ const createEntity = async(req, res) => {
         } = req.body;
         // get the database controllers of the active organization
         organizationId = orgId;
-        console.log(orgId);
         let dbController = await getDbController(orgId);
         console.log("Received Database Controllers")
         // check for invalid entity type

@@ -32,6 +32,20 @@ const organizationSchema = new Schema({
     }
 });
 
+async function preventDuplicate(next) {
+    try {
+        const userId = this.users[0].toString();
+        const model = this.constructor;
+        const orgWithSameName = await model.find({name:this.name, users:{$in: [userId]}});
+        if (orgWithSameName.length > 0) next(new Error('Organization with same name already created by you.'));
+        else next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+organizationSchema.pre('save', preventDuplicate);
+
 const Organization = model("Organization", organizationSchema);
 
 export default Organization;

@@ -1,13 +1,12 @@
 
 const otherDetailsDocumentData = (data) => {
     const {notes, amount:totalAmount, amountOffset, mode:receiptMode} = data;
-    console.log(amountOffset);
+    const offSetTransactions = amountOffset.filter(e => e.amount !== 0);
     const linkedEntity = data.customer || data.vendor;
     const billingAddress = data.selectedEntity.addresses.find(e => e.type === 'billing');
     const partyName = data.selectedEntity.name;
     const otherDetails = {
-        linkedEntity, partyName, billingAddress, notes, totalAmount,  offSetTransactions:amountOffset,
-        receiptMode, 
+        linkedEntity, partyName, billingAddress, notes, totalAmount,  offSetTransactions, receiptMode, 
     };
     return otherDetails;
 };

@@ -177,7 +177,6 @@ export const verifyOtp = async (email, otp, requestToken, newRequestToken) => {
 
 export const updatePassword = async (email, password, requestToken) => {
     try {
-        console.log(email, password, requestToken);
         const doc = await User.findOneAndUpdate(
             {email, 'passwordResetRequest.requestToken':requestToken}, 
             {$set: {password}, $unset:{passwordResetRequest: 1}},

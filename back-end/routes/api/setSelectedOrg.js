@@ -7,6 +7,7 @@ const setSelectedOrg = async (req, res) => {
         await setLastSelectedOrg(userId, orgId);
         res.json({message: "Success"});
     } catch (error) {
+        console.log(error);
         res.status(403).json({error});
     }
 };

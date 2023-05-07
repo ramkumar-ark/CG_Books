@@ -60,7 +60,6 @@ otherDetailsSchema.pre('save', function(next){
     // calculate pendingAmount value
     if (this.offSetTransactions){
         const totalOffsetAmount = this.offSetTransactions.reduce((pv, e)=> e.amount + pv, 0);
-        console.log('totalOffsetAmount', totalOffsetAmount);
         this.pendingAmount = this.totalAmount - totalOffsetAmount;
     }else{
         this.pendingAmount = this.totalAmount;
@@ -69,34 +68,45 @@ otherDetailsSchema.pre('save', function(next){
 });
 
 otherDetailsSchema.post('findOneAndUpdate', async function(doc){
+    const updateQuery = this.getUpdate();
     const updatedDoc = await this.model.findOne(this.getQuery());
-     // avoid duplicate offset amounts of same receipt transaction to invoice transaction
-     if (updatedDoc.offSetTransactions.length>1){
-        let isDuplicateFound = false;
-        const offsetData = updatedDoc.offSetTransactions.slice(0,updatedDoc.offSetTransactions.length-1)
-            .map(e => {
-                if (e.transaction === updatedDoc.offSetTransactions.at(-1).transaction){
-                    isDuplicateFound = true;        
-                }else{ return e;}
-            })
-        if (isDuplicateFound) 
-            updatedDoc.offSetTransactions = offsetData.push(updatedDoc.offSetTransactions.at(-1));
+    const newUpdateQuery = {};
+    if (updateQuery['$push']) {
+         // avoid duplicate offset amounts of same receipt transaction to invoice transaction
+         if (updatedDoc.offSetTransactions.length>1){
+            let isDuplicateFound = false;
+            const offsetData = updatedDoc.offSetTransactions.slice(0,updatedDoc.offSetTransactions.length-1)
+                .filter(e => {
+                    if ((e.transaction && e.transaction.toString()) === updatedDoc.offSetTransactions.at(-1).transaction.toString()){
+                        isDuplicateFound = true;
+                        return false;      
+                    }else{ return true;}
+                });
+            if (isDuplicateFound){ 
+                offsetData.push(updatedDoc.offSetTransactions.at(-1))
+                newUpdateQuery.offSetTransactions = [...offsetData];
+            }
+        }
     }
     // calculate pendingAmount value
-    if (updatedDoc.offSetTransactions){
-        const totalOffsetAmount = updatedDoc.offSetTransactions.reduce((pv, e)=> e.amount + pv, 0);
-        updatedDoc.pendingAmount = updatedDoc.totalAmount - totalOffsetAmount;
+    if (newUpdateQuery.offSetTransactions || updatedDoc.offSetTransactions){
+        const totalOffsetAmount = (newUpdateQuery.offSetTransactions || updatedDoc.offSetTransactions)
+            .reduce((pv, e)=> e.amount + pv, 0);
+        newUpdateQuery.pendingAmount = updatedDoc.totalAmount - totalOffsetAmount;
     }else{
-        updatedDoc.pendingAmount = updatedDoc.totalAmount;
+        newUpdateQuery.pendingAmount = updatedDoc.totalAmount;
     }
     // update payment status of invoice.
     if (updatedDoc.status){
-        if (updatedDoc.pendingAmount == 0) updatedDoc.status = 'paid';
-        else updatedDoc.status = 'unPaid'; 
+        if (newUpdateQuery.pendingAmount == 0) newUpdateQuery.status = 'paid';
+        else newUpdateQuery.status = 'unPaid'; 
     }
+    
     // save document
-    updatedDoc.save();
-    // console.log('document saved', doc);
+    let savedDoc;
+    if (updateQuery['$set']) savedDoc = await updatedDoc.update(newUpdateQuery)
+    else savedDoc = await this.model.findByIdAndUpdate(updatedDoc['_id'].toString(), newUpdateQuery, {new:true});
+    console.log('savedDoc', savedDoc);
 });
 
 export default otherDetailsSchema;

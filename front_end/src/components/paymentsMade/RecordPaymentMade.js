@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import useGetDataForRecordPaymentForm from "../../hooks/useGetDataForRecordPaymentForm";
 import RecordPaymentForm from "../individual components/RecordPaymentForm/RecordPaymentForm";
 
-const RecordPaymentMade = ({}) => {
+const RecordPaymentMade = () => {
     const headerRef = useRef(null);
     const {transactionId} = useParams();
     const {isLoading, ...dataForForm} = useGetDataForRecordPaymentForm('Payment', transactionId);

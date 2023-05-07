@@ -84,13 +84,13 @@ export default function PurchaseVoucherView({data, isPdf=false}){
                         <View style={{...styles.tdAlignLeft, flex:1}}>
                             <Text style={styles.th}>Item & Description</Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'11%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'11%'}}>
                             <Text style={styles.th}>Qty</Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'11%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'11%'}}>
                             <Text style={styles.th}>RATE</Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'15%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'15%'}}>
                             <Text style={styles.th}>AMOUNT</Text>
                         </View>
                     </View>
@@ -102,17 +102,17 @@ export default function PurchaseVoucherView({data, isPdf=false}){
                         <View style={{...styles.tdAlignLeft, flex:1}}>
                             <Text style={styles.td}>{item.details}</Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'11%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'11%'}}>
                             <Text style={styles.td}>
                                 {item.quantity.toLocaleString('en-IN', {minimumFractionDigits:2})}
                             </Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'11%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'11%'}}>
                             <Text style={styles.td}>
                                 {item.rate.toLocaleString('en-IN', {minimumFractionDigits:2})}
                             </Text>
                         </View>
-                        <View style={{...styles.tdAlignRight, width:'15%'}}>
+                        <View style={{...styles.tdAlignRight, minWidth:'15%'}}>
                             <Text style={styles.td}>
                                 {item.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}
                             </Text>
@@ -122,7 +122,7 @@ export default function PurchaseVoucherView({data, isPdf=false}){
                 </View>
                 <View style={{marginTop:5, display:'flex', flexDirection:'row', justifyContent:'flex-end'}}>
                     <View style={styles.totalSection}>
-                        {(data.otherDetails.discount.value != 0 && data.rounding != 0) &&
+                        {(data.discount !== 0 && data.rounding !== 0) &&
                         <View style={{display:'flex', flexDirection:'row'}}>
                             <View style={styles.totalSectionLabel}>
                                 <Text style={styles.totalSectionFont}>Sub Total</Text>
@@ -131,16 +131,16 @@ export default function PurchaseVoucherView({data, isPdf=false}){
                                 <Text style={styles.totalSectionFont}>{data.otherDetails.itemDetails.reduce((pv,cv) => pv + cv.amount, 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
                             </View>
                         </View>}
-                        {data.otherDetails.discount.value != 0 &&
+                        {data.discount !== 0 &&
                         <View style={{display:'flex', flexDirection:'row'}}>
                             <View style={styles.totalSectionLabel}>
                                 <Text style={styles.totalSectionFont}>Discount</Text>
                             </View>
                             <View style={styles.totalSectionValue}>
-                                <Text style={styles.totalSectionFont}>{(data.otherDetails.discount.value * -1).toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
+                                <Text style={styles.totalSectionFont}>{(data.discount * -1).toLocaleString('en-IN', {minimumFractionDigits:2})}</Text>
                             </View>
                         </View>}
-                        {data.rounding != 0 &&
+                        {data.rounding !== 0 &&
                         <View style={{display:'flex', flexDirection:'row'}}>
                             <View style={styles.totalSectionLabel}>
                                 <Text style={styles.totalSectionFont}>Rounding Off</Text>

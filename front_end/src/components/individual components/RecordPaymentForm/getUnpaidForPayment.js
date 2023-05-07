@@ -3,20 +3,15 @@ export const getUnpaidForEditPayment = (unpaidData, offsetData ,opBalDate) => {
     // transform offsetData
     const receiptOffsetData = transformOffsetData(offsetData, opBalDate);
     // filter out offsetData from unpaidData
-    unpaidData.filter(e => filterFunction(e, receiptOffsetData));
+    const remainingUnpaidData = unpaidData.filter(e => filterFunction(e, receiptOffsetData));
     // combine the data
-    return [...receiptOffsetData, ...unpaidData];
+    return [...receiptOffsetData, ...remainingUnpaidData];
 }
 
 export function getUnpaidVouchersOfEntity(entityId, allUnpaidVouchers, customersObj, opBalDate) {
-    const unpaid = allUnpaidVouchers
-            .filter(e => e.transaction.otherDetails.linkedEntity === entityId)
-            .map(e => ({date:e.transaction.transactionDate, voucherNumber:e.voucherNumber, 
-                invoiceAmount:e.transaction.otherDetails.totalAmount,
-                balanceDue:e.transaction.otherDetails.pendingAmount,
-                referenceNumber:e.transaction.referenceNumber, transaction:e.transaction['_id'],
-                dueDate:e.transaction.otherDetails.dueDate, 
-            }));
+    const unpaid = transformUnpaidData(
+        allUnpaidVouchers.filter(e => e.transaction.otherDetails.linkedEntity === entityId)
+    );
     customersObj[entityId].otherDetails?.pendingAmount > 0 && unpaid.push({
         date:opBalDate, voucherNumber: 'Opening Balance', referenceNumber: 'Opening Balance',
         invoiceAmount: customersObj[entityId].otherDetails.totalAmount,
@@ -31,6 +26,7 @@ function transformOffsetData(offsetData, opBalDate){
     offsetData.forEach(e => newOffsetData.push({
         date:e.voucherDate || opBalDate, 
         voucherNumber:e.voucherNumber, 
+        referenceNumber:e.referenceNumber, 
         invoiceAmount:e.voucherAmount, 
         balanceDue:e.pendingAmount,
         dueDate:e.dueDate || opBalDate, 
@@ -38,6 +34,15 @@ function transformOffsetData(offsetData, opBalDate){
         receiptAmount: e.amount,
     }))
     return newOffsetData;
+}
+
+function transformUnpaidData(unpaidData) {
+    return unpaidData.map(e => ({date:e.transaction.transactionDate, voucherNumber:e.voucherNumber, 
+        invoiceAmount:e.transaction.otherDetails.totalAmount,
+        balanceDue:e.transaction.otherDetails.pendingAmount,
+        referenceNumber:e.transaction.referenceNumber, transaction:e.transaction['_id'],
+        dueDate:e.transaction.otherDetails.dueDate, 
+    }));
 }
 
 function filterFunction(data, offsetData){

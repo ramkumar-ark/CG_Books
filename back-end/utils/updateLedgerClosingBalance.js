@@ -21,14 +21,12 @@ const updateLedgerClosingBalance = async (orgId, ledgerId) => {
 export function calculateClosingBalance(transactions, ledgerId, openingBalance){
     let closingBalance = openingBalance;
     for (const transac of transactions){
-        console.log(transac);
         for (const debit of transac.debits){
             if (debit.ledger.toString() === ledgerId.toString()) closingBalance += debit.amount;
         }
         for (const credit of transac.credits){
             if (credit.ledger.toString() === ledgerId.toString()) closingBalance -= credit.amount;
         }
-        console.log('closingBalance', closingBalance);
     }
     return closingBalance;
 }

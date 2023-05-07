@@ -22,8 +22,5 @@ export default function useGetSubmitFunction(voucherType, onFinish) {
           onOk() {if (isAdvance) onFinish(values)},
         });
     };
-    const submitFunction = (values, summaryData) => {
-        
-    };
     return showModalOnSubmit;
 }

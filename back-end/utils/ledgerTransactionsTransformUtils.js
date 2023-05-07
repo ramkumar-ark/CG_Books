@@ -35,7 +35,7 @@ export const transformData = (data, voucherNumbers, referenceNumbers, opBalance)
             date: transac.transactionDate, voucherType:transac.voucherType.primaryType, 
             voucherNumber, dueDate: transac.otherDetails.dueDate, amount:transac.netAmount, 
             referenceNumber: transac.referenceNumber, runningBalance, status:transac.otherDetails.status,
-            pendingAmount:transac.otherDetails.pendingAmount, offsetAmounts,
+            pendingAmount:transac.otherDetails.pendingAmount, offsetAmounts, id:[transac['_id']]
         };
         transactions.push(transaction);
     }

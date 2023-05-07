@@ -20,7 +20,6 @@ const voucherTypeSchema = new Schema({
 });
 
 transactionsSchema.pre('save', function(next){
-    console.log(this);
     const voucherNos = this.transactions.map(e => e.voucherNumber);
     if (voucherNos.length !== [...new Set(voucherNos)].length)
         next(new Error('Voucher Number already exists.'));
@@ -30,22 +29,22 @@ transactionsSchema.pre('save', function(next){
     else next();
 });
 
-voucherTypeSchema.pre('save', function(next){
-  console.log(this.transactions);
-  const finYrs = this.transactions.map(e => e.financialYear);
-  if (finYrs.length !== [...new Set(finYrs)].length)
-    next(new Error('Financial Year already exists.'));
-  else next();
-});
+// voucherTypeSchema.pre('save', function(next){
+//   console.log(this.transactions);
+//   const finYrs = this.transactions.map(e => e.financialYear);
+//   if (finYrs.length !== [...new Set(finYrs)].length)
+//     next(new Error('Financial Year already exists.'));
+//   else next();
+// });
 
-voucherTypeSchema.pre('save', function(next){
-  this.transactions.forEach(year => {
-    const vchNos = year.transactions.map(e => e.voucherNumber);
-    const uniqueVchNos = new Set(vchNos);
-    if (vchNos.length !== uniqueVchNos.size)
-      next(new Error('Voucher Number already exists.'))
-  });
-});
+// voucherTypeSchema.pre('save', function(next){
+//   this.transactions.forEach(year => {
+//     const vchNos = year.transactions.map(e => e.voucherNumber);
+//     const uniqueVchNos = new Set(vchNos);
+//     if (vchNos.length !== uniqueVchNos.size)
+//       next(new Error('Voucher Number already exists.'))
+//   });
+// });
 
 
 

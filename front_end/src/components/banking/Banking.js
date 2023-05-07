@@ -2,6 +2,7 @@ import { Switch, Route } from "react-router-dom";
 import BankingHomePage from "./BankingHomePage";
 import AddBank from "./AddBank";
 import EditAccount from "./EditAccount";
+import ViewBank from "./ViewBank";
 
 const Banking = ({basePath}) => (
     <Switch>
@@ -17,8 +18,8 @@ const Banking = ({basePath}) => (
         <Route path={`${basePath}/edit/cashaccount/:ledgerId`}>
             <EditAccount/>
         </Route>
-        <Route path={`${basePath}/:bankDetailsId`}>
-            <h1>View Bank Account</h1>
+        <Route path={`${basePath}/:ledgerId`}>
+            <ViewBank/>
         </Route>
     </Switch>
 );

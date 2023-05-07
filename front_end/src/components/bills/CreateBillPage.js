@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import useGetEntities from "../../hooks/useGetEntities";
 import constructInitialValues from "../individual components/CreateVoucherForm/constructInitialValues";
 import useGetVoucher from "../../hooks/useGetVoucher";
@@ -9,10 +9,11 @@ import useSelectedOrg from "../../hooks/useSelectedOrg";
 import useCreateVoucher from "../../hooks/useCreateVoucher";
 import useUpdateVoucher from "../../hooks/useUpdateVoucher";
 
-const {Title} = Typography;
+const {Title, Link} = Typography;
 
-const CreateBillPage = ({}) => {
+const CreateBillPage = () => {
     const {transactionId} = useParams();
+    const history = useHistory();
     const {entityDataObj} = useGetEntities('vendor');
     const voucherData = useGetVoucher(transactionId, 'Purchase');
     const initialValues = (transactionId && voucherData.voucherNumber) ? constructInitialValues(voucherData, 'vendor') : {
@@ -32,7 +33,7 @@ const CreateBillPage = ({}) => {
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', 
                 padding:`0px 20px`, marginBottom:20 ,borderBottom:'1px solid #eee'}}>
                 <Title level={3}>{transactionId ? 'Edit' : 'New'} Bill</Title>
-                <CloseOutlined style={{fontSize:18}}/>
+                <Link onClick={history.goBack()}><CloseOutlined style={{fontSize:18}}/></Link>
             </div>
             {((transactionId && initialValues.vendor) || (!transactionId && entityDataObj)) &&
             <CreateVoucherForm entityDataObj={entityDataObj} 

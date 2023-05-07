@@ -1,6 +1,6 @@
-import { Space, Typography, Form, InputNumber, Table, Col, Row, Popover, notification, Input } from "antd";
+import { Space, Typography, Form, InputNumber, Table, Col, Row, Popover, notification } from "antd";
 import { ProfileOutlined, DownOutlined } from '@ant-design/icons'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useStateEffect from "../../../hooks/useStateEffect";
 import DateFilterRange from "./DateFilterRange";
 
@@ -9,7 +9,7 @@ const { Title, Text } = Typography;
 const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd, voucherType}) =>{
     const offsetVoucherType = voucherType === 'Receipt' ? 'Invoice' : 'Bill';
     const [offsetAmounts, setOffsetAmounts] = useState(InvoiceData.map(e => ({transaction:e.transaction, 
-        amount:e.receiptAmount})));
+        amount:e.receiptAmount || 0})));
     const [tableData, setTableData] = useStateEffect(InvoiceData, () => {form.setFieldsValue({'amountOffset':[]})});
     const [openPeiodFilter, setOpenPeriodFilter] = useState();
     const [api, contextHolder] = notification.useNotification();
@@ -28,12 +28,12 @@ const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd, vouch
         setOffsetAmounts(data);
     };
    
-    const receivedFullAmount = () => {
+    const receivedFullAmount = useCallback(() => {
         const data = [...tableData];
         const offsetData = data.map(e => ({amount: e.balanceDue, transaction: e.transaction}));
         form.setFieldsValue({'amountOffset': offsetData});
         setOffsetAmounts(offsetData);
-    };
+    }, [form, tableData]);
 
     function clearAppliedAmount(){
         const offsetList = form.getFieldValue('amountOffset') || [];
@@ -64,7 +64,10 @@ const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd, vouch
     useEffect(() => {
         onUsedAmtChange([...offsetAmounts].reduce((pe,e)=>pe+e.amount,0));
     }, [offsetAmounts]);
-    useEffect(() => {isFullAmtRcd && receivedFullAmount()}, [isFullAmtRcd]);
+
+    useEffect(() => {
+        isFullAmtRcd && receivedFullAmount();
+    }, [isFullAmtRcd, receivedFullAmount]);
 
     const columns = [
         {
@@ -110,7 +113,7 @@ const UnpaidInvoices = ({InvoiceData, form, onUsedAmtChange, isFullAmtRcd, vouch
                         }
                 />
                 </Form.Item>
-                <Form.Item name={['amountOffset', index, 'transaction']} hidden={true}/>
+                <Form.Item name={['amountOffset', index, 'transaction']} hidden={true} initialValue={record.transaction}/>
                 <Typography.Link 
                     onClick={()=>{OnPayInFullClick(record.balanceDue, index);}} 
                     style={{fontSize:12}}>

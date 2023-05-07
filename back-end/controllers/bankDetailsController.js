@@ -15,7 +15,6 @@ export default class BankDetailsController{
 
     async getDetails(id) {
         try {
-            console.log(id);
             const doc = await this.model.findById(id).populate('ledger');
             return Promise.resolve(doc);
         } catch (error) {
@@ -34,7 +33,7 @@ export default class BankDetailsController{
 
     async update(bankDetails, id){
         try {
-            const doc = await this.model.findOneAndReplace({'_id':id, bankDetails});
+            const doc = await this.model.findOneAndReplace({'_id':id}, {bankDetails});
             return Promise.resolve(doc);
         } catch (error) {
             return Promise.reject(error);
