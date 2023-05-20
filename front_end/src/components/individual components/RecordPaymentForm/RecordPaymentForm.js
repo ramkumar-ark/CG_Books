@@ -39,7 +39,6 @@ const RecordPaymentForm = ({initialValues, onSave, voucherType, voucherData, ent
             layout='horizontal'
             style={{padding:'0 20px 50px', textAlign:'left'}}  
             onFinish={(values) => {
-                console.log(values);
                 summaryData.received === summaryData.used ? onFinish(values) : onSubmit(values, summaryData);
             }}
             disabled={!selectedEntity}

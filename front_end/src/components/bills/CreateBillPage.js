@@ -33,7 +33,7 @@ const CreateBillPage = () => {
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', 
                 padding:`0px 20px`, marginBottom:20 ,borderBottom:'1px solid #eee'}}>
                 <Title level={3}>{transactionId ? 'Edit' : 'New'} Bill</Title>
-                <Link onClick={history.goBack()}><CloseOutlined style={{fontSize:18}}/></Link>
+                <Link onClick={() => {history.goBack()}}><CloseOutlined style={{fontSize:18}}/></Link>
             </div>
             {((transactionId && initialValues.vendor) || (!transactionId && entityDataObj)) &&
             <CreateVoucherForm entityDataObj={entityDataObj} 

@@ -5,7 +5,7 @@ const { Text } = Typography;
 
 const SortButton = ({sortOptions, refetchFunction, onItemSelect}) => {
     const childrenItems = sortOptions.map((e, i) => ({
-        label:<Typography.Link onClick={() => onItemSelect(e.sortField)}>
+        label:<Typography.Link onClick={() => onItemSelect(e.sortField)} key={i+1}>
                 <Text>{e.label}</Text>
             </Typography.Link>, 
         key:i + 1,

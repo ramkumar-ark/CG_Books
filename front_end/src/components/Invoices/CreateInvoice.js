@@ -19,7 +19,7 @@ const { Title, Text } = Typography;
 
 const CreateInvoice = () => {
     const history = useHistory();
-    const {url, path} = useRouteMatch();
+    const {url} = useRouteMatch();
     let mode = url.split('/')[4];
     mode = `${mode[0].toUpperCase()}${mode.slice(1)}`;
     const transactionId = useParams()?.transactionId;
@@ -159,7 +159,7 @@ const CreateInvoice = () => {
     );
 
     useEffect(() => {
-        if(isSucess1 && mode == 'Edit'){ 
+        if(isSucess1 && mode === 'Edit'){ 
             const {subTotal, discount, rounding:round, otherDetails:{totalAmount:total}} = vchData.voucher;
             setSelectedCustomer(customersObj[initialValues.customer]);
             setTableFigures({subTotal, discount, round, total});

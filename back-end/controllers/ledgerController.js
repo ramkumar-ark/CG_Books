@@ -4,9 +4,9 @@ export default class LedgerController {
         this.model = LedgerModel;
     }
 
-    async create(name, groupId, description, opBalance){
+    async create(name, groupId, description, opBalance, isReadOnly){
         try {
-            const ledger = await this.model.create({name, group:groupId, description, opBalance: opBalance || 0});
+            const ledger = await this.model.create({name, group:groupId, description, opBalance: opBalance || 0, isReadOnly});
             return Promise.resolve(ledger.id);
         } catch (error) {
             return Promise.reject(error);
@@ -15,7 +15,7 @@ export default class LedgerController {
 
     async update(name, groupId, description, opBalance, ledgerId){
         try {
-            const ledger = await this.model.findOneAndReplace({'_id':ledgerId}, {name, group:groupId, description, opBalance: opBalance || 0}, {new:true});
+            const ledger = await this.model.findOneAndUpdate({'_id':ledgerId}, {name, group:groupId, description, opBalance: opBalance || 0}, {new:true});
             return Promise.resolve(ledger);
         } catch (error) {
             return Promise.reject(error);
@@ -44,6 +44,16 @@ export default class LedgerController {
         try {
             await this.model.deleteOne({"_id": id});
             return Promise.resolve();
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async deleteLedgers(ledgerIds) {
+        try {
+            const result = await this.model.deleteMany({'_id': {'$in': ledgerIds}}, { writeConcern: { w: "majority", j: true } });
+            console.log(result);
+            return Promise.resolve(result.deletedCount);   
         } catch (error) {
             return Promise.reject(error);
         }

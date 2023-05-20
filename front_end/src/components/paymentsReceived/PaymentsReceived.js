@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router-dom";
-import RecordReceipt from "./RecordReceipt";
 import ViewAllReceipts from "./ViewAllReceipts";
 import ViewReceipt from "./ViewReceipt";
+import RecordPaymentReceived from "./RecordPaymentReceived";
 
 
 const PaymentsReceived = ({basePath}) => {
@@ -11,13 +11,13 @@ const PaymentsReceived = ({basePath}) => {
                 <ViewAllReceipts/>
             </Route>
             <Route path={`${basePath}/new`}>
-                <RecordReceipt/>
+                <RecordPaymentReceived />
             </Route>
-            <Route exact path={`${basePath}/:transactionid`}>
+            <Route exact path={`${basePath}/:transactionId`}>
                 <ViewReceipt/>
             </Route>
-            <Route path={`${basePath}/edit/:transactionid`}>
-                <RecordReceipt edit={true} />
+            <Route path={`${basePath}/edit/:transactionId`}>
+                <RecordPaymentReceived />
             </Route>
         </Switch>
     );

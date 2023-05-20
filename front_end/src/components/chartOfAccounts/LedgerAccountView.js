@@ -5,6 +5,7 @@ import useGetLedgers from "../../hooks/useGetLedgers";
 import { useParams } from "react-router-dom";
 import SubHeaderSingleView from "../individual components/SubHeaderSingleView";
 import useCreateAccountModal from "./useCreateAccountModal";
+import useDeleteAccount from "./useDeleteAccount";
 
 const {Text} = Typography;
 
@@ -14,12 +15,13 @@ const LedgerAccountView = ({api}) => {
     const ledgers = useGetLedgers();
     const ledger = ledgers?.find(e => e.key === ledgerId);
     const [CreateAccountModal, showModal] = useCreateAccountModal(api, true);
+    const {deleteLedgerAccount, isLoading} = useDeleteAccount(ledgerId);
     return (
-        <Spin spinning={!ledger}>
+        <Spin spinning={!ledger || isLoading}>
             <Header componentref={headerRef} topOffset={0} ledgerGroupName={ledger?.group} 
                 ledgerName={ledger?.name} titelLevel={4}/>
             <SubHeaderSingleView 
-                deleteFunction={() => {}}
+                deleteFunction={deleteLedgerAccount}
                 editFunction={showModal}
                 topOffset={headerRef?.current?.clientHeight}
             />

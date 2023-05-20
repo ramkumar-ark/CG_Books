@@ -7,7 +7,7 @@ export default function useGetUnpaidAmount(primaryVoucherType) {
     const unpaidVouchers = useGetUnpaidVouchers(primaryVoucherType);
     const unpaidtransactions = unpaidVouchers?.map(e => ({
         dueDate:new Date(e.transaction.otherDetails.dueDate), 
-        amount:e.transaction.otherDetails.totalAmount,
+        amount:e.transaction.otherDetails.pendingAmount,
     }));
     const {entityDataObj: entities} = useGetEntities(primaryVoucherType==='sales' ? 'customer' : 'vendor');
     const unpaidOpBalances = Object.keys(entities)?.filter(e => entities[e]?.otherDetails?.pendingAmount > 0)

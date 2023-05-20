@@ -1,5 +1,7 @@
 export const computeNetAmount = (transactions, ledgerIds) => {
     for (const transac of transactions){
+        console.log(ledgerIds);
+        console.log(transac);
         let netAmount = 0;
         for (const debit of transac.debits){
             if (ledgerIds.includes(debit.ledger.toString())) netAmount += debit.amount;

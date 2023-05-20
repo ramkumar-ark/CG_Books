@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { Typography, Form } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons"
 import BankDetailsSection from "./BankDetailsSection";
@@ -18,7 +18,7 @@ const BankDetailsTab = ({data}) => {
         return (
             <div style={{textAlign:'left', marginBottom:20}}>
             {bankDetailsList.map((e, i) => (
-                <>
+                <Fragment key={i+1}>
                     {bankDetailsList.length > 1 && 
                         <Form.Item label={`BANK ${i+1}`} labelCol={{span:4}} wrapperCol={{span:16, lg:8}}>
                             {i>0 && <div style={{textAlign:'right', width:'100%'}}>
@@ -29,7 +29,7 @@ const BankDetailsTab = ({data}) => {
                         </Form.Item>
                     }
                     <BankDetailsSection key={i + 1} index={i}/>
-                </>
+                </Fragment>
             ))}
             <Link onClick={() => {addBankDetail()}}>
                 <PlusOutlined/> Add New Bank

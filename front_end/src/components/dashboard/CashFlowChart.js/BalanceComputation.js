@@ -21,7 +21,7 @@ const BalanceComputation = ({startDate, endDate, openingBalance, closingBalance,
             {label:`Incoming`, amount:totalDebit, action:'+', labelColor:'#549d06'},
             {label:`Outgoing`, amount:totalCredit, action:'-', labelColor:'#e54643'},
             {label:`Cash as on ${endDate?.toLocaleDateString('en-IN', {month:'2-digit', day:'2-digit', year:'numeric'})}`, amount:closingBalance, action:'='},
-        ].map(e => <DisplayAmountItem label={e.label} amount={e.amount} computationSymbol={e.action} labelColor={e.labelColor}/>);
+        ].map((e, i) => <DisplayAmountItem label={e.label} amount={e.amount} computationSymbol={e.action} labelColor={e.labelColor} key={i+1}/>);
 };
 
 export default BalanceComputation;

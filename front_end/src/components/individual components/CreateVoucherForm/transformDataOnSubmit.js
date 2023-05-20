@@ -26,7 +26,6 @@ function transformDataOnSubmit(formData, tableTotals, selectedEntity, requiredLe
     const voucherNumber = selectedEntity.type === 'customer' && formData.voucherNumber;
     const voucherType = selectedEntity.type === 'customer' ? "Sales" : "Purchase";
     const requestObject = {otherDetails, transaction, voucherType, voucherNumber};
-    console.log(requestObject);
     return requestObject;
 }
 

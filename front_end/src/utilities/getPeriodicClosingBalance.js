@@ -29,7 +29,6 @@ const getPeriodicClosingBalances = ({transactions, timeUnit, timeValue, groupOrL
         closingBalance = (data[entry] !== 0) ? data[entry] : closingBalance;
         result.push({period:entry, closingBalance, name:groupOrLedgerName});
     }
-    console.log(result);
     return result;
 };
 

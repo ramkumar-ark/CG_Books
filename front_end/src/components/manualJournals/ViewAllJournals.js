@@ -3,10 +3,9 @@ import HeaderViewAllJournals from "./HeaderViewAllJournals";
 import JournalsTable from "./JournalsTable";
 import useGetVouchers from "../../hooks/useGetVouchers";
 
-const ViewAllJournals = ({}) => {
+const ViewAllJournals = () => {
     const headerRef = useRef();
     const {vouchers} = useGetVouchers('Journal');
-    console.log(vouchers);
     return (
         <>
             <HeaderViewAllJournals componentref={headerRef} topOffset={0}/>

@@ -19,6 +19,15 @@ const Chart = ({data}) => {
             //     {type: 'adjust-color',},
             // ],
         },
+        tooltip: {
+            showMarkers: false,
+            formatter: (record) => {
+              return {
+                  name:record.type,
+                  value:`₹ ${record.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+              };
+            },
+        },
     };
     return <Column {...config} style={{margin:15}}/>;
 };

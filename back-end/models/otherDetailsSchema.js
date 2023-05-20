@@ -106,7 +106,6 @@ otherDetailsSchema.post('findOneAndUpdate', async function(doc){
     let savedDoc;
     if (updateQuery['$set']) savedDoc = await updatedDoc.update(newUpdateQuery)
     else savedDoc = await this.model.findByIdAndUpdate(updatedDoc['_id'].toString(), newUpdateQuery, {new:true});
-    console.log('savedDoc', savedDoc);
 });
 
 export default otherDetailsSchema;

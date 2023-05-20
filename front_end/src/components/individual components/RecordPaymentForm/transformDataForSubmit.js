@@ -1,7 +1,7 @@
 
 const otherDetailsDocumentData = (data) => {
     const {notes, amount:totalAmount, amountOffset, mode:receiptMode} = data;
-    const offSetTransactions = amountOffset.filter(e => e.amount !== 0);
+    const offSetTransactions = amountOffset.filter(e => !!e.amount);
     const linkedEntity = data.customer || data.vendor;
     const billingAddress = data.selectedEntity.addresses.find(e => e.type === 'billing');
     const partyName = data.selectedEntity.name;

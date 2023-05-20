@@ -15,8 +15,8 @@ const SubHeaderSingleView = ({editFunction, deleteFunction, downloadFunction, re
                 {label: 'Delete', icon:() => <DeleteOutlined/>, fn:deleteFunction},
                 {label: 'Download PDF', icon:() => <FilePdfOutlined/>, fn:downloadFunction},
                 {label: 'Record Payment', icon:() => <DollarCircleOutlined/>, fn:recordPaymentFunction},
-            ].map(e => e.fn &&
-                <Link onClick={e.fn}>
+            ].map((e, i) => e.fn &&
+                <Link onClick={e.fn} key={i+1}>
                     <div style={{padding:10, borderRight:'ridge'}}>
                         <e.icon/> {e.label}
                     </div>

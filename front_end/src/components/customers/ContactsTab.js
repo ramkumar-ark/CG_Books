@@ -6,7 +6,6 @@ const { Link } = Typography;
 
 const EditableTable = ({sourceData}) => {
   const [dataSource, setDataSource] = useState(sourceData);
-  console.log(dataSource);
   const handleAddRow = () => {
     setDataSource([...dataSource, {}]);
   };

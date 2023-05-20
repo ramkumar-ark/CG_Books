@@ -26,7 +26,7 @@ export default function useGetDataForRecordPaymentForm(voucherType, transactionI
     const entityType = voucherType === 'Receipt' ? 'customer': 'vendor';
     const {entityDataObj} = useGetEntities(entityType);
     const {data: closingBalances} = useGetLedgerBalances();
-    const offsetVoucherType = voucherType === 'Receipt' ? 'invoice' : 'purchase';
+    const offsetVoucherType = voucherType === 'Receipt' ? 'sales' : 'purchase';
     const unpaidVouchers = useGetUnpaidVouchers(offsetVoucherType);
     const {userId, '_id':orgId} = useSelectedOrg();
     const [createVoucher, {isLoading:isCreating}] = useCreateVoucher();

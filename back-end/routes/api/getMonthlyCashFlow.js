@@ -1,25 +1,18 @@
 import { getOrgById } from "../../controllers/organization";
-import { getDbController } from "../../db/accountingDb";
-import getGroupTransactions from "./getGroupTransactions";
 
-const getCashFlowMonthlyData = async (req, res) => {
+const getMonthlyCashFlow = async (req, res, next) => {
     try {
-        const {orgId} = req.params;
-        const {'createdOn':opBalDate} = await getOrgById(orgId);
-        const dbController = await getDbController(orgId);
-        const { '_id': bankGroupId} = await dbController.primaryGroup.getByName('Bank');
-        const { '_id': cashGroupId} = await dbController.primaryGroup.getByName('Cash');
-        const {groupTransactions: cashGroupTransactions, openingBalance:cashOpeningBalance} = 
-            await getGroupTransactions({params:{orgId, groupId:cashGroupId}, isMiddleWare:true}, res);
-        const {groupTransactions: bankGroupTransactions, openingBalance:bankOpeningBalance} = 
-            await getGroupTransactions({params:{orgId, groupId:bankGroupId}, isMiddleWare:true}, res);
+        const {'createdOn':opBalDate} = await getOrgById(req.params.orgId);
+        const [cashData, bankData] = req.result;
+        const {groupTransactions: cashGroupTransactions, openingBalance:cashOpeningBalance} = cashData;
+        const {groupTransactions: bankGroupTransactions, openingBalance:bankOpeningBalance} = bankData;
         const cashMonthlyData = getMonthlyData(cashGroupTransactions, opBalDate, cashOpeningBalance);        
         const bankMonthlyData =  getMonthlyData(bankGroupTransactions, opBalDate, bankOpeningBalance);
         const cashFlowData = getAggragateObject(cashMonthlyData, bankMonthlyData);
-        res.json(cashFlowData);
+        req.result = cashFlowData;
+        next();
     } catch (error) {
-        console.log(error);
-        res.status(403).json({error});
+        res.status(403).json({error})
     }
 };
 
@@ -66,4 +59,5 @@ function getAggragateObject(cashDataObject, bankDataObject){
     return aggragateObject;
 }
 
-export default getCashFlowMonthlyData;
+
+export default getMonthlyCashFlow;

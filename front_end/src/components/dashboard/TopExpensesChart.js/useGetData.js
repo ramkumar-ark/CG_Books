@@ -13,7 +13,6 @@ for (const option of periodOptions) {
 export default function useGetData() {
     const {'_id': orgId} = useSelectedOrg();
     const {data} = useGetExpenseMonthlyDataQuery({params:{orgId}}, {skip:!orgId});
-    console.log(data);
     const [componentData, setComponentData] = useState();
     const onPeriodChange = useCallback(function(option) {
         const periodData = periodDataInstances[option];
@@ -21,7 +20,6 @@ export default function useGetData() {
         setComponentData(periodData.getRequiredData());
         }, [data]
     );
-    console.log(componentData);
     const prevdata = usePrevious(data);
     useEffect(() => {(!prevdata && data) && onPeriodChange('cfy')}, [data, prevdata, onPeriodChange]);
     return [componentData, onPeriodChange];

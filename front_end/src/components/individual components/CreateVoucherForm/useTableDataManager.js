@@ -9,7 +9,6 @@ export default function useTableDataManager(initialValues){
     }
     const [tableTotals, setTableTotals] = useState(initialState);
     const updateTableTotals = (discountAmount, subTotalAmount) => {
-        console.log(discountAmount, subTotalAmount);
         let {subTotal, discount, round, total} = tableTotals;
         subTotal = Number(subTotalAmount).toFixed(2);
         discount = (Number(discountAmount) * -1).toFixed(2);

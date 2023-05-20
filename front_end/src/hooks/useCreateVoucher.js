@@ -1,18 +1,16 @@
 import { useHistory } from "react-router-dom";
 import { useCreateVoucherMutation } from "../service/transactionsApi";
-import useSelectedOrg from "./useSelectedOrg";
 import { Modal, Typography } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 const { confirm } = Modal;
 const { Text } = Typography;
 
 export default function useCreateVoucher(){
     const history = useHistory();
-    const {'_id': orgId} = useSelectedOrg();
     const [createVoucher, {isLoading, isSuccess:isCreated, error}] = useCreateVoucherMutation();
-    const showModalOnSubmitFailed = () => {
+    const showModalOnSubmitFailed = useCallback(() => {
         Modal.error({
             title:'Form Submission Failed', 
             content:<Text>
@@ -21,11 +19,11 @@ export default function useCreateVoucher(){
                 : 'There was an error in submiting the form. Please try again later. If the error persists, contact support.'}
                 </Text>,         
         });
-    };
+    }, [error]);
     useEffect(() => {
         isCreated && history.goBack();
         error && showModalOnSubmitFailed();
-    }, [isCreated, error, history]);
+    }, [isCreated, error, history, showModalOnSubmitFailed]);
 
     const showConfirm = (requestObject) => {
         confirm({

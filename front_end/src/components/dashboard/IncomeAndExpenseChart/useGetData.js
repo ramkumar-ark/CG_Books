@@ -13,7 +13,6 @@ for (const option of periodOptions) {
 export default function useGetData() {
     const {'_id': orgId} = useSelectedOrg();
     const {data} = useGetMonthlyIncomeAndExpenseQuery({params:{orgId}}, {skip:!orgId});
-    console.log(data);
     const [componentData, setComponentData] = useState();
     const onPeriodChange = useCallback(function(option) {
         const periodData = periodDataInstances[option];

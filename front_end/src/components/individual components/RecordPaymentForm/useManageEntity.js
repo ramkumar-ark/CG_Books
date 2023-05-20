@@ -32,5 +32,3 @@ function initState(entityDataObj, closingBalances, unpaidVouchers, voucherData) 
         return {...entityDataObj[entityId], closingBalance, unpaid:updatedUnpaidData};
     }
 }
-
-

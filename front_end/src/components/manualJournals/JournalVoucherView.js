@@ -64,7 +64,7 @@ function JournalVoucherView({data, isPdf=false}){
                     </View>
                 </View>
                 {entriesList.map((item,index) => (
-                    <View style={styles.tr}>
+                    <View style={styles.tr} key={index+1}>
                         <View style={{...styles.tdAlignLeft, flex:1}}>
                             <Text style={styles.td}>{item.ledger}</Text>
                         </View>

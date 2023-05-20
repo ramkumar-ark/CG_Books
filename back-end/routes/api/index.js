@@ -32,17 +32,23 @@ import deleteEntity from "./deleteEntity";
 import updateOffsetTransactions from "./updateOffsetTransactions";
 import getEntity from "./getEntity";
 import getLedgersOfAccountType from "./getLedgersOfAccountType";
-import getGroupTransactions from "./getGroupTransactions";
+import getLedgersOfGroup from "./getLedgersOfGroup";
 import createAccount from "./createAccount";
 import updateLedgerAccount from "./updateLedgerAccount";
 import getBankAccount from "./getBankAccount";
 import updateBankAccount from "./updateBankAccount";
-import getCashFlowMonthlyData from "./getCashFlowMonthlyData";
 import getMonthlyIncomeAndExpense from "./getMonthlyIncomeAndExpense";
 import getAllExpenses from "./getAllExpenses";
 import resetPasswordRoutes from "./resetPasswordRoutes"
+import getTransactionsOfLedgers from "./getTransactionsOfLedgers";
+import sendFinalResponse from "./sendFinalResponse";
+import getCashAndBankGroupId from "./getCashAndBankGroupId";
+import getMonthlyCashFlow from "./getMonthlyCashFlow";
+import getIncomeAndExpenseLedgers from "./getIncomeAndExpenseLedgers";
+import deleteLedgerAccount from "./deleteLedgerAccount";
+import deleteLedgers from "./deleteMultipleLedgers";
 
-const router =Router();
+const router = Router();
 
 router.use("/resetpassword", resetPasswordRoutes);
 router.post("/signup", signUpUser);
@@ -64,9 +70,9 @@ router.patch("/updateentity/:entityId", protectApi, updateEntity);
 router.get("/getcustomers/:orgId", protectApi, getCustomers);
 router.get("/getvendors/:orgId", protectApi, getVendors);
 router.get("/getentity/:orgId/:entityId", protectApi, getEntity);
-router.get("/getrunningbalanceofgroup/:orgId/:groupId", protectApi, getGroupTransactions);
-router.get("/getcashflowmonthlydata/:orgId", protectApi, getCashFlowMonthlyData);
-router.get("/getincomeandexpensemonthlydata/:orgId", protectApi, getMonthlyIncomeAndExpense);
+router.get("/getrunningbalanceofgroup/:orgId/:groupId", protectApi, getLedgersOfGroup, getTransactionsOfLedgers, sendFinalResponse);
+router.get("/getcashflowmonthlydata/:orgId", protectApi, getCashAndBankGroupId, getLedgersOfGroup, getTransactionsOfLedgers, getMonthlyCashFlow, sendFinalResponse);
+router.get("/getincomeandexpensemonthlydata/:orgId", protectApi, getIncomeAndExpenseLedgers, getTransactionsOfLedgers, getMonthlyIncomeAndExpense, sendFinalResponse);
 router.get("/getexpensesmonthlydata/:orgId", protectApi, getAllExpenses);
 router.get("/getcustomermonthlyincome/:orgId/:customerLedgerId", protectApi, getCustomerMonthlyIncome);
 router.get("/getvendormonthlyexpense/:orgId/:vendorLedgerId", protectApi, getVendorMonthlyExpense);
@@ -83,6 +89,8 @@ router.get("/getvoucherdata/:orgId/:voucherName/:transactionId", protectApi, get
 router.patch("/updatevoucherdata/:orgId/:transactionId/:otherDetailsId", protectApi, updateVoucher);
 router.delete("/deletevoucherentry/:orgId", protectApi, deleteVoucherData);
 router.delete("/deleteentity/:orgId/:entityId", protectApi, deleteEntity);
+router.delete("/deleteledger/:orgId/:ledgerId", protectApi, deleteLedgerAccount, sendFinalResponse);
+router.delete("/deleteledgers/:orgId", protectApi, deleteLedgers, sendFinalResponse);
 router.get("/getledgerbalance/:orgId/:ledgerId", protectApi, getLegerBalance);
 router.get("/getallbalances/:orgId", protectApi, getAllBalances);
 router.get("/testApi", testApi);

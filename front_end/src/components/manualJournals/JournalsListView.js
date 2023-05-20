@@ -11,11 +11,12 @@ const JournalsListView = () => {
     return (
         <>
             <Header topOffset={0}/>
-            {vouchers?.map(e => 
+            {vouchers?.map((e, i) => 
                 <JournalListItem 
                     data={e} 
                     isSelected={e.transactionId.toString() === params.transactionId}
                     onClick={() => {history.replace(pathname.replace(params.transactionId, e.transactionId))}}
+                    key={i+1}
                 />
             )}
         </>

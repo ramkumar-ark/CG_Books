@@ -1,7 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Space, Typography } from 'antd';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import useAuthentication from '../useAuthentication';
 
 const UserDropDown = () => {
@@ -20,9 +19,9 @@ const UserDropDown = () => {
           type: 'divider',
         },
         {
-          label: <Link onClick={() => {
+          label: <Typography.Link onClick={() => {
             logOut();
-          }}>Log Out</Link>,
+          }}>Log Out</Typography.Link>,
           key: '3',
         },
       ];
@@ -33,12 +32,12 @@ const UserDropDown = () => {
           }}
           trigger={['click']}
         >
-          <a onClick={(e) => e.preventDefault()}>
+          <Typography.Link onClick={(e) => e.preventDefault()}>
             <Space>
               {user && user.name}
               <DownOutlined />
             </Space>
-          </a>
+          </Typography.Link>
         </Dropdown>
         );
 };

@@ -10,7 +10,6 @@ const CreateNewAccountForm = ({form, onSave, initialValues, isGroupDisabled}) =>
             labelCol={{lg:8, span:24}}
             style={{padding:'30px 10px'}}
             onFinish={(values) => {
-                console.log(values);
                 onSave(values);
             }}
             initialValues={initialValues}

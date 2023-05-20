@@ -53,9 +53,9 @@ export default function createAccountingControllers(modelsObject) {
         try {
             const { ledgerMasters: ledgerObjs } = await getMasters();
             for (const record of ledgerObjs){
-                const {name, group, description} = record;
+                const {name, group, description, readOnly} = record;
                 const { id:groupId } = await primaryGroup.getByName(group);
-                await ledger.create(name, groupId, description);
+                await ledger.create(name, groupId, description, 0, !!readOnly);
             }
             console.log('ledger masters created.');
             return Promise.resolve();

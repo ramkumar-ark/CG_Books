@@ -92,9 +92,9 @@ function ReceiptVoucherView({data, isPdf=false}){
                       <Text style={styles.th}>Invoice Amount</Text>
                       <Text style={styles.th}>Payment Amount</Text>
                     </View>
-                    {data.otherDetails.offSetTransactions.map( elem =>(
-                        <View style={styles.tr}>
-                            {(isPdf || elem.voucherNumber == 'Opening Balance') 
+                    {data.otherDetails.offSetTransactions.map( (elem, i) =>(
+                        <View style={styles.tr} key={i+1}>
+                            {(isPdf || elem.voucherNumber === 'Opening Balance') 
                                 ? <Text style={styles.td}>{elem.voucherNumber}</Text>
                                 :<Link to={`/app/home/invoices/view/${elem.transaction}`} style={styles.td}>
                                     {elem.voucherNumber}</Link>}

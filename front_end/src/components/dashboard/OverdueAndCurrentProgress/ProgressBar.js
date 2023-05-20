@@ -1,4 +1,4 @@
-import { Progress, Space, Tooltip, Typography } from 'antd';
+import { Progress, Tooltip, Typography } from 'antd';
 
 const {Text} = Typography;
 

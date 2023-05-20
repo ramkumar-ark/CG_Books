@@ -1,4 +1,4 @@
-import { Button, Space, Typography, Dropdown, Select } from "antd";
+import { Button, Space, Typography, Dropdown } from "antd";
 import { DownOutlined, EllipsisOutlined, PlusOutlined, InteractionTwoTone } from "@ant-design/icons"
 import { Link } from "react-router-dom";
 import { useGetCustomersQuery } from "../../service/mastersApi";
@@ -70,7 +70,6 @@ const Customers = () => {
 
     useEffect(() => {
         customersTableData = customersTableData.sort(sortfns[sortField]);
-        console.log(sortField);
     }, [sortField]);
 
     if (customers.length === 0){

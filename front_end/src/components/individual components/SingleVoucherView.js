@@ -24,7 +24,7 @@ const SingleVoucherView = ({voucherType, VoucherViewComponent, children}) => {
         <Spin spinning={isLoading || !voucherData.voucherNumber}>
             <SubHeader topOffset={0} componentref={topHeaderRef}>
                 <Title level={3}>
-                    {(voucherType == 'Purchase' ? voucherData?.transaction?.referenceNumber : voucherData.voucherNumber) 
+                    {(voucherType === 'Purchase' ? voucherData?.transaction?.referenceNumber : voucherData.voucherNumber) 
                         || 'Loading...'}
                 </Title>
                 <Link onClick={() => history.goBack()}>

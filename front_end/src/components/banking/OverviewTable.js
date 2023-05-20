@@ -23,7 +23,6 @@ const OverviewTable = ({data}) => {
     const {pathname} = useLocation();
     const [dataSource, setDataSource] = useState(data);
     const actionOptions = (record) =>{
-        console.log(record);
         if (record.type==='cash') return[
             {label:<Link onClick={() => history.push(`${pathname}/edit/cashaccount/${record.ledgerId}`)}>
                 Edit Account

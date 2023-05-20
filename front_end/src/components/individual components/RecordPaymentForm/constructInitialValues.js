@@ -5,7 +5,7 @@ const constructInitialValues = (data, bankChargesLedgerId, bankAccounts) => {
         const bankAccountIds = bankAccounts.map(e => e['_id']);
         const voucherNumber = data.voucherNumber;
         const amount = data.otherDetails?.totalAmount;
-        const bankCharges = data.transaction.debits.find(e => e.ledger['_id'] == bankChargesLedgerId)?.amount || 0;
+        const bankCharges = data.transaction.debits.find(e => e.ledger['_id'] === bankChargesLedgerId)?.amount || 0;
         const date = dayjs(new Date(data.transaction.transactionDate));
         const mode = data.otherDetails.receiptMode;
         const bankLedger = [...data.transaction.debits, ...data.transaction.credits].find(e => 

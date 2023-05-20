@@ -95,6 +95,21 @@ export const mastersApi = createApi({
             }),
             invalidatesTags: ['mastersCreation'],
         }),
+        deleteLedger: builder.mutation({
+            query: ({params}) => ({
+                url: `api/deleteledger/${params.orgId}/${params.ledgerId}`,
+                method:'DELETE',
+            }),
+            invalidatesTags: ['mastersCreation', 'ClosingBalance'],
+        }),
+        deleteLedgers: builder.mutation({
+            query: ({params, body}) => ({
+                url: `api/deleteledgers/${params.orgId}`,
+                method:'DELETE',
+                body: body,
+            }),
+            invalidatesTags: ['mastersCreation', 'ClosingBalance'],
+        }),
     })
 });
 
@@ -102,5 +117,5 @@ export const {
     useFetchMastersQuery, useGetCustomersQuery, useCreateEntityMutation, useUpdateEntityMutation,
     useCreateBankAccountMutation, useGetBankAccountsQuery, useDeleteEntityMutation, useGetEntityQuery,
     useGetVendorsQuery, useGetAccountTypeLedgersQuery, useCreateAccountMutation, useUpdateAccountMutation,
-    useGetBankAccountQuery, useUpdateBankAccountMutation,
+    useGetBankAccountQuery, useUpdateBankAccountMutation, useDeleteLedgerMutation, useDeleteLedgersMutation,
 } = mastersApi;

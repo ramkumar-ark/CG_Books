@@ -1,13 +1,13 @@
 import { useHistory } from "react-router-dom";
 import useGetVouchers from "../../hooks/useGetVouchers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import usePrevious from "../../hooks/usePrevious";
 
 export default function useGetInvoiceTableData(){
     const history = useHistory();
     const { vouchers, refetchVouchers} = useGetVouchers('Sales');
-    const tableData = vouchers?.map(e => ({...e, invoiceNumber:e.voucherNumber, orderNumber:e.referenceNumber,
-        balanceDue:e.pendingAmount,})) || [];
+    const tableData = useMemo(() => vouchers?.map(e => ({...e, invoiceNumber:e.voucherNumber, orderNumber:e.referenceNumber,
+        balanceDue:e.pendingAmount,})) || [], [vouchers]);
     const [invoiceTableData, setInvoiceTableData] = useState(tableData);
     const prevTableData = usePrevious(tableData);
     useEffect(() => {
@@ -41,6 +41,5 @@ export default function useGetInvoiceTableData(){
     const onInvoiceRowClick = (transactionId) => {
         history.push(`/app/home/invoices/view/${transactionId}`);
     };
-    console.log(invoiceTableData);
     return {invoiceTableData, filterTableData, refetchVouchers, onInvoiceRowClick};
 }

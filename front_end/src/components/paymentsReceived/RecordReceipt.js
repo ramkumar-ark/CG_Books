@@ -1,6 +1,6 @@
 import {Form, Spin, Typography, Select, Input, Modal, Button, InputNumber, Checkbox, DatePicker, } from "antd";
 import { IdcardOutlined,  } from '@ant-design/icons'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useGetEntities from "../../hooks/useGetEntities";
 import SelectCustomer from "./SelectCustomer";
@@ -74,7 +74,6 @@ const RecordReceipt = ({edit}) => {
     
     const onReceiptAmtChange = (value) => {
         setSummaryData({...summaryData, received:value});
-        console.log('receiptAmt');
     };
     const onUsedAmtChange = (value) =>{
         setSummaryData({...summaryData, used:value});
@@ -103,7 +102,7 @@ const RecordReceipt = ({edit}) => {
           onOk() {if (isAdvance) onFinish(values)},
         });
     };
-    const showModalOnSubmitFailed = () => {
+    const showModalOnSubmitFailed = useCallback(() => {
         Modal.error({
             title:'Form Submission Failed', 
             content:<Text>
@@ -112,7 +111,7 @@ const RecordReceipt = ({edit}) => {
                 : 'There was an error in submiting the form. Please try again later. If the error persists, contact support.'}
                 </Text>,         
         });
-    };
+    }, [error]);
     const onFinish = (values) => {
         const formDataToSubmit = transformData({...values, selectedCustomer, bankChargesLedgerId, userId});
         edit ? updateVoucher(formDataToSubmit) : createVoucher({...formDataToSubmit, orgId});
@@ -123,7 +122,7 @@ const RecordReceipt = ({edit}) => {
             history.goBack()
         }
         isError && showModalOnSubmitFailed()
-    }, [isSuccess, isError, data, history]);
+    }, [isSuccess, isError, data, history, showModalOnSubmitFailed]);
 
     return (
         <Spin size="large" 
@@ -182,7 +181,6 @@ const RecordReceipt = ({edit}) => {
                 layout='horizontal'
                 style={{padding:'0 20px 50px', textAlign:'left'}}  
                 onFinish={(values) => {
-                    console.log(values);
                     summaryData.received === summaryData.used ? onFinish(values) : showModalOnSubmit(values);
                 }}
                 disabled={!selectedCustomer}

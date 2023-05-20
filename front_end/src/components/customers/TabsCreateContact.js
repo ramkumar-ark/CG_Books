@@ -33,6 +33,5 @@ const TabsCreateContact = ({formObj, contactsData, bankDetails, entityType}) => 
     ];
     const bankDetailsTabItem = {key:'5', label:'Bank Details', children:<BankDetailsTab data={bankDetails}/>, forceRender:true};
     if (entityType==='vendor') items.splice(3,0,bankDetailsTabItem);
-    console.log(items);
     return <Tabs defaultActiveKey="1" items={items} />};
 export default TabsCreateContact;

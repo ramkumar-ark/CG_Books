@@ -29,7 +29,6 @@ const CreateVoucherForm = ({initialValues, onSave, voucherType, voucherData, ent
     const requiredLedgerIds = useGetRequiredLedgerIds();
     const itemTableDetails = voucherData?.otherDetails?.itemDetails || [{}];
     const updateTotalData = (subtotalAmount=tableTotals.subTotal) => {
-        console.log(subtotalAmount);
         const {value, unit} = form.getFieldValue('discount');
         if (unit === "absolute") updateTableTotals(Number(value), subtotalAmount);
         else {

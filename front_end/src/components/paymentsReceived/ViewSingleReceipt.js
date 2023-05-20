@@ -14,10 +14,10 @@ const {Title, Link} = Typography;
 const ViewSingleReceipt = () => {
     const history = useHistory();
     const {pathname} = useLocation();
-    const {transactionid} = useParams();
-    const voucherData = useGetVoucher(transactionid, 'Receipt');
+    const {transactionId} = useParams();
+    const voucherData = useGetVoucher(transactionId, 'Receipt');
     const topHeaderRef = useRef(null);
-    const [deleteReceipt, {isLoading}] = useDeleteVoucher(transactionid, voucherData);
+    const [deleteReceipt, {isLoading}] = useDeleteVoucher(transactionId, voucherData);
 
     return (
         <Spin spinning={isLoading || !voucherData.voucherNumber}>
@@ -30,7 +30,7 @@ const ViewSingleReceipt = () => {
             <SubHeaderSingleView 
                 deleteFunction={()=>{deleteReceipt()}} 
                 downloadFunction={()=>{downloadPdf(ReceiptVoucherView, {data:voucherData, isPdf:true})}} 
-                editFunction={()=>{history.push(pathname.replace(transactionid, `edit/${transactionid}`))}}
+                editFunction={()=>{history.push(pathname.replace(transactionId, `edit/${transactionId}`))}}
                 topOffset={topHeaderRef.current?.clientHeight}/>
             <div style={{padding:30}}>
                 {voucherData.otherDetails && <ReceiptVoucherView data={voucherData} />}

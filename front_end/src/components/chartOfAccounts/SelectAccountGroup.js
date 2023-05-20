@@ -3,7 +3,6 @@ import useGetGroupsList from "./useGetGroupsList";
 
 const SelectAccountGroup = ({isDisabled}) => {
     const selectOptionsList = useGetGroupsList();
-    console.log(selectOptionsList);
     return (
         <Form.Item label='Account Group' name='group' required={true} 
             rules={[{required: true, message: `Please Select a Account Group.`}]}>

@@ -17,6 +17,15 @@ const Chart = ({data}) => {
             textAlign: 'center',
           },
         },
+        tooltip: {
+          showMarkers: false,
+          formatter: (record) => {
+            return {
+                name:record.expense,
+                value:`₹ ${record.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+            };
+          },
+      },
         interactions: [
           {
             type: 'element-active',

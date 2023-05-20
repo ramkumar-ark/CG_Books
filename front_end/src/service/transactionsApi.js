@@ -49,6 +49,7 @@ export const transactionsApi = createApi({
                 url:`/api/getrunningbalanceofgroup/${requestObject.params.orgId}/${requestObject.params.groupId}`,
                 method:'GET',
             }),
+            transformResponse: (response) => response?.[0],
             providesTags: ['ClosingBalance'],
         }),
         getCashFlowMonthlyData: builder.query({

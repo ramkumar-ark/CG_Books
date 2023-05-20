@@ -6,15 +6,14 @@ import useGetLedger from "../../hooks/useGetLedger";
 import SubHeader from "../individual components/SubHeader";
 import { useEffect } from "react";
 
-const EditAccount = ({}) => {
+const EditAccount = () => {
     const {ledgerId} = useParams();
     const ledger = useGetLedger(ledgerId);
-    console.log(ledger);
     const history = useHistory();
     const [api, contextHolder] = notification.useNotification();
     const {updateLedgerAccount, isLoading: isUpdating, isSuccess} = useUpdateAccount(api, ledgerId);
     const [form] = Form.useForm();
-    useEffect(() => {isSuccess && history.goBack()}, [isSuccess])
+    useEffect(() => {isSuccess && history.goBack()}, [isSuccess, history])
     return (
         <Spin spinning={isUpdating || !ledger}>
             {contextHolder}
