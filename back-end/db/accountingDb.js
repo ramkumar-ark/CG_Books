@@ -17,7 +17,7 @@ export default async function initiateAccountingDb(orgId, isNewOrg){
         console.log("Connected to Accounting Database");
         connectedDB = db;
         const databaseModels = createAccountingModels(db);
-        console.log('Accounting Models Created')
+        console.log('Accounting Models Created');
         databaseControllers[orgId] = createAccountingControllers(databaseModels);
         console.log('Accounting Controllers Created')
         isNewOrg && await databaseControllers[orgId].utils.createPrimaryMasters();

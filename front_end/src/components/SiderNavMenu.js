@@ -1,5 +1,5 @@
 import { SolutionOutlined, PieChartOutlined, ShoppingCartOutlined, ShoppingOutlined, BankOutlined, WalletOutlined, BarChartOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 const { Sider } = Layout;
@@ -41,7 +41,7 @@ const items = [
     getItem(<Link to="/app/home/manualjournals">Manual Journals</Link>, '12'),
     getItem(<Link to="/app/home/chartofaccounts">Chart Of Accounts</Link>, '13'),
   ]),
-  // getItem('Reports', '14', <BarChartOutlined/>)
+  getItem(<Link to="/app/home/reports">Reports</Link>, '14', <BarChartOutlined/>)
 ];
 
 const SiderNavMenu = ({onCollapse}) => {

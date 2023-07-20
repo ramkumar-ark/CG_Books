@@ -17,6 +17,7 @@ import Bills from "./bills/bills";
 import useGetViewPortHeight from "../hooks/useGetViewPortHeight";
 import PaymentsMade from "./paymentsMade/paymentsMade";
 import ManualJournals from "./manualJournals/ManualJournals";
+import Reports from "./reports/Reports";
 
 const {Content} = Layout;
 
@@ -87,6 +88,9 @@ export default function AppHome() {
                         </Route>
                         <Route path='/app/home/manualjournals'>
                             <ManualJournals basePath={'/app/home/manualjournals'}/>
+                        </Route>
+                        <Route path='/app/home/reports'>
+                            <Reports basePath={'/app/home/reports'}/>
                         </Route>
                     </Switch>
                 </Content>

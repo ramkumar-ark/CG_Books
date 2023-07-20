@@ -1,0 +1,38 @@
+.reports-card {
+    margin: 20px auto;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #E0F4AC;
+}
+
+.reports-card__header {
+    padding: 10px;
+    background-color: royalblue;
+}
+.reports-card__header h2 {
+    margin-top: 15px;
+    color: #E0F4AC;
+}
+.reports-card__row {
+    padding: 15px 25px;
+}
+.reports-card__row span {
+    font-size: 18px;
+    color: royalblue;
+}
+.reports-card__row:hover {
+    background-color: #E0F4AC;
+    border: 2px solid white;
+    padding: 15px 10px;
+}
+.reports-card__row:hover span {
+    font-size: 20px;
+}
+
+.closeButton {
+    padding-top: 5px;
+}
+.closeButton span {
+    font-size: large;
+    color: blue;
+}
